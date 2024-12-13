@@ -94,3 +94,70 @@ This is a short network cable commonly used to connect routers, switches, or com
 This cable is typically used to connect two devices of the same type (e.g., computer-to-computer or router-to-router). One side follows the T568A standard wiring and the other follows the T568B standard wiring.
 
 ![](Images/standardcabling.jpg)
+
+# Background
+
+Cisco was founded in 1984, and like many companies, it began with its fair share of controversies. They are credited with inventing the router, and this has become their claim to fame. “We invented the router.” However, if you type this into Google, you’ll find that a sixty-year-old individual claims, “No, I invented the router, and Cisco stole it.” Either way, it's a valid point. Perhaps that sixty-year-old did invent the router, and Cisco did steal the idea. But without a doubt, Cisco took the concept, brought it to the world, and popularized it. They developed it on a massive scale, earning their reputation as the pioneers of routers and a fundamental building block for today’s networks.
+
+Now, Cisco is undoubtedly a leader in the network equipment industry. A large portion of the world’s network infrastructure is associated with their name, and they are renowned for their stability and reliability.
+
+![](Images/network.jpg)
+
+Let’s imagine we have an office in New York with a PC, a server, and a printer, all of which need to communicate with each other. To achieve this, I’ll install a network switch and connect the devices to it using Ethernet cables. This switch would look something like this. The switch acts as a connector device for my Local Area Network (LAN).
+
+In the New York office, I might also have a laptop that connects via a wireless network. This allows me to send a file from one person to another, store a file on a server, or even use a shared printer so that everyone doesn’t have to buy their own inkjet printer—something that can be a challenging task. All these forms of communication are supported by the switch. Now all my devices in the New York office can communicate with each other. I’ve created a local area network, which is a network that connects devices within a specific geographical area, such as an office or a university campus.
+
+However, I don’t want all these devices to only communicate among themselves. They’ll likely need to connect to the internet as well. For this, I will use a router. A router is capable of making advanced routing decisions to direct network traffic between different network segments. This is how it works, and it would look something like this. Additionally, to protect against hackers or other malicious users attempting to compromise our network, I’ll set up a firewall. This firewall will safeguard various network segments from each other.
+
+Now, the Local Area Network (LAN) in New York is connected to the internet. But in the modern business world, companies don’t operate from just one office. Suppose we also have an office in Boston with similar devices and its own LAN. To connect the New York and Boston offices so that the devices can communicate with each other, I could establish a secure connection through the internet or, alternatively, set up a dedicated connection between the two offices’ routers. This would provide a Wide Area Network (WAN) connection between the two offices.
+
+## The Purpose of Networking
+
+The primary purpose of networking is to connect various devices with each other. Some of the key features of networks include:
+
+Topology: The structure that determines how devices are connected to one another.
+Network Speed: Typically, the higher the speed, the higher the cost.
+Security: This includes firewalls, routers, and switches that maintain network safety.
+Availability: Ensuring that the network is accessible and avoiding a single point of failure by implementing redundancy.
+Scalability: The network must be easily expandable as the company grows.
+Reliability: Networks should operate consistently and reliably over time.
+Eventually, it might be necessary for companies to communicate beyond their local network. This is where routers come into play. A router allows you to connect your Local Area Network (LAN) to a Wide Area Network (WAN) or a larger network, essentially providing the ability to communicate outside your local environment. Routers act as boundaries, defining divisions between networks. They also often provide security features, although they mainly focus on managing and directing network traffic.
+
+# How Routers Work
+
+Routers establish boundaries between networks. When designing a network, routers are used to segment network traffic and prevent data from unnecessarily flooding an entire corporate network. They perform tasks such as Network Address Translation (NAT), a service that converts your internal network IP addresses into internet-accessible addresses. This feature is essential and is implemented by nearly 99% of routers, though it’s not strictly required.
+
+So, what does a router do? Essentially, a router acts as a type of translator or bridge between your internal network and external networks, managing the flow of information and creating a form of division between your LAN and the rest of the internet or other networks.
+
+In short, routers divide boundaries between networks, making communication possible while optimizing efficiency, reducing traffic overloads, and adding a layer of security to network operations.
+
+## Switch
+
+A switch is a network device used to connect multiple devices or computers within a network and works to ensure that data packets are delivered to their correct destinations. A switch operates at the data link layer and is used in LAN (Local Area Network) environments.
+
+![](Images/Switch.jpg)
+
+## LAN 
+
+A LAN (Local Area Network) is a networking system that connects computers and other devices within a small, limited geographical area (such as a home, office, school, or building). LAN allows users to share information with each other, share resources such as printers, file servers, etc., and access internet connections.
+
+![](Images/Lan.jpg)
+
+## WAN
+A WAN (Wide Area Network) is a large regional or international network that connects multiple LANs (Local Area Networks) or other smaller networks. WAN typically spans a large geographical area, such as a city, country, or even across the entire globe. It is used for communication between computers, servers, databases, and other network resources.
+
+![](Images/Wan.jpg)
+
+# Router
+A Router is a network device that transfers data between two or more networks. It determines the path of data packets within networks and directs them to their correct destination. Routers typically establish connections between the internet and a local network (LAN) or a wide area network (WAN).
+
+![](Images/Router.jpg)
+
+Now let's talk about Wireless Access Points.
+
+This was a revolutionary technology that changed the world. Wi-Fi was initially a huge security vulnerability, but it has become much more secure over time.
+
+# Wireless Access Point (WAP)
+A Wireless Access Point (WAP) is a network device that helps connect wireless devices (such as smartphones, laptops, tablets, etc.) to a wired network. It operates as part of a LAN (Local Area Network) and creates a Wi-Fi network, allowing devices to access the internet or network resources.
+
+![](Images/Wireless.jpg)
