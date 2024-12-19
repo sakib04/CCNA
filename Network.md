@@ -232,3 +232,7 @@ Transfer Time = Network Speed (in  bps) / File Size (in  bits)
               = 100 megabits per second/ 80 megabits
               = 0.8seconds
 ```
+
+Suppose you have a 1.5 GB music collection. First, I would say, "Alright, it’s 1500 megabytes in size, correct?" Then, multiply by 8 because I need to convert it to megabits. So, 1500 times 8 equals 12,000 megabits of data that I need to transfer. Now, I’ll say, if I transfer at 100 megabits per second, and if I actually get a throughput of 100 megabits per second, it would take about two minutes.
+
+So, what do you understand? When we work with networks, we always need to keep in mind the conversion between "bits per second" and "bytes per second."
