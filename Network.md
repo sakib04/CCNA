@@ -291,5 +291,6 @@ The Open Systems Interconnection (OSI) model is a theoretical network model used
 - **Application Layer**
   - Function: This is the layer that directly interacts with the user, where various applications run to use network services. It provides various services for data.
   - Example: HTTP, FTP, SMTP, DNS, POP3, Telnet
-  - Summary: The OSI model provides a 7-layer framework for managing communication and information flow between network protocols and systems. Each layer performs a specific task, ensuring the correct exchange of information through collaboration with the other layers.
+
+Summary: The OSI model provides a 7-layer framework for managing communication and information flow between network protocols and systems. Each layer performs a specific task, ensuring the correct exchange of information through collaboration with the other layers.
 
