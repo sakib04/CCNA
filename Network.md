@@ -18,29 +18,29 @@ Now, the Local Area Network (LAN) in New York is connected to the internet. But 
 
 The primary purpose of networking is to connect various devices with each other. Some of the key features of networks include:
 
-Topology: The structure that determines how devices are connected to one another.
+- **Topology:** The structure that determines how devices are connected to one another.
+- **Network Speed:** Typically, the higher the speed, the higher the cost.
+- **Security:** This includes firewalls, routers, and switches that maintain network safety.
+- **Availability:** Ensuring that the network is accessible and avoiding a single point of failure by implementing redundancy.
+- **Scalability:** The network must be easily expandable as the company grows.
+- **Reliability:** Networks should operate consistently and reliably over time.
 
-Network Speed: Typically, the higher the speed, the higher the cost.
-Security: This includes firewalls, routers, and switches that maintain network safety.
-Availability: Ensuring that the network is accessible and avoiding a single point of failure by implementing redundancy.
-Scalability: The network must be easily expandable as the company grows.
-Reliability: Networks should operate consistently and reliably over time.
 Eventually, it might be necessary for companies to communicate beyond their local network. This is where routers come into play. A router allows you to connect your Local Area Network (LAN) to a Wide Area Network (WAN) or a larger network, essentially providing the ability to communicate outside your local environment. Routers act as boundaries, defining divisions between networks. They also often provide security features, although they mainly focus on managing and directing network traffic.
 
 # Network
 A Network is a system of connection between two or more computers or devices that enables sharing of information and resources. Through networks, devices can communicate with each other and exchange data.
 
 **The main objectives of networks are:**
-- Data Sharing: Sharing data, files, and software among different devices.
-- Resource Sharing: Sharing printers, scanners, hard drives, etc.
-- Communication: Communication via email, messaging, video conferencing, etc.
-- Internet Access: Facilitating access to the internet.
+- **Data Sharing:** Sharing data, files, and software among different devices.
+- **Resource Sharing:** Sharing printers, scanners, hard drives, etc.
+- **Communication:** Communication via email, messaging, video conferencing, etc.
+- **Internet Access:** Facilitating access to the internet.
 
 Networks can be of various types, such as:
-- LAN (Local Area Network): A network used within a small area, such as an office or home, connecting computers.
-- WAN (Wide Area Network): A network used over large geographical areas, such as between cities or countries.
-- MAN (Metropolitan Area Network): A network used within a single city or part of a city.
-- PAN (Personal Area Network): A small network connecting two devices, such as a Bluetooth or Wi-Fi connection.
+- **LAN (Local Area Network):** A network used within a small area, such as an office or home, connecting computers.
+- **WAN (Wide Area Network):** A network used over large geographical areas, such as between cities or countries.
+- **MAN (Metropolitan Area Network):** A network used within a single city or part of a city.
+- **PAN (Personal Area Network):** A small network connecting two devices, such as a Bluetooth or Wi-Fi connection.
 
 Network components or elements include:
 - Router
@@ -124,14 +124,6 @@ This cable is typically used to connect two devices of the same type (e.g., comp
 
 ![](Images/standardcabling.jpg)
 
-# How Routers Work
-
-Routers establish boundaries between networks. When designing a network, routers are used to segment network traffic and prevent data from unnecessarily flooding an entire corporate network. They perform tasks such as Network Address Translation (NAT), a service that converts your internal network IP addresses into internet-accessible addresses. This feature is essential and is implemented by nearly 99% of routers, though it’s not strictly required.
-
-So, what does a router do? Essentially, a router acts as a type of translator or bridge between your internal network and external networks, managing the flow of information and creating a form of division between your LAN and the rest of the internet or other networks.
-
-In short, routers divide boundaries between networks, making communication possible while optimizing efficiency, reducing traffic overloads, and adding a layer of security to network operations.
-
 ## Switch
 
 A switch is a network device used to connect multiple devices or computers within a network and works to ensure that data packets are delivered to their correct destinations. A switch operates at the data link layer and is used in LAN (Local Area Network) environments.
@@ -148,6 +140,14 @@ A LAN (Local Area Network) is a networking system that connects computers and ot
 A WAN (Wide Area Network) is a large regional or international network that connects multiple LANs (Local Area Networks) or other smaller networks. WAN typically spans a large geographical area, such as a city, country, or even across the entire globe. It is used for communication between computers, servers, databases, and other network resources.
 
 ![](Images/Wan.jpg)
+
+# How Routers Work
+
+Routers establish boundaries between networks. When designing a network, routers are used to segment network traffic and prevent data from unnecessarily flooding an entire corporate network. They perform tasks such as Network Address Translation (NAT), a service that converts your internal network IP addresses into internet-accessible addresses. This feature is essential and is implemented by nearly 99% of routers, though it’s not strictly required.
+
+So, what does a router do? Essentially, a router acts as a type of translator or bridge between your internal network and external networks, managing the flow of information and creating a form of division between your LAN and the rest of the internet or other networks.
+
+In short, routers divide boundaries between networks, making communication possible while optimizing efficiency, reducing traffic overloads, and adding a layer of security to network operations.
 
 # Router
 A Router is a network device that transfers data between two or more networks. It determines the path of data packets within networks and directs them to their correct destination. Routers typically establish connections between the internet and a local network (LAN) or a wide area network (WAN).
