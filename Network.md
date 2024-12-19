@@ -258,5 +258,38 @@ Here, I am connected through a switch between a sender (like my laptop) and a re
 
 The OSI model provides a great advantage for engineers because they can focus on their specific layer and follow the standards of the layers above and below. It is an open standard. To help remember the layers of the OSI model, there are some acronyms. One popular acronym is "Please Do Not Throw Sausage Pizza Away," which helps you easily remember the names of the OSI model’s layers.
 
+1.	Physical
+2.	Data Link
+3.	Network
+4.	Transport
+5.	Session
+6.	Presentation
+7.	Application
 
+There are also other acronyms, such as "Please Don't Need Those Stupid Packets Anyway" or "Please Do Not Touch Superman’s Private Area."
+
+The Open Systems Interconnection (OSI) model is a theoretical network model used to explain how communication is managed between different network protocols and devices. It is designed as a framework of 7 layers, with each layer performing a specific function or responsibility. Below is an explanation of the 7 layers of the OSI model:
+
+- **Physical Layer**
+  - Function: This layer is hardware-related and its job is to ensure the availability of suitable physical media for data transmission (such as cables, signals, etc.). It transmits data at the bit level.
+  - Example: Cables, routers, hubs, modems, switches (physical connectivity)
+- **Data Link Layer**
+  - Function: This layer establishes data links and converts data packets into frames. It also performs error detection and correction during data transmission.
+  - Example: Ethernet, MAC (Media Access Control), PPP (Point-to-Point Protocol)
+- **Network Layer**
+  - Function: This layer handles routing and addressing to ensure that data reaches its destination. It uses IP (Internet Protocol) to send packets from one place to another.
+  - Example: IP, ICMP (Internet Control Message Protocol), Routers
+- **Transport Layer**
+  - Function: This layer is responsible for managing the processes of connection establishment, maintenance, and termination, ensuring correct and effective data transfer. It also handles session creation and error correction.
+  - Example: TCP (Transmission Control Protocol), UDP (User Datagram Protocol)
+- **Session Layer**
+  - Function: This layer establishes, maintains, and terminates communication sessions between two programs. It also coordinates the session during data transfer.
+  - Example: NetBIOS, RPC (Remote Procedure Call), SMB (Server Message Block)
+- **Presentation Layer**
+   - Function: This layer converts data into a format that is usable by the application layer. It also manages data encoding, encryption, and compression.
+   - Example: JPEG, GIF, Encryption methods (SSL/TLS)
+- **Application Layer**
+  - Function: This is the layer that directly interacts with the user, where various applications run to use network services. It provides various services for data.
+  - Example: HTTP, FTP, SMTP, DNS, POP3, Telnet
+  - Summary: The OSI model provides a 7-layer framework for managing communication and information flow between network protocols and systems. Each layer performs a specific task, ensuring the correct exchange of information through collaboration with the other layers.
 
