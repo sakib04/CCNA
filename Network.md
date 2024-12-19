@@ -236,3 +236,27 @@ Transfer Time = Network Speed (in  bps) / File Size (in  bits)
 Suppose you have a 1.5 GB music collection. First, I would say, "Alright, it’s 1500 megabytes in size, correct?" Then, multiply by 8 because I need to convert it to megabits. So, 1500 times 8 equals 12,000 megabits of data that I need to transfer. Now, I’ll say, if I transfer at 100 megabits per second, and if I actually get a throughput of 100 megabits per second, it would take about two minutes.
 
 So, what do you understand? When we work with networks, we always need to keep in mind the conversion between "bits per second" and "bytes per second."
+
+``` css
+1 TeraByte = 1024 GigaByte
+1 GigaByte = 1024 Megabyte
+1 Megabyte = 1024 KiloByte
+1 KiloByte = 1024 Byte
+1 Byte     = 8 Bit
+```
+
+# Network Model
+
+![](Images/Untitled.png)
+
+## OSI Model
+![](Images/OSI1.jpg)
+
+The Open Systems Interconnection (OSI) model is an international standard set by the International Organization for Standardization (ISO), meaning it is an ISO standard. It provides a general-purpose framework that defines and standardizes how computers communicate with each other over a network. The OSI model is conceptual, meaning it is not a physical object or an actual protocol or technology. Its seven layers of data transmission operations are divided into specific related groups, where each layer provides services to the layer above it and receives services from the layer below it.
+
+Here, I am connected through a switch between a sender (like my laptop) and a receiver (like my email server). I will send an email to my email server. First, the sender will generate traffic that will be sent to the receiver. When the packet is created, it will move from the upper layers down to the lower layers. The sender will first create data for layer 7, the application layer. For example, if I am sending an email, it will contain fields like 'sender' and 'receiver', then it will be encapsulated within data for layer 6 (the presentation layer). After that, it will be encapsulated in the data for layer 5 (the session layer). Layers 5, 6, and 7 are called the upper layers and are more important for application developers than for network engineers. When network engineers reach layer 4, the sender will create a segment and encapsulate it with the header of layer 4 (the transport layer). Layer 4 will check the header and identify the traffic by its port number to determine whether it is for the email server application or the web server application. It could be either TCP or UDP, and the port number will be included, such as port 80 for web traffic or port 25 for our email example. Now, the packet is prepared and transmitted from the sender. Then, layer 3 will check the header and confirm that the packet is for its destination based on the IP address. It will encapsulate the data. First, it will check the layer 2 header and verify if the packet is for it. It will encapsulate the data. In this way, the entire packet is encapsulated in the sender's system and moves to the next layer. When it reaches the receiver, the operations will reverse, starting from the physical layer and moving upwards. In this way, the entire packet is de-encapsulated in the receiver’s system and moves upwards to the upper layers.
+
+The OSI model provides a great advantage for engineers because they can focus on their specific layer and follow the standards of the layers above and below. It is an open standard. To help remember the layers of the OSI model, there are some acronyms. One popular acronym is "Please Do Not Throw Sausage Pizza Away," which helps you easily remember the names of the OSI model’s layers.
+
+
+
