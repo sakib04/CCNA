@@ -162,3 +162,73 @@ This was a revolutionary technology that changed the world. Wi-Fi was initially 
 A Wireless Access Point (WAP) is a network device that helps connect wireless devices (such as smartphones, laptops, tablets, etc.) to a wired network. It operates as part of a LAN (Local Area Network) and creates a Wi-Fi network, allowing devices to access the internet or network resources.
 
 ![](Images/Wireless.jpg)
+
+# Metropolitan Area Network (MAN)
+A Metropolitan Area Network (MAN) refers to a computer network that spans a specific metropolitan or city area. It is larger than a Local Area Network (LAN) but smaller than a Wide Area Network (WAN).
+
+**Characteristics of MAN:**
+
+- **Geographical Range:** A MAN typically covers a city or metropolitan area, or its surrounding regions (usually between 10 to 50 kilometers in range).
+
+- **High-Speed Connections:** MANs generally use high-speed fiber optic cables or other fast connection technologies, ensuring fast data transfer.
+
+- **Multiple LAN Connections:** MAN connects multiple Local Area Networks (LANs). This means that several offices or buildings are linked together and can share data.
+
+- **User Types:** MANs are usually used by large organizations, universities, government offices, or the general public in a city or region.
+
+Examples of MAN:
+
+- A citywide Wi-Fi network
+- A network used to connect various buildings in a university
+- A network that connects various government offices in a city
+
+Advantages of MAN:
+
+- Fast and efficient communication within a city or area
+- Quick connection of multiple offices or buildings
+- Improved services for multiple users in a computer network.
+- In general, a MAN is a network that connects one or more LANs and ensures fast information exchange within a specific city or area.
+
+# PAN (Personal Area Network)
+A Personal Area Network (PAN) is a small, personal network typically used within a single person or a small area. It is used for connecting devices such as smartphones, laptops, tablets, printers, headphones, etc.
+
+Characteristics of PAN:
+
+- Range and Coverage: A PAN typically operates within a very small area, such as a room, a house, or a close proximity of devices belonging to one person. Its range is generally limited to about 10 meters (30 feet).
+
+Device Connectivity: PAN allows multiple personal devices to be connected, such as:
+
+- Data exchange between smartphones and laptops
+- Connecting various devices via Bluetooth or Wi-Fi
+- Connection between a smartwatch and a smartphone
+- Communication Technologies: Technologies like Bluetooth, Infrared, and Wi-Fi are typically used to create a PAN. These allow devices to connect with each other and exchange information.
+
+Examples of PAN:
+
+- Bluetooth headphones connected to a smartphone
+- Wireless keyboards or mice connected to a computer
+- Infrared devices (e.g., remote controls) that control home appliances
+- Connection between two or more devices via Wi-Fi, such as a laptop and a printer
+
+Advantages of PAN:
+
+- Personal and Secure: Since it operates in a small area, PAN is usually personal and secure.
+- Easy and Fast Connections: It helps quickly and easily connect devices.
+- Seamless Data Sharing: Data can be shared between devices without the need for wires or cables.
+
+In summary, a PAN (Personal Area Network) is a small, personal network, primarily used to establish communication between a person’s devices. It is typically operated through Bluetooth or Wi-Fi.
+
+# Network Speed
+We will discuss how we manage speed. Some people refer to it as megabytes per second, others as megabits per second, or gigabits per second. What does it actually mean?
+
+If you have a 100 megabits per second (Mbps) connection, you send your 10 MB file by breaking it into smaller 1500-byte packets, and each packet will have some header data, such as where it came from, where it's going, port numbers, etc. This extra information serves as overhead for transmission and routing. As a result, you might get something like 80 megabits per second, meaning it will be a bit less due to this additional overhead. Again, this is just an estimate, not the actual number.
+
+10 MB (megabytes) = 80 megabits (since 1 byte = 8 bits).
+
+If you use a 100 Mbps network, the transfer time can be calculated as:
+
+``` java
+Transfer Time = Network Speed (in  bps) / File Size (in  bits)
+              = 100 megabits per second/ 80 megabits
+              = 0.8seconds
+```
