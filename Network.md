@@ -294,3 +294,42 @@ The Open Systems Interconnection (OSI) model is a theoretical network model used
 
 Summary: The OSI model provides a 7-layer framework for managing communication and information flow between network protocols and systems. Each layer performs a specific task, ensuring the correct exchange of information through collaboration with the other layers.
 
+## TCP/IP Model
+In the past, other computing protocols like IPX/SPX and AppleTalk existed, but they are now obsolete. TCP/IP is now universally used. While the OSI reference model is conceptual, the TCP/IP stack is actually used for data transfer in today's production networks. The TCP/IP model also has a layered structure, but it does not use all the layers of the OSI model, although the activities and functions of the layers are similar.
+
+TCP/IP was developed in the 1960s by the U.S. Department of Defense's Advanced Research Projects Agency (ARPA). The TCP/IP model (Transmission Control Protocol / Internet Protocol model) is a network communication model that manages the transfer of data and communication in the internet and other computer networks. It is a protocol stack, which is primarily divided into four layers. Although the TCP/IP model is somewhat different from the OSI model, both models provide a layered structure for protocols to ensure network communication.
+
+It is a protocol stack composed of multiple protocols, including TCP (Transmission Control Protocol) and IP (Internet Protocol). It is not a single protocol, but rather a stack of protocols. If two hosts want to communicate with each other, there will be a protocol that determines how that communication will work.
+
+The four layers of the TCP/IP model:
+
+- **Application Layer:**
+   - Function: The Application Layer acts as the main medium for communication between the user and the network. It directly communicates with applications such as browsers, email clients, file transfer protocols (FTP), and other programs.
+   - Examples: HTTP, FTP, SMTP, DNS, Telnet
+   - Role: Responsible for data formatting, encryption, and encoding.
+- **Transport Layer:**
+  - Function: The Transport Layer ensures secure and reliable data transfer. It converts data into segments and handles error detection and correction. TCP and UDP are the protocols at this layer.
+  - Examples: TCP (Transmission Control Protocol), UDP (User Datagram Protocol)
+  - Role: Connection-oriented (TCP) or connectionless (UDP) data transmission.
+- **Internet Layer:**
+  - Function: The Internet Layer ensures routing and addressing to deliver data to its destination. It primarily uses the IP protocol to forward data packets across different networks.
+  - Examples: IP (Internet Protocol), ICMP (Internet Control Message Protocol)
+  - Role: Determines the correct route for data (routing) and handles IP addressing.
+- **Network Access Layer:**
+  - Function: The Network Access Layer handles the physical and data link layer tasks. It is responsible for communication between physical media and devices in the network, transferring data as frames.
+  - Examples: Ethernet, Wi-Fi, ARP (Address Resolution Protocol)
+  - Role: Data transfer through the physical network.
+
+TCP/IP Model Layers Compared to OSI Model:
+- **Application Layer:** This corresponds to the application, presentation, and session layers in the OSI model.
+- **Transport Layer:** This aligns with the transport layer in the OSI model.
+- **Internet Layer:** This corresponds to the network layer in the OSI model.
+- **Network Access Layer:** This relates to the data link and physical layers in the OSI model.
+
+The TCP/IP stack has four layers, while the OSI model has seven. To compare, the Application Layer of TCP/IP combines the OSI models of application, presentation, and session layers. Below it is the Transport Layer, which corresponds to the OSI's Transport Layer. Under that is the Internet Layer, which matches OSI's Network Layer. At the bottom is the Network Access Layer, which aligns with OSI's Data Link and Physical Layers.
+
+![](Images/OSIVsTCP.jpg)
+
+When two hosts communicate with each other, they exchange Protocol Data Units (PDUs). A PDU represents the entire communication, spanning layers 7 to 1 in the OSI model.
+
+![](Images/pdu.jpg)
