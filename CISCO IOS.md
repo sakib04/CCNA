@@ -49,5 +49,117 @@ Cisco IOS (Internetwork Operating System) এ কিছু নির্দিষ
 ব্যাখ্যা: এই মোডে, আপনি একক ইন্টারফেসের জন্য কনফিগারেশন পরিবর্তন করতে পারেন। উদাহরণস্বরূপ, আপনি একটি ইন্টারফেসে IP ঠিকানা সেট করতে পারেন অথবা কোনো ইন্টারফেসের স্ট্যাটাস পরিবর্তন করতে পারেন।
 কমান্ড উদাহরণ: ip address 192.168.1.1 255.255.255.0, no shutdown
 
-User Mode
-Cisco IOS User Mode (ইউজার মোড) হল একটি কনসোল বা রিমোট সেশনে সিসকো ডিভাইস (যেমন রাউটার বা সুইচ) এ প্রথমে প্রবেশ করার সময় ডিভাইসটির প্রাথমিক অবস্থান। এই মোডে, আপনি ডিভাইসটির কনফিগারেশন পরিবর্তন করতে পারবেন না, তবে কিছু সাধারণ কমান্ড ব্যবহার করে ডিভাইসের অবস্থা এবং তথ্য দেখতে পারবেন।
+# Console Cable connection to pc
+Windows-এ Cisco ডিভাইসের সাথে কনসোল কেবল সংযোগ এবং টার্মিনাল চালানোর জন্য নিম্নলিখিত ধাপগুলি অনুসরণ করতে হবে:
+
+১. কনসোল কেবল সংযোগ করুন:
+কনসোল কেবল ( RJ-45 to DB9 বা RJ-45 to USB) ব্যবহার করে আপনার Cisco ডিভাইস (যেমন রাউটার বা সুইচ) এবং কম্পিউটার এর মধ্যে সংযোগ স্থাপন করুন।
+যদি আপনি RJ-45 to DB9 কেবল ব্যবহার করেন, তবে DB9 পোর্টটি কম্পিউটারের পুরনো সিরিয়াল পোর্টে (COM port) সংযুক্ত হবে।
+যদি আপনি RJ-45 to USB কেবল ব্যবহার করেন, তবে USB পোর্টের মাধ্যমে ডিভাইসটি সংযুক্ত হবে এবং আপনাকে একটি নতুন COM পোর্ট ড্রাইভার ইনস্টল করতে হতে পারে।
+২. টার্মিনাল সিস্টেম ইন্সটল করুন:
+Windows-এ কনসোল পোর্টের মাধ্যমে Cisco ডিভাইসের সাথে যোগাযোগ করতে PuTTY বা Tera Term মতো টার্মিনাল সফটওয়্যার ব্যবহার করা হয়। এখানে আমরা PuTTY ব্যবহার করার পদ্ধতি দেখাব:
+
+- PuTTY ডাউনলোড করুন:
+- PuTTY ইনস্টল করুন:
+
+৩. PuTTY দিয়ে সংযোগ স্থাপন:
+- PuTTY ওপেন করুন।
+- Serial অপশনটি সিলেক্ট করুন।
+- Serial line (COM port) এ সঠিক COM পোর্ট নম্বর দিন:
+- আপনি Device Manager এ গিয়ে দেখতে পারবেন যে কোন COM পোর্টটি সংযুক্ত হয়েছে। সাধারণত এটি COM1, COM2 ইত্যাদি হতে পারে।
+যেমন: COM1, COM2 ইত্যাদি।
+- Speed (baud rate) সেট করুন: 9600 (এটি সাধারণত ডিফল্ট থাকে, তবে আপনি আপনার ডিভাইসের কনফিগারেশন চেক করে এটি নিশ্চিত করতে পারেন)।
+- Data bits: 8
+- Parity: None
+- Stop bits: 1
+- Flow control: None
+- এরপর Open ক্লিক করুন।
+
+৪. Cisco ডিভাইসে লগইন করুন:
+আপনি যদি সবকিছু সঠিকভাবে সেটআপ করেন, তবে PuTTY টার্মিনাল উইন্ডোটি খুলবে এবং Cisco ডিভাইসের কনসোল থেকে লগইন প্রম্পট আসবে। আপনি তখন ডিভাইসে লগইন করতে পারবেন।
+
+# Hostname configure
+Cisco IOS-এ hostname কনফিগার করার জন্য আপনাকে নিম্নলিখিত ধাপগুলি অনুসরণ করতে হবে:
+
+1. **রাউটার বা সুইচে লগইন করুন:**
+   - প্রথমে আপনার ডিভাইসে লগইন করুন।
+
+2. **গ্লোবাল কনফিগারেশন মোডে প্রবেশ করুন:**
+   - প্রম্পট থেকে `enable` টাইপ করুন এবং Enter চাপুন।
+   - তারপর `configure terminal` টাইপ করুন এবং Enter চাপুন।
+```css
+<swhtch> ?
+
+connect       Open a terminal connection
+disable       Turn off privileged commands
+disconnect    Disconnect an existing network connection
+enable        Turn on privileged commands
+exit          Exit from the EXEC
+logout        Exit from the EXEC
+ping          send echo messages
+resume 	      Resume an active network connection
+show          Show running system information
+telnet        Open a telnet connection
+terminal	    Set terminal line parameters
+traceroute    Trace route to destination
+<switch> en
+Switch#?
+Exec          commands:
+clear         Reset functions
+clock         Manage the system clock
+configure     Enter configuration mode
+connect       Open a terminal connection
+copy          Copy from one file to another
+debug         Debugging functions (see also 'undebug')
+delete        Delete a file
+dir           List files on a filesystem
+disable       Turn off privileged commands
+disconnect    Disconnect an existing network connection
+enable        Turn on privileged commands
+erase         Erase a filesystem
+exit          Exit from the EXEC
+logout        Exit from the EXEC
+more          Display the contents of a file
+no            Disable debugging informations
+ping          Send echo messages
+reload        Halt and perform a cold restart
+resume        Resume an active network connection
+setup         Run the SETUP command facility
+show          Show running system information
+ssh           Open a secure shell client connection
+telnet        Open a telnet connection
+terminal      Set terminal line parameters
+traceroute    Trace route to destination
+undebug       Disable debugging functions (see also 'debug')
+vlan          Configure VLAN parameters
+write Write   running configuration to memory, network, or terminal
+
+Switch# configure terminal 
+Enter configuration commands, one per line. End with CNTL/Z.
+```
+3. **hostname কনফিগার করুন:**
+   - `hostname` কমান্ড ব্যবহার করে আপনার ডিভাইসের নতুন নাম সেট করুন। উদাহরণস্বরূপ:
+     ```cmd
+     hostname ciscoswitch1
+     ```
+```css
+Switch(config)# hostname ?
+WORD This system's network name
+
+Switch(config)# hostname ciscoswitch1
+
+Switch(config)#exit
+
+Switch#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Switch#exit
+```
+4. **কনফিগারেশন সেভ করুন:**
+   - কনফিগারেশন সংরক্ষণ করতে `write memory` বা `copy running-config startup-config` কমান্ড ব্যবহার করুন।
+
+এভাবে আপনি Cisco IOS ডিভাইসে hostname কনফিগার করতে পারবেন।
+
+
+
+```
