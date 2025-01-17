@@ -83,11 +83,7 @@ Cisco IOS-এ hostname কনফিগার করার জন্য আপন
 
 1. **রাউটার বা সুইচে লগইন করুন:**
    - প্রথমে আপনার ডিভাইসে লগইন করুন।
-
-2. **গ্লোবাল কনফিগারেশন মোডে প্রবেশ করুন:**
-   - প্রম্পট থেকে `enable` টাইপ করুন এবং Enter চাপুন।
-   - তারপর `configure terminal` টাইপ করুন এবং Enter চাপুন।
-```css
+```bash
 <swhtch> ?
 
 connect       Open a terminal connection
@@ -102,7 +98,23 @@ show          Show running system information
 telnet        Open a telnet connection
 terminal	    Set terminal line parameters
 traceroute    Trace route to destination
+<switch> 
+
+```
+2. **গ্লোবাল কনফিগারেশন মোডে প্রবেশ করুন:**
+   - প্রম্পট থেকে `enable` টাইপ করুন এবং Enter চাপুন।
+     ```cmd
+     enable
+     ```
+   - তারপর `configure terminal` টাইপ করুন এবং Enter চাপুন।
+     ```cmd
+     configure terminal 
+     ```
+
+```bash
 <switch> en
+<switch> enable
+Switch#
 Switch#?
 Exec          commands:
 clear         Reset functions
@@ -133,7 +145,8 @@ traceroute    Trace route to destination
 undebug       Disable debugging functions (see also 'debug')
 vlan          Configure VLAN parameters
 write Write   running configuration to memory, network, or terminal
-
+```
+```bash
 Switch# configure terminal 
 Enter configuration commands, one per line. End with CNTL/Z.
 ```
@@ -148,18 +161,27 @@ WORD This system's network name
 
 Switch(config)# hostname ciscoswitch1
 
-Switch(config)#exit
+ciscoswitch1(config)# exit
 
-Switch#
+ciscoswitch1#
 %SYS-5-CONFIG_I: Configured from console by console
 
-Switch#exit
+ciscoswitch1# exit
+
+<ciscoswitch1>
+
 ```
 4. **কনফিগারেশন সেভ করুন:**
    - কনফিগারেশন সংরক্ষণ করতে `write memory` বা `copy running-config startup-config` কমান্ড ব্যবহার করুন।
 
 এভাবে আপনি Cisco IOS ডিভাইসে hostname কনফিগার করতে পারবেন।
 
+# Negetive Command
+Cisco IOS-এ no কমান্ড ব্যবহার করা হয় কোনো কনফিগারেশন অপশনকে নিষ্ক্রিয় (disable) বা মুছে ফেলার জন্য। এর মাধ্যমে আপনি কোনো সেটিংস বা কনফিগারেশন পরিবর্তন করতে পারেন। এই কমান্ডটি সাধারণত কোনো পূর্ববর্তী কনফিগারেশন বা অপশনকে বিপরীত করতে ব্যবহৃত হয়।
 
+no কমান্ডের উদাহরণ:
+হোস্টনেম (Hostname) পরিবর্তন: যদি আপনি আগে হোস্টনেম সেট করে থাকেন এবং সেটি মুছে দিতে চান, তাহলে no hostname কমান্ড ব্যবহার করতে পারেন।
 
+```bash
+Router(config)# no hostname
 ```
