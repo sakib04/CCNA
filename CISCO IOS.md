@@ -181,7 +181,311 @@ Cisco IOS-এ no কমান্ড ব্যবহার করা হয় ক�
 
 no কমান্ডের উদাহরণ:
 হোস্টনেম (Hostname) পরিবর্তন: যদি আপনি আগে হোস্টনেম সেট করে থাকেন এবং সেটি মুছে দিতে চান, তাহলে no hostname কমান্ড ব্যবহার করতে পারেন।
+```cmd
+no hostname
+```
+```bash
+ciscoswitch1(config)# no hostname
+switch(config)# exit
+switch# exit
+switch> 
+```
+# Console Password
+Cisco ডিভাইসে console password কনফিগার করার মাধ্যমে আপনি console পোর্টের মাধ্যমে রাউটার বা সুইচে প্রবেশ করার সময় পাসওয়ার্ড সুরক্ষা যোগ করতে পারেন। এই পাসওয়ার্ড শুধুমাত্র যখন আপনি কনসোল পোর্টের মাধ্যমে ডিভাইসে লগইন করবেন তখনই কার্যকর হবে। নিচে কিভাবে console password কনফিগার করবেন, তা বিস্তারিতভাবে দেওয়া হলো:
+
+### Console Password কনফিগার করার ধাপ:
+- **সুইচে কনফিগারেশন মোডে প্রবেশ করুন:**
+      Console Password কনফিগার করার ধাপ:
+রাউটারের কনফিগারেশন মোডে প্রবেশ করুন:
+   ```cmd
+      enable
+      configure terminal
+   ```
+```bash
+switch> enable
+switch# configure terminal
+Enter configuration commands, one per line. End with CNTL/Z.
+
+```
+- **Console পোর্ট নির্বাচন করুন:**
+  ```cmd 
+      line console 0
+   ```
+```bash
+
+switch(config)# line ?
+<0-16>      First Line number
+  console   Primary terminal line
+  vty       Virtual terminal
+<0-0>       First Line number
+
+switch(config)#line console ?
+<0-0>  First Line number
+
+switch(config)#line console 0
+switch(config-line)#
+switch(config-line)# ?
+Line configuration commands:
+   access-class           Filter connections based on an IP access list
+  autocommand             Automatically execute an EXEC command
+  autocommand-options     Autocommand options
+  data-character-bits     Size of characters being handled
+  databits                Set number of data bits per character
+  default                 Set a command to its defaults
+  domain-lookup           Enable domain lookups in show commands
+  editing                 Enable command line editing
+  escape-character        Change the current line's escape character
+  exec                    Configure EXEC
+  exec-banner             Enable the display of the EXEC banner
+  exec-character-bits     Size of characters to the command exec
+  exec-timeout            Set the EXEC timeout
+  exit                    Exit from line configuration mode
+  flowcontrol             Set the flow control
+  full-help               Provide help to unprivileged user
+  help                    Description of the interactive help system
+  history                 Enable and control the command history function
+  international           Enable international 8-bit character support
+  ip                      IP options
+  ipv6                    IPv6 options
+  length                  Set number of lines on a screen
+  location                Enter terminal location description
+  logging                 Modify message logging facilities
+  login                   Enable password checking
+  media-type              Console connection media type
+  modem                   Configure the Modem Control Lines
+  monitor                 Copy debug output to the current terminal line
+  motd-banner             Enable the display of the MOTD banner
+  no                      Negate a command or set its defaults
+  notify                  Inform users of output from concurrent sessions
+  padding                 Set padding for a specified output character
+  parity                  Set terminal parity
+  password                Set a password
+  prc                     PRC commands
+  privilege               Change privilege level for line
+  refuse-message          Define a refuse banner
+  rotary                  Add line to a rotary group
+  rxspeed                 Set the receive speed
+  session-timeout         Set interval for closing connection when there is no
+                          input traffic
+  special-character-bits  Size of the escape (and other special) characters
+  speed                   Set the transmit and receive speeds
+  start-character         Define the start character
+  stop-character          Define the stop character
+  stopbits                Set async line stop bits
+  terminal-type           Set the terminal type
+  timeout                 Timeouts for the line
+  transport               Define transport protocols for line
+  txspeed                 Set the transmit speeds
+  usb-inactivity-timeout  Inactivity timeout for USB media type
+  vacant-message          Define a vacant banner
+  width                   Set width of the display terminal
+
+```
+- **Console পাসওয়ার্ড সেট করুন:**
+   ```cmd
+      password cisco
+   ```
+```bash
+
+Switch(config-line)#password ?
+7             Specifies a HIDDEN password will follow
+LINE          The UNENCRYPTED (cleartext) line password
+0             specified unencrypted password
+encryption    Encrypt system passwords
+
+Switch(config-line)# password cisco
+Switch(config-line)# end
+
+Switch# show running-config 
+Building configuration...
+
+Current configuration : 1096 bytes
+!
+version 12.2
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Switch
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+!
+interface FastEthernet0/2
+!
+interface FastEthernet0/3
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+no ip address
+shutdown
+!
+!
+line con 0               [console port]
+password cisco             
+!
+line vty 0 4
+login
+line vty 5 15
+login
+!
+!
+end
+```
+  
+- **Login প্রম্পট এনাবল করুন (যাতে পাসওয়ার্ড চাওয়া হয়):**
+   ```cmd
+      login
+   ```
+```bash
+switch> enable
+switch# configure terminal
+Enter configuration commands, one per line. End with CNTL/Z.
+
+
+switch(config)#line console 0
+
+Switch(config-line)#
+Switch(config-line)# login
+Switch(config-line)# end
+
+switch# exit
+
+Press RETURN to get started!
+
+User Access Verification
+
+Password: 
+switch>   enable
+Switch#
+
+Switch# show running-config | ?
+   begin          Begins unfiltered output of the show command with the first line
+                    that contains the regular expression.
+  exclude         Displays output lines that do not contain the regular expression.
+  include         Displays output lines that contain the regular expression.	
+  section         Filter a section of output
+
+Switch# show running-config | begin ?
+  LINE  Regular expression.
+
+Switch# show running-config | begin line con
+line con 0
+password cisco
+login
+!
+line vty 0 4
+login
+line vty 5 15
+login
+!
+end 
+```
+- **কনফিগারেশন সেভ করুন:**
+```bash
+Switch# write memory
+```
+ব্যাখ্যা:
+- **line console 0:** কনসোল পোর্টের জন্য কনফিগারেশন মোডে প্রবেশ করা হয়।
+- **password <your_password>:** console পোর্টের জন্য পাসওয়ার্ড নির্ধারণ করা হয়।
+- **login:** পাসওয়ার্ড চাওয়ার জন্য login প্রম্পট সক্রিয় করা হয়।
+- **write memory:** আপনার কনফিগারেশন পরিবর্তনগুলি সেভ করা হয়।
+# Telnet Password
+Cisco switch-এ Telnet password কনফিগার করার মাধ্যমে আপনি সুইচের দূরবর্তী (remote) অ্যাক্সেস নিরাপদ করতে পারবেন। Telnet একটি প্রোটোকল যা আপনাকে সুইচ বা রাউটার থেকে দূরবর্তী অবস্থান থেকে কনফিগারেশন করতে দেয়। তবে, Telnet প্রটোকল সিকিউরিটি ক্ষেত্রে তেমন নিরাপদ নয়, তাই সাধারণত SSH ব্যবহারের পরামর্শ দেওয়া হয়। তবে এখানে আমরা Telnet password কনফিগারেশন দেখব।
+Switch-এ প্রবেশ করুন:
+
+-**প্রথমে, সুইচের enable মোডে প্রবেশ করুন।**
+```bash
+Switch> enable
+Switch# configure terminal
+Switch(config)#
+```
+- **VTY লাইনের কনফিগারেশন করুন:**
+Telnet সেশনের জন্য VTY (Virtual Terminal) লাইনের কনফিগারেশন করতে হবে:
+```bash
+Switch(config)# line vty 0 15
+```
+- **Telnet পাসওয়ার্ড সেট করুন:**
+এবার আপনি Telnet সেশনের জন্য পাসওয়ার্ড সেট করতে পারেন:
+```bash
+Switch(config-line)# password <your_password>
+উদাহরণস্বরূপ, পাসওয়ার্ড cisco123 সেট করতে:
+```bash
+Switch(config-line)# password cisco123
+Login প্রম্পট সক্রিয় করুন:
+```
+- **Telnet লগইন প্রম্পট সক্রিয় করার জন্য login কমান্ডটি ব্যবহার করুন:**
+```bash
+Switch(config-line)# login
+```
+**Telnet অ্যাক্সেসের জন্য সিসকো সুইচকে Telnet পোর্ট চালু করুন:**
+
+যদি আপনার switch-এ IP address না থাকে, তবে আপনাকে একটি IP address কনফিগার করতে হবে যাতে আপনি Telnet এর মাধ্যমে অ্যাক্সেস করতে পারেন:
 
 ```bash
-Router(config)# no hostname
+Switch(config)# interface vlan 1
+Switch(config-if)# ip address 192.168.1.1 255.255.255.0
+Switch(config-if)# no shutdown
 ```
+কনফিগারেশন সেভ করুন:
+
+এখন কনফিগারেশন শেষ হয়ে গেলে, সেগুলি সেভ করুন:
+```bash
+Switch(config-line)# exit
+Switch(config)# exit
+Switch# write memory
+```
+
+ব্যাখ্যা:
+- line vty 0 15: ১৬টি VTY লাইনের কনফিগারেশন নির্বাচন করা হয়েছে (সুইচে ১৬টি ভ্যারচুয়াল টার্মিনাল সেশন অনুমোদিত থাকে)।
+- password <your_password>: Telnet পাসওয়ার্ড সেট করা হচ্ছে।
+- login: পাসওয়ার্ড প্রম্পট সক্রিয় করা হচ্ছে।
+- ip address: সুইচের জন্য একটি IP address কনফিগার করা হচ্ছে যাতে Telnet অ্যাক্সেস করা যায়।
