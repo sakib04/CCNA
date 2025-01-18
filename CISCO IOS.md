@@ -489,3 +489,58 @@ Switch# write memory
 - password <your_password>: Telnet পাসওয়ার্ড সেট করা হচ্ছে।
 - login: পাসওয়ার্ড প্রম্পট সক্রিয় করা হচ্ছে।
 - ip address: সুইচের জন্য একটি IP address কনফিগার করা হচ্ছে যাতে Telnet অ্যাক্সেস করা যায়।
+
+# Enable Password
+Cisco switch-এ enable password কনফিগার করার মাধ্যমে আপনি সুইচের privileged EXEC mode (enable mode) নিরাপদ করতে পারবেন। এটি সুইচে enable মোডে প্রবেশ করার সময় পাসওয়ার্ড চাওয়ার ব্যবস্থা করবে। নিচে enable password কনফিগার করার সম্পূর্ণ প্রক্রিয়া বাংলা ভাষায় ব্যাখ্যা করা হলো।
+
+- **Enable Password কনফিগারেশন করার ধাপ:**
+Switch-এ প্রবেশ করুন:
+
+প্রথমে, সুইচে privileged EXEC mode (enable mode) এ প্রবেশ করুন:
+```bash
+Switch> enable
+Switch# configure terminal
+Enable পাসওয়ার্ড সেট করুন:
+```
+- **enable password কমান্ড ব্যবহার করে আপনি একটি পাসওয়ার্ড সেট করতে পারবেন:**
+```bash
+Switch(config)# enable password <your_password>
+```
+উদাহরণস্বরূপ, যদি আপনি পাসওয়ার্ড হিসেবে cisco123 ব্যবহার করতে চান:
+
+```bash
+Switch(config)# enable password cisco123
+```
+- **Enable Secret Password সেট করুন (এটি আরো সুরক্ষিত):**
+
+enable password সাধারণত সাদাসিধে পাসওয়ার্ড হিসেবে ব্যবহার করা হয়, কিন্তু এটি এনক্রিপ্টেড নয়। তাই সুরক্ষিতভাবে পাসওয়ার্ড রাখতে enable secret ব্যবহার করা ভালো।
+
+```bash
+Switch(config)# enable secret <your_secret_password>
+```
+উদাহরণস্বরূপ:
+```bash
+Switch(config)# enable secret cisco123secret
+```
+- **কনফিগারেশন সেভ করুন:**
+
+কনফিগারেশন শেষ হলে, পরিবর্তনগুলো সেভ করে ফেলুন:
+```bash
+Switch(config)# exit
+Switch# write memory
+```
+পূর্ণ উদাহরণ:
+ধরা যাক, আপনি cisco123 পাসওয়ার্ড দিয়ে enable password এবং cisco123secret দিয়ে enable secret password কনফিগার করতে চান। তাহলে পুরো কমান্ডগুলো হবে:
+
+```bash
+Switch> enable
+Switch# configure terminal
+Switch(config)# enable password cisco123
+Switch(config)# enable secret cisco123secret
+Switch(config)# exit
+Switch# write memory
+```
+ব্যাখ্যা:
+- enable password <your_password>: এটি enable মোডে প্রবেশের জন্য একটি পাসওয়ার্ড সেট করবে, কিন্তু এই পাসওয়ার্ডটি প্লেইন টেক্সটে সেভ হবে।
+- enable secret <your_secret_password>: এটি enable মোডে প্রবেশের জন্য একটি পাসওয়ার্ড সেট করবে এবং এই পাসওয়ার্ডটি এনক্রিপ্টেড থাকবে, যা অধিক সুরক্ষিত।
+- write memory: আপনার কনফিগারেশন সেভ করে ফেলতে এই কমান্ডটি ব্যবহার করা হয়।
