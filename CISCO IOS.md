@@ -681,3 +681,112 @@ Cisco সুইচের **timeout time** পরিবর্তন করতে 
 - এর মাধ্যমে আপনি আউটপুটে ফ্লাশিং লগ মেসেজগুলির কারণে কনসোল বা VTY সেশনের মধ্যে বিভ্রান্তিকর বা অপ্রত্যাশিত ফলাফল এড়াতে পারবেন।
 
 এটি বিশেষত তখন ব্যবহারযোগ্য যখন আপনার ডিভাইসটি একটি বড় নেটওয়ার্কে এবং অনেক লগ মেসেজ জেনারেট করছে, যেমন যখন কিছু ত্রুটি বা সতর্কতা বার্তা আসে। `logging synchronous` নিশ্চিত করবে যে লগ মেসেজগুলির কারণে আপনার কাজের ক্ষেত্রে কোনো বিঘ্ন সৃষ্টি হবে না।
+# service password-encryption
+**`service password-encryption`** কমান্ডটি Cisco সুইচ বা রাউটারে ব্যবহৃত হয় যাতে ডিভাইসের কনফিগারেশন ফাইলে থাকা পাসওয়ার্ডগুলি এনক্রিপ্ট (গোপন) হয়ে যায়। এই কমান্ডটি সক্রিয় করার মাধ্যমে, সুইচের কনফিগারেশন ফাইলে লেখা পাসওয়ার্ডগুলি সরাসরি পাঠযোগ্য না হয়ে একটি এনক্রিপ্টেড ফর্মে সেভ হয়, যা সুরক্ষা বাড়ানোর জন্য গুরুত্বপূর্ণ।
+
+### **`service password-encryption` কমান্ড ব্যবহারের উপকারিতা:**
+- **পাসওয়ার্ড নিরাপত্তা:** এটি কনফিগারেশন ফাইলে থাকা পাসওয়ার্ডকে নিরাপদ করে তোলে, যাতে কেউ যদি কনফিগারেশন ফাইলটি পড়তে পারে, তবে পাসওয়ার্ডগুলি পড়া যাবে না।
+- **এনক্রিপ্টেড পাসওয়ার্ড:** এনক্রিপ্ট করা পাসওয়ার্ডগুলি আরও সুরক্ষিত, কারণ এগুলি কেবল একটি এনক্রিপশন কী ব্যবহার করে ডিকোড করা যায়।
+
+### **`service password-encryption` কিভাবে ব্যবহার করবেন:**
+
+1. **Global Configuration Mode**-এ প্রবেশ করুন:
+   ```bash
+   Switch# configure terminal
+   ```
+
+2. **`service password-encryption` কমান্ড ব্যবহার করুন**:
+   ```bash
+   Switch(config)# service password-encryption
+   ```
+
+3. **কনফিগারেশন সেভ করুন**:
+   ```bash
+   Switch(config)# end
+   Switch# write memory
+   ```
+
+### **উদাহরণ:**
+ধরা যাক, আপনি `enable` পাসওয়ার্ড সেট করেছেন:
+```bash
+Switch(config)# enable secret cisco123
+```
+```bash
+Switch>
+Switch>ena
+Switch>enable 
+Switch#conf
+Switch#configure t
+Switch#configure terminal 
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#line co
+Switch(config)#line console 0
+Switch(config-line)#pass
+Switch(config-line)#password cisco
+Switch(config-line)#login
+Switch(config-line)#exit
+Switch(config)#line vty
+Switch(config)#line vty ?
+  <0-15>  First Line number
+Switch(config)#line vty 0 15
+Switch(config-line)#passw
+Switch(config-line)#password cisc
+Switch(config-line)#password cisc
+Switch(config-line)#login
+Switch(config-line)#exit
+Switch(config)#
+Switch(config)#enable secret cisco123
+
+Switch(config)#end
+Switch#
+%SYS-5-CONFIG_I: Configured from console by console
+show running-config 
+Building configuration...
+
+Current configuration : 1204 bytes
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname Switch
+!
+enable secret 5 $1$mERr$5.a6P4JqbNiMX01usIfka/
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+ --More-- 
+
+Switch#
+%SYS-5-CONFIG_I: Configured from console by console
+show running-config | begin  line
+line con 0
+ password 7 0822455D0A16
+ login
+!
+line vty 0 4
+ password 7 0822455D0A
+ login
+line vty 5 15
+ password 7 0822455D0A
+ login
+!
+!
+end
+```
+
+এখন, যদি আপনি `service password-encryption` কমান্ডটি ব্যবহার করেন, তাহলে `enable secret` পাসওয়ার্ডটি কনফিগারেশন ফাইলে সরাসরি `cisco123` হিসেবে না থেকে, এনক্রিপ্টেড আকারে থাকবে।
+
+### **এনক্রিপ্টেড পাসওয়ার্ডের উদাহরণ:**
+যখন আপনি `service password-encryption` ব্যবহার করেন, তখন কনফিগারেশন ফাইলে পাসওয়ার্ডের মান এমন কিছু হতে পারে:
+```bash
+enable secret 5 $1$S0y7$FqP5Szh79fZCk/ghvWFAow
+```
+
+এটি দেখাচ্ছে যে পাসওয়ার্ডটি এনক্রিপ্ট করা হয়েছে এবং আর সরাসরি পড়া সম্ভব নয়।
+
+### **সারাংশ:**
+`service password-encryption` কমান্ডটি Cisco সুইচের কনফিগারেশন ফাইলে পাসওয়ার্ডগুলি এনক্রিপ্ট করতে ব্যবহৃত হয়, যা ডিভাইসের নিরাপত্তা উন্নত করতে সহায়ক। service password encryption decrypt এই সাইট থেকে [Cisco Type 7 Password Decrypt]( https://www.firewall.cx/cisco/cisco-routers/cisco-type7-password-crack.html).
