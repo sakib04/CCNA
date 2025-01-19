@@ -574,3 +574,74 @@ Switch# write memory
 - enable password <your_password>: এটি enable মোডে প্রবেশের জন্য একটি পাসওয়ার্ড সেট করবে, কিন্তু এই পাসওয়ার্ডটি প্লেইন টেক্সটে সেভ হবে।
 - enable secret <your_secret_password>: এটি enable মোডে প্রবেশের জন্য একটি পাসওয়ার্ড সেট করবে এবং এই পাসওয়ার্ডটি এনক্রিপ্টেড থাকবে, যা অধিক সুরক্ষিত।
 - write memory: আপনার কনফিগারেশন সেভ করে ফেলতে এই কমান্ডটি ব্যবহার করা হয়।
+
+# Cisco সুইচের timeout time পরিবর্তন
+Cisco সুইচের **timeout time** পরিবর্তন করতে হলে আপনাকে কিছু নির্দিষ্ট পদ্ধতি অনুসরণ করতে হবে। এটি সাধারণত **console session timeout** বা **inactive timeout** হিসেবে পরিচিত, যা সুইচের CLI-তে লগ ইন করার পর কত সময় পর কনসোল সেশনটি স্বয়ংক্রিয়ভাবে বন্ধ হবে তা নিয়ন্ত্রণ করে।
+
+### ১. **Console Timeout পরিবর্তন:**
+
+আপনি যদি **console timeout** পরিবর্তন করতে চান, তাহলে নিচের ধাপগুলো অনুসরণ করতে পারেন:
+
+1. **Global Configuration Mode**-এ প্রবেশ করুন:
+   ```bash
+   Switch# configure terminal
+   ```
+
+2. **Console Line Configuration Mode**-এ প্রবেশ করুন:
+   ```bash
+   Switch(config)# line con 0
+   ```
+
+3. **Timeout পরিবর্তন করুন**:  
+   এখানে `exec-timeout` কমান্ড ব্যবহার করা হবে, যার মাধ্যমে আপনি সেশনটির ইনঅ্যাকটিভিটি টাইম আউট সময় সেট করতে পারবেন। 
+   উদাহরণস্বরূপ, যদি আপনি টাইম আউট সময় ১০ মিনিট (১০০ মিনিট) সেট করতে চান, তাহলে এই কমান্ড ব্যবহার করুন:
+   ```bash
+   Switch(config-line)# exec-timeout 10 0
+   ```
+   এখানে:
+   - প্রথম সংখ্যা (১০) মিনিটের জন্য,
+   - দ্বিতীয় সংখ্যা (০) সেকেন্ডের জন্য।
+
+4. **কনফিগারেশন সেভ করুন**:
+   ```bash
+   Switch(config-line)# end
+   Switch# write memory
+   ```
+
+এটি আপনার কনসোল সেশনটির টাইমআউট সময় ১০ মিনিটে সেট করবে। অর্থাৎ, ১০ মিনিট ইনঅ্যাকটিভ থাকার পর সেশনটি স্বয়ংক্রিয়ভাবে বন্ধ হয়ে যাবে।
+
+### ২. **VTY (Virtual Terminal) Timeout পরিবর্তন:**
+
+যদি আপনি VTY (Telnet বা SSH) সেশনের জন্য টাইমআউট সময় পরিবর্তন করতে চান, তাহলে নিচের পদ্ধতি অনুসরণ করুন:
+
+1. **Global Configuration Mode**-এ প্রবেশ করুন:
+   ```bash
+   Switch# configure terminal
+   ```
+
+2. **VTY Line Configuration Mode**-এ প্রবেশ করুন:
+   ```bash
+   Switch(config)# line vty 0 4
+   ```
+
+3. **Timeout পরিবর্তন করুন**:
+   উদাহরণস্বরূপ, আপনি যদি VTY সেশনের জন্য ১৫ মিনিট টাইম আউট সেট করতে চান, তাহলে এই কমান্ডটি ব্যবহার করুন:
+   ```bash
+   Switch(config-line)# exec-timeout 15 0
+   ```
+
+4. **কনফিগারেশন সেভ করুন**:
+   ```bash
+   Switch(config-line)# end
+   Switch# write memory
+   ```
+
+### ৩. **Never Timeout পরিবর্তন (Optional)**:
+
+  ```bash
+   Switch# configure terminal
+   Switch(config)# line con 0
+   Switch(config-line)# exec-timeout 0 0
+   ```
+
+এভাবে আপনি Cisco সুইচের টাইম আউট সময় পরিবর্তন করতে পারবেন।
