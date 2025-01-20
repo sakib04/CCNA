@@ -548,9 +548,48 @@ enable password সাধারণত সাদাসিধে পাসওয়�
 ```bash
 Switch(config)# enable secret <your_secret_password>
 ```
-উদাহরণস্বরূপ:
+### enable secrete
 ```bash
-Switch(config)# enable secret cisco123secret
+Switch(config)#enable ?
+  password  Assign the privileged level password
+  secret    Assign the privileged level secret
+
+Switch(config)#enable secret ?
+  0      Specifies an UNENCRYPTED password will follow
+  5      Specifies an ENCRYPTED secret will follow
+  LINE   The UNENCRYPTED (cleartext) 'enable' secret
+  level  Set exec level password
+
+Switch(config)#enable secret cisco
+Switch(config)#exit
+Switch#
+%SYS-5-CONFIG_I: Configured from console by console
+show r
+Switch#show running-config 
+Building configuration...
+
+Current configuration : 1154 bytes
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Switch
+!
+enable secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
+enable password cisco123
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+ --More-- 
+
 ```
 - **কনফিগারেশন সেভ করুন:**
 
