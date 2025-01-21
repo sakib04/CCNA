@@ -897,7 +897,7 @@ Switch(config-if)# no shutdown
 Switch(config-if)# end
 Switch# write memory
 ```
-
+এখন আপনার VLAN 10-এ IP ঠিকানা 192.168.10.1/24 সেট হয়ে গেছে এবং এটি সক্রিয় আছে।
 ```bash
 
 Switch>
@@ -1209,8 +1209,57 @@ GigabitEthernet0/2     unassigned      YES manual down                  down
 Vlan1                  192.168.0.2     YES manual up                    down
 Switch#
 
+Switch#
+%LINK-5-CHANGED: Interface FastEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan1, changed state to up
+ 
+Switch#show ip interface brief 
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual up                    up 
+FastEthernet0/2        unassigned      YES manual down                  down 
+FastEthernet0/3        unassigned      YES manual down                  down 
+FastEthernet0/4        unassigned      YES manual down                  down 
+FastEthernet0/5        unassigned      YES manual down                  down 
+FastEthernet0/6        unassigned      YES manual down                  down 
+FastEthernet0/7        unassigned      YES manual down                  down 
+FastEthernet0/8        unassigned      YES manual down                  down 
+FastEthernet0/9        unassigned      YES manual down                  down 
+FastEthernet0/10       unassigned      YES manual down                  down 
+FastEthernet0/11       unassigned      YES manual down                  down 
+FastEthernet0/12       unassigned      YES manual down                  down 
+FastEthernet0/13       unassigned      YES manual down                  down 
+FastEthernet0/14       unassigned      YES manual down                  down 
+FastEthernet0/15       unassigned      YES manual down                  down 
+FastEthernet0/16       unassigned      YES manual down                  down 
+FastEthernet0/17       unassigned      YES manual down                  down 
+FastEthernet0/18       unassigned      YES manual down                  down 
+FastEthernet0/19       unassigned      YES manual down                  down 
+FastEthernet0/20       unassigned      YES manual down                  down 
+FastEthernet0/21       unassigned      YES manual down                  down 
+FastEthernet0/22       unassigned      YES manual down                  down 
+FastEthernet0/23       unassigned      YES manual down                  down 
+FastEthernet0/24       unassigned      YES manual down                  down 
+GigabitEthernet0/1     unassigned      YES manual down                  down 
+GigabitEthernet0/2     unassigned      YES manual down                  down 
+Vlan1                  192.168.0.2     YES manual up                    up
+Switch#ping 192.168.0.5
+
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 192.168.0.5, timeout is 2 seconds:
+.....
+Success rate is 0 percent (0/5)
+
+Switch#ping 192.168.0.5
+
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 192.168.0.5, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 0/0/0 ms
 ```
 
 ```
 
-এখন আপনার VLAN 10-এ IP ঠিকানা 192.168.10.1/24 সেট হয়ে গেছে এবং এটি সক্রিয় আছে।
+
