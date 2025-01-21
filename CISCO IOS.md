@@ -1296,6 +1296,91 @@ Switch(config)# end
 Switch# write memory
 ```
 
+# Interface Shutdown & Up
 এখন আপনার সুইচের ডিফল্ট গেটওয়ে সফলভাবে সেট হয়ে গেছে। এই গেটওয়ে IP ঠিকানার মাধ্যমে সুইচটি অন্য নেটওয়ার্ক বা ইন্টারনেটে যোগাযোগ করতে সক্ষম হবে।
 
+Cisco switch-এ ইন্টারফেস বন্ধ (shutdown) এবং চালু (no shutdown) করার জন্য কিছু বিশেষ কমান্ড ব্যবহার করা হয়। নিচে আমি বিস্তারিতভাবে ব্যাখ্যা করছি কিভাবে ইন্টারফেস shutdown ও up করতে হয়:
 
+### 1. **Interface Shutdown**:
+   একটি ইন্টারফেস বন্ধ (disable) করতে, আপনাকে প্রথমে সেই ইন্টারফেসে প্রবেশ করতে হবে এবং তারপর **shutdown** কমান্ডটি ব্যবহার করতে হবে।
+
+   **কমান্ড**:
+   ```
+   interface <interface-name>
+   shutdown
+   ```
+
+   উদাহরণস্বরূপ, যদি আপনি **FastEthernet0/1** ইন্টারফেসটি বন্ধ করতে চান, তাহলে কমান্ড হবে:
+   ```
+   interface FastEthernet0/1
+   shutdown
+   ```
+
+### 2. **Interface Up (No Shutdown)**:
+   একটি ইন্টারফেস পুনরায় চালু (enable) করতে, **no shutdown** কমান্ডটি ব্যবহার করতে হয়। এটি ইন্টারফেসকে সক্রিয় করে।
+
+   **কমান্ড**:
+   ```
+   interface <interface-name>
+   no shutdown
+   ```
+
+   উদাহরণস্বরূপ, যদি আপনি **FastEthernet0/1** ইন্টারফেসটি চালু করতে চান, তাহলে কমান্ড হবে:
+   ```
+   interface FastEthernet0/1
+   no shutdown
+   ```
+
+### **কনফিগারেশন প্রক্রিয়া:**
+
+1. **Global Configuration Mode-এ প্রবেশ করুন:**
+   প্রথমে আপনাকে **Global Configuration Mode**-এ যেতে হবে:
+   ```
+   enable
+   configure terminal
+   ```
+
+2. **ইন্টারফেস নির্বাচন করুন এবং Shutdown/No Shutdown করুন:**
+
+   - ইন্টারফেস বন্ধ করতে (shutdown):
+     ```bash
+     interface FastEthernet0/1
+     shutdown
+     ```
+
+   - ইন্টারফেস চালু করতে (no shutdown):
+     ```bash
+     interface FastEthernet0/1
+     no shutdown
+     ```
+
+3. **কনফিগারেশন সংরক্ষণ করুন:**
+   সব কিছু শেষ হলে কনফিগারেশন সংরক্ষণ করতে `end` এবং তারপর `write memory` বা `copy running-config startup-config` কমান্ড ব্যবহার করুন:
+   ```bash
+   end
+   write memory
+   ```
+
+### **সম্পূর্ণ উদাহরণ:**
+
+**1. ইন্টারফেস বন্ধ (shutdown):**
+```bash
+Switch> enable
+Switch# configure terminal
+Switch(config)# interface FastEthernet0/1
+Switch(config-if)# shutdown
+Switch(config-if)# end
+Switch# write memory
+```
+
+**2. ইন্টারফেস চালু (no shutdown):**
+```bash
+Switch> enable
+Switch# configure terminal
+Switch(config)# interface FastEthernet0/1
+Switch(config-if)# no shutdown
+Switch(config-if)# end
+Switch# write memory
+```
+
+এভাবে আপনি Cisco switch-এ একটি ইন্টারফেস shutdown এবং no shutdown (চালু) করতে পারেন।
