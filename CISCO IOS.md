@@ -829,3 +829,388 @@ enable secret 5 $1$S0y7$FqP5Szh79fZCk/ghvWFAow
 
 ### **সারাংশ:**
 `service password-encryption` কমান্ডটি Cisco সুইচের কনফিগারেশন ফাইলে পাসওয়ার্ডগুলি এনক্রিপ্ট করতে ব্যবহৃত হয়, যা ডিভাইসের নিরাপত্তা উন্নত করতে সহায়ক। service password encryption decrypt এই সাইট থেকে [Cisco Type 7 Password Decrypt]( https://www.firewall.cx/cisco/cisco-routers/cisco-type7-password-crack.html).
+
+Cisco switch-এ VLAN এবং তার IP ঠিকানা সেটআপ করার জন্য আপনাকে কিছু নির্দিষ্ট পদক্ষেপ অনুসরণ করতে হবে। নিচে আমি সেটআপ করার প্রক্রিয়া বাংলায় ব্যাখ্যা করছি।
+
+# VLAN তৈরি ও IP ঠিকানা সেট করা:
+
+1. **Switch-এ লগ ইন করুন:**
+   প্রথমে আপনাকে Cisco switch-এ লগ ইন করতে হবে। যদি আপনি console বা SSH ব্যবহার করে সুইচে প্রবেশ করেন, তাহলে আপনাকে প্রম্পট থেকে নিচের মতো কমান্ড ব্যবহার করতে হবে।
+
+2. **Global Configuration Mode এ প্রবেশ করুন:**
+   সুইচের প্রিভিলেজড EXEC মোড থেকে (যেখানে প্রম্পট `Switch#` থাকে) টাইপ করুন:
+   ```
+   configure terminal
+   ```
+   অথবা সংক্ষেপে:
+   ```
+   conf t
+   ```
+
+3. **VLAN তৈরি করুন:**
+   এখন আপনি যে VLAN তৈরি করতে চান, সেটি তৈরি করতে হবে। ধরুন আপনি VLAN 10 তৈরি করতে চান, তাহলে কমান্ড হবে:
+   ```
+   vlan 10
+   ```
+   এরপর VLAN 10-এ একটি নাম দিতে চাইলে টাইপ করুন:
+   ```
+   name VLAN10
+   ```
+
+4. **VLAN Interface Configuration Mode এ প্রবেশ করুন:**
+   VLAN 10-এর জন্য একটি ভ্ল্যান ইন্টারফেস (SVI - Switched Virtual Interface) কনফিগার করতে হবে যাতে আপনি VLAN এর জন্য IP ঠিকানা সেট করতে পারেন। এজন্য কমান্ড হবে:
+   ```
+   interface vlan 10
+   ```
+
+5. **VLAN Interface-এ IP ঠিকানা সেট করুন:**
+   এখন VLAN 10 এর ইন্টারফেসে একটি IP ঠিকানা সেট করতে হবে। উদাহরণস্বরূপ, যদি আপনি VLAN 10-এ IP ঠিকানা 192.168.10.1/24 দিতে চান, তাহলে কমান্ড হবে:
+   ```
+   ip address 192.168.10.1 255.255.255.0
+   ```
+
+6. **VLAN Interface সক্রিয় করুন (No Shutdown):**
+   এখন এই VLAN ইন্টারফেসটি সক্রিয় করতে হবে। এটি করতে নিচের কমান্ড ব্যবহার করুন:
+   ```
+   no shutdown
+   ```
+
+7. **কনফিগারেশন সংরক্ষণ করুন:**
+   সব কিছু করার পর, কনফিগারেশনটি সংরক্ষণ করতে `end` কমান্ড ব্যবহার করুন এবং তারপর `write memory` বা `copy running-config startup-config` দিয়ে কনফিগারেশন সেভ করুন।
+
+   ```
+   end
+   write memory
+   ```
+
+### সম্পূর্ণ প্রক্রিয়ার উদাহরণ:
+
+```bash
+Switch> enable
+Switch# configure terminal
+Switch(config)# vlan 10
+Switch(config-vlan)# name VLAN10
+Switch(config-vlan)# exit
+Switch(config)# interface vlan 10
+Switch(config-if)# ip address 192.168.10.1 255.255.255.0
+Switch(config-if)# no shutdown
+Switch(config-if)# end
+Switch# write memory
+```
+
+```bash
+
+Switch>
+Switch>
+Switch>enable
+Switch#show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual down                  down 
+FastEthernet0/2        unassigned      YES manual down                  down 
+FastEthernet0/3        unassigned      YES manual down                  down 
+FastEthernet0/4        unassigned      YES manual down                  down 
+FastEthernet0/5        unassigned      YES manual down                  down 
+FastEthernet0/6        unassigned      YES manual down                  down 
+FastEthernet0/7        unassigned      YES manual down                  down 
+FastEthernet0/8        unassigned      YES manual down                  down 
+FastEthernet0/9        unassigned      YES manual down                  down 
+FastEthernet0/10       unassigned      YES manual down                  down 
+FastEthernet0/11       unassigned      YES manual down                  down 
+FastEthernet0/12       unassigned      YES manual down                  down 
+FastEthernet0/13       unassigned      YES manual down                  down 
+FastEthernet0/14       unassigned      YES manual down                  down 
+FastEthernet0/15       unassigned      YES manual down                  down 
+FastEthernet0/16       unassigned      YES manual down                  down 
+FastEthernet0/17       unassigned      YES manual down                  down 
+FastEthernet0/18       unassigned      YES manual down                  down 
+FastEthernet0/19       unassigned      YES manual down                  down 
+FastEthernet0/20       unassigned      YES manual down                  down 
+FastEthernet0/21       unassigned      YES manual down                  down 
+FastEthernet0/22       unassigned      YES manual down                  down 
+FastEthernet0/23       unassigned      YES manual down                  down 
+FastEthernet0/24       unassigned      YES manual down                  down 
+GigabitEthernet0/1     unassigned      YES manual down                  down 
+GigabitEthernet0/2     unassigned      YES manual down                  down 
+Vlan1                  unassigned      YES manual administratively down down
+Switch#
+Switch#show vlan 
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/2, Fa0/3, Fa0/4
+                                                Fa0/5, Fa0/6, Fa0/7, Fa0/8
+                                                Fa0/9, Fa0/10, Fa0/11, Fa0/12
+                                                Fa0/13, Fa0/14, Fa0/15, Fa0/16
+                                                Fa0/17, Fa0/18, Fa0/19, Fa0/20
+                                                Fa0/21, Fa0/22, Fa0/23, Fa0/24
+                                                Gig0/1, Gig0/2
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+
+VLAN Type  SAID       MTU   Parent RingNo BridgeNo Stp  BrdgMode Trans1 Trans2
+---- ----- ---------- ----- ------ ------ -------- ---- -------- ------ ------
+1    enet  100001     1500  -      -      -        -    -        0      0
+1002 fddi  101002     1500  -      -      -        -    -        0      0   
+1003 tr    101003     1500  -      -      -        -    -        0      0   
+1004 fdnet 101004     1500  -      -      -        ieee -        0      0   
+1005 trnet 101005     1500  -      -      -        ibm  -        0      0   
+
+VLAN Type  SAID       MTU   Parent RingNo BridgeNo Stp  BrdgMode Trans1 Trans2
+---- ----- ---------- ----- ------ ------ -------- ---- -------- ------ ------
+
+Remote SPAN VLANs
+------------------------------------------------------------------------------
+
+Primary Secondary Type              Ports
+------- --------- ----------------- ------------------------------------------
+
+Switch#conf
+Switch#configure t
+Switch#configure terminal 
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#interface ?
+  Ethernet         IEEE 802.3
+  FastEthernet     FastEthernet IEEE 802.3
+  GigabitEthernet  GigabitEthernet IEEE 802.3z
+  Port-channel     Ethernet Channel of interfaces
+  Vlan             Catalyst Vlans
+  range            interface range command
+Switch(config)#interface vla
+Switch(config)#interface vlan ?
+  <1-4094>  Vlan interface number
+Switch(config)#interface vlan 1
+Switch(config-if)#?
+Interface configuration commands:
+  arp          Set arp type (arpa, probe, snap) or timeout
+  description  Interface specific description
+  exit         Exit from interface configuration mode
+  ip           Interface Internet Protocol config commands
+  no           Negate a command or set its defaults
+  shutdown     Shutdown the selected interface
+  standby      HSRP interface configuration commands
+Switch(config-if)#ip ?
+  address         Set the IP address of an interface
+  helper-address  Specify a destination address for UDP broadcasts
+Switch(config-if)#ip address ?
+  A.B.C.D  IP address
+  dhcp     IP Address negotiated via DHCP
+Switch(config-if)#ip address 192.168.0.2 ?
+  A.B.C.D  IP subnet mask
+Switch(config-if)#ip address 192.168.0.2 255.255.255.0
+Switch(config-if)#^Z
+Switch#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Switch#show ip inter
+Switch#show ip interface brie
+Switch#show ip interface brief 
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual down                  down 
+FastEthernet0/2        unassigned      YES manual down                  down 
+FastEthernet0/3        unassigned      YES manual down                  down 
+FastEthernet0/4        unassigned      YES manual down                  down 
+FastEthernet0/5        unassigned      YES manual down                  down 
+FastEthernet0/6        unassigned      YES manual down                  down 
+FastEthernet0/7        unassigned      YES manual down                  down 
+FastEthernet0/8        unassigned      YES manual down                  down 
+FastEthernet0/9        unassigned      YES manual down                  down 
+FastEthernet0/10       unassigned      YES manual down                  down 
+FastEthernet0/11       unassigned      YES manual down                  down 
+FastEthernet0/12       unassigned      YES manual down                  down 
+FastEthernet0/13       unassigned      YES manual down                  down 
+FastEthernet0/14       unassigned      YES manual down                  down 
+FastEthernet0/15       unassigned      YES manual down                  down 
+FastEthernet0/16       unassigned      YES manual down                  down 
+FastEthernet0/17       unassigned      YES manual down                  down 
+FastEthernet0/18       unassigned      YES manual down                  down 
+FastEthernet0/19       unassigned      YES manual down                  down 
+FastEthernet0/20       unassigned      YES manual down                  down 
+FastEthernet0/21       unassigned      YES manual down                  down 
+FastEthernet0/22       unassigned      YES manual down                  down 
+FastEthernet0/23       unassigned      YES manual down                  down 
+FastEthernet0/24       unassigned      YES manual down                  down 
+GigabitEthernet0/1     unassigned      YES manual down                  down 
+GigabitEthernet0/2     unassigned      YES manual down                  down 
+Vlan1                  192.168.0.2     YES manual administratively down down
+Switch#show ru
+Switch#show running-config 
+Building configuration...
+
+Current configuration : 1103 bytes
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Switch
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+!
+interface FastEthernet0/2
+!
+interface FastEthernet0/3
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ ip address 192.168.0.2 255.255.255.0
+ shutdown
+!
+!
+!
+!
+line con 0
+!
+line vty 0 4
+ login
+line vty 5 15
+ login
+!
+!
+!
+!
+end
+
+Switch#conf
+Switch#configure t
+Switch#configure terminal 
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#i?
+interface  ip  
+Switch(config)#?
+Configure commands:
+  aaa                Authentication, Authorization and Accounting.
+  access-list        Add an access list entry
+  banner             Define a login banner
+  boot               Boot Commands
+  cdp                Global CDP configuration subcommands
+  clock              Configure time-of-day clock
+  crypto             Encryption module
+  default            Set a command to its defaults
+  do-exec            To run exec commands in config mode
+  dot1x              IEEE 802.1X Global Configuration Commands
+  enable             Modify enable password parameters
+  end                Exit from configure mode
+  exit               Exit from configure mode
+  hostname           Set system's network name
+  interface          Select an interface to configure
+  ip                 Global IP configuration subcommands
+  line               Configure a terminal line
+  lldp               Global LLDP configuration subcommands
+  logging            Modify message logging facilities
+  mac                MAC configuration
+  mls                mls global commands
+  monitor            SPAN information and configuration
+  no                 Negate a command or set its defaults
+  ntp                Configure NTP
+  port-channel       EtherChannel configuration
+  privilege          Command privilege parameters
+  sdm                Switch database management
+  service            Modify use of network based services
+  snmp-server        Modify SNMP engine parameters
+  spanning-tree      Spanning Tree Subsystem
+  tacacs-server      Modify TACACS query parameters
+  username           Establish User Name Authentication
+  vlan               Vlan commands
+  vtp                Configure global VTP state
+Switch(config)#interfa
+Switch(config)#interface vlan 1
+Switch(config-if)#no shutdown
+
+Switch(config-if)#
+%LINK-5-CHANGED: Interface Vlan1, changed state to up
+
+Switch(config-if)#ip address 192.168.0.2 255.255.255.0^Z
+Switch#
+%SYS-5-CONFIG_I: Configured from console by console
+show ip interface brief 
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual down                  down 
+FastEthernet0/2        unassigned      YES manual down                  down 
+FastEthernet0/3        unassigned      YES manual down                  down 
+FastEthernet0/4        unassigned      YES manual down                  down 
+FastEthernet0/5        unassigned      YES manual down                  down 
+FastEthernet0/6        unassigned      YES manual down                  down 
+FastEthernet0/7        unassigned      YES manual down                  down 
+FastEthernet0/8        unassigned      YES manual down                  down 
+FastEthernet0/9        unassigned      YES manual down                  down 
+FastEthernet0/10       unassigned      YES manual down                  down 
+FastEthernet0/11       unassigned      YES manual down                  down 
+FastEthernet0/12       unassigned      YES manual down                  down 
+FastEthernet0/13       unassigned      YES manual down                  down 
+FastEthernet0/14       unassigned      YES manual down                  down 
+FastEthernet0/15       unassigned      YES manual down                  down 
+FastEthernet0/16       unassigned      YES manual down                  down 
+FastEthernet0/17       unassigned      YES manual down                  down 
+FastEthernet0/18       unassigned      YES manual down                  down 
+FastEthernet0/19       unassigned      YES manual down                  down 
+FastEthernet0/20       unassigned      YES manual down                  down 
+FastEthernet0/21       unassigned      YES manual down                  down 
+FastEthernet0/22       unassigned      YES manual down                  down 
+FastEthernet0/23       unassigned      YES manual down                  down 
+FastEthernet0/24       unassigned      YES manual down                  down 
+GigabitEthernet0/1     unassigned      YES manual down                  down 
+GigabitEthernet0/2     unassigned      YES manual down                  down 
+Vlan1                  192.168.0.2     YES manual up                    down
+Switch#
+
+```
+
+```
+
+এখন আপনার VLAN 10-এ IP ঠিকানা 192.168.10.1/24 সেট হয়ে গেছে এবং এটি সক্রিয় আছে।
