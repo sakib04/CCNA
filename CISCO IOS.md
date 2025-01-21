@@ -1262,7 +1262,7 @@ Success rate is 100 percent (5/5), round-trip min/avg/max = 0/0/0 ms
 
 VLAN switch-এ **default gateway** সেট আপ করার জন্য, আপনাকে VLAN এর জন্য একটি IP ঠিকানা কনফিগার করতে হবে এবং সেই IP ঠিকানাটি সুইচের জন্য ডিফল্ট গেটওয়ে হিসেবে সেট করতে হবে। সাধারণত, সুইচের জন্য ডিফল্ট গেটওয়ে সেট করা হয় যখন সুইচটি বিভিন্ন VLAN-এর মধ্যে রাউটিং বা অন্যান্য নেটওয়ার্কের সাথে যোগাযোগ করবে।
 
-### Steps to Set Default Gateway on a Cisco Switch:
+# Steps to Set Default Gateway on a Cisco Switch:
 
 1. **Global Configuration Mode এ প্রবেশ করুন:**
    প্রথমে আপনাকে **Global Configuration Mode**-এ যেতে হবে। সুইচে লগ ইন করে নিচের কমান্ড দিন:
