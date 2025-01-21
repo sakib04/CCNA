@@ -1260,6 +1260,42 @@ Sending 5, 100-byte ICMP Echos to 192.168.0.5, timeout is 2 seconds:
 Success rate is 100 percent (5/5), round-trip min/avg/max = 0/0/0 ms
 ```
 
+VLAN switch-এ **default gateway** সেট আপ করার জন্য, আপনাকে VLAN এর জন্য একটি IP ঠিকানা কনফিগার করতে হবে এবং সেই IP ঠিকানাটি সুইচের জন্য ডিফল্ট গেটওয়ে হিসেবে সেট করতে হবে। সাধারণত, সুইচের জন্য ডিফল্ট গেটওয়ে সেট করা হয় যখন সুইচটি বিভিন্ন VLAN-এর মধ্যে রাউটিং বা অন্যান্য নেটওয়ার্কের সাথে যোগাযোগ করবে।
+
+### Steps to Set Default Gateway on a Cisco Switch:
+
+1. **Global Configuration Mode এ প্রবেশ করুন:**
+   প্রথমে আপনাকে **Global Configuration Mode**-এ যেতে হবে। সুইচে লগ ইন করে নিচের কমান্ড দিন:
+   ```
+   enable
+   configure terminal
+   ```
+
+2. **Default Gateway সেট করুন:**
+   সুইচের ডিফল্ট গেটওয়ে সেট করতে, নিচের কমান্ডটি ব্যবহার করুন (ধরি, ডিফল্ট গেটওয়ে 192.168.0.1):
+   ```
+   ip default-gateway 192.168.0.1
+   ```
+
+   এখানে `192.168.0.1` হল সেই রাউটার বা গেটওয়ে ডিভাইসের IP ঠিকানা যা সুইচটি ব্যবহার করবে ডেটা ট্রাফিকের জন্য।
+
+3. **কনফিগারেশন সংরক্ষণ করুন:**
+   সব কিছু সম্পন্ন হলে, কনফিগারেশন সংরক্ষণ করতে `end` এবং পরে `write memory` অথবা `copy running-config startup-config` ব্যবহার করুন:
+   ```
+   end
+   write memory
+   ```
+
+### Example Configuration:
+
+```bash
+Switch> enable
+Switch# configure terminal
+Switch(config)# ip default-gateway 192.168.0.1
+Switch(config)# end
+Switch# write memory
 ```
+
+এখন আপনার সুইচের ডিফল্ট গেটওয়ে সফলভাবে সেট হয়ে গেছে। এই গেটওয়ে IP ঠিকানার মাধ্যমে সুইচটি অন্য নেটওয়ার্ক বা ইন্টারনেটে যোগাযোগ করতে সক্ষম হবে।
 
 
