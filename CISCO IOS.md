@@ -1295,7 +1295,68 @@ Switch(config)# ip default-gateway 192.168.0.1
 Switch(config)# end
 Switch# write memory
 ```
+# `do` কমান্ড
+**`do` কমান্ড** হলো একটি বিশেষ কমান্ড যা **Cisco devices** (যেমন রাউটার বা সুইচ) এর **Global Configuration Mode**-এ থেকে **privileged EXEC mode**-এ থাকা কমান্ডগুলি চালানোর সুযোগ দেয়। এটি মূলত **Global Configuration Mode** থেকে **privileged EXEC mode**-এর কমান্ডগুলি কার্যকর করার জন্য ব্যবহৃত হয়।
 
+### **`do` কমান্ডের ব্যবহার:**
+যখন আপনি **Global Configuration Mode**-এ থাকবেন এবং আপনি যদি **privileged EXEC mode**-এর কোনো কমান্ড চালাতে চান, তাহলে `do` কমান্ড ব্যবহার করতে হবে। এটি আপনাকে সরাসরি EXEC মোডের কমান্ড চালাতে সাহায্য করবে।
+
+### **`do` কমান্ডের উদাহরণ:**
+
+1. **Show Command ব্যবহার করা (Show Command ব্যবহার করা হলে):**
+   আপনি যদি **Global Configuration Mode**-এ থাকেন এবং সুইচের স্ট্যাটাস দেখতে চান, তখন `show` কমান্ড ব্যবহার করতে `do` ব্যবহার করতে হবে।
+
+   **কমান্ড**:
+   ```bash
+   do show running-config
+   ```
+
+   এটি **running configuration** দেখাবে।
+
+2. **Ping কমান্ড ব্যবহার করা (Ping Test):**
+   যদি আপনি **ping** কমান্ড চালাতে চান, তবে আপনি Global Configuration Mode থেকে `do` ব্যবহার করে এটি করতে পারেন।
+
+   **কমান্ড**:
+   ```bash
+   do ping 192.168.1.1
+   ```
+
+3. **Copy Command ব্যবহার করা:**
+   যদি আপনি **running-config** কপি করতে চান **startup-config** এ, তাহলে `do` কমান্ড ব্যবহার করতে হবে।
+
+   **কমান্ড**:
+   ```bash
+   do copy running-config startup-config
+   ```
+
+### **কিভাবে `do` কমান্ড ব্যবহার করবেন:**
+
+1. **Global Configuration Mode-এ প্রবেশ করুন:**
+   প্রথমে আপনাকে **Global Configuration Mode**-এ প্রবেশ করতে হবে।
+   ```bash
+   Switch> enable
+   Switch# configure terminal
+   ```
+
+2. **`do` কমান্ড ব্যবহার করুন:**
+   আপনি যদি **privileged EXEC mode**-এর কমান্ড চালাতে চান তবে `do` ব্যবহার করুন। উদাহরণস্বরূপ:
+
+   ```bash
+   do show ip interface brief
+   ```
+
+   অথবা:
+
+   ```bash
+   do ping 192.168.1.1
+   ```
+
+### **`do` কমান্ডের সুবিধা:**
+- এটি আপনাকে **Global Configuration Mode** থেকে **privileged EXEC mode**-এর কমান্ড সরাসরি চালানোর সুযোগ দেয়।
+- আপনার কমান্ড প্রম্পট পরিবর্তন না করেই আপনি বিভিন্ন EXEC কমান্ড পরীক্ষা বা চালাতে পারেন।
+
+### **সারাংশ:**
+`do` কমান্ড আপনাকে **Global Configuration Mode**-এ থাকাকালীন **privileged EXEC mode**-এর কমান্ড চালানোর সুবিধা দেয়, যা আপনাকে সহজভাবে EXEC কমান্ড কার্যকর করার সুযোগ দেয়।
 # Interface Shutdown & Up
 এখন আপনার সুইচের ডিফল্ট গেটওয়ে সফলভাবে সেট হয়ে গেছে। এই গেটওয়ে IP ঠিকানার মাধ্যমে সুইচটি অন্য নেটওয়ার্ক বা ইন্টারনেটে যোগাযোগ করতে সক্ষম হবে।
 
@@ -1382,5 +1443,190 @@ Switch(config-if)# no shutdown
 Switch(config-if)# end
 Switch# write memory
 ```
+Cisco switch-এ একাধিক ইন্টারফেস একসাথে **shutdown** (বন্দ) করতে হলে, আপনি **range command** ব্যবহার করতে পারেন। এর মাধ্যমে একাধিক ইন্টারফেসকে একযোগে কনফিগার করা সহজ হয়।
+
+### একাধিক ইন্টারফেস shutdown করার পদক্ষেপ:
+
+1. **Global Configuration Mode-এ প্রবেশ করুন:**
+   প্রথমে আপনাকে **Global Configuration Mode**-এ প্রবেশ করতে হবে।
+   ```bash
+   Switch> enable
+   Switch# configure terminal
+   ```
+
+2. **Interface Range নির্বাচন করুন:**
+   একাধিক ইন্টারফেসে একযোগে কাজ করতে, আপনাকে **interface range** কমান্ড ব্যবহার করতে হবে। উদাহরণস্বরূপ, যদি আপনি **FastEthernet0/1 থেকে FastEthernet0/5** পর্যন্ত ইন্টারফেসগুলো বন্ধ করতে চান, তাহলে কমান্ড হবে:
+   ```bash
+   Switch(config)# interface range FastEthernet0/1 - 5
+   ```
+
+   এখানে, **FastEthernet0/1 - 5** মানে হলো আপনি **FastEthernet0/1 থেকে FastEthernet0/5** পর্যন্ত সব ইন্টারফেস একসাথে সিলেক্ট করছেন।
+
+3. **Shutdown কমান্ড দিন:**
+   ইন্টারফেস রেঞ্জ নির্বাচন করার পর, **shutdown** কমান্ডটি দিন:
+   ```bash
+   Switch(config-if-range)# shutdown
+   ```
+
+   এটি **FastEthernet0/1 থেকে FastEthernet0/5** পর্যন্ত সব ইন্টারফেস বন্ধ করে দেবে।
+
+4. **কনফিগারেশন সংরক্ষণ করুন:**
+   সব কিছু শেষ হলে, কনফিগারেশন সংরক্ষণ করতে `end` কমান্ড দিয়ে Global Configuration Mode থেকে বের হয়ে যান এবং `write memory` বা `copy running-config startup-config` ব্যবহার করুন:
+   ```bash
+   Switch(config-if-range)# end
+   Switch# write memory
+   ```
+
+### **পূর্ণ উদাহরণ:**
+
+ধরি, আপনাকে **FastEthernet0/1 থেকে FastEthernet0/5** পর্যন্ত ইন্টারফেসগুলো বন্ধ করতে হবে। এর জন্য কমান্ড হবে:
+
+```bash
+Switch> enable
+Switch# configure terminal
+Switch(config)# interface range FastEthernet0/1 - 5
+Switch(config-if-range)# shutdown
+Switch(config-if-range)# end
+Switch# write memory
+```
+
+এভাবে আপনি একাধিক ইন্টারফেসকে একসাথে **shutdown** (বন্দ) করতে পারবেন।
+
+### **অতিরিক্ত:**
+- আপনি যদি **interface range**-এ **different types of interfaces** যেমন **FastEthernet** এবং **GigabitEthernet** এর কম্বিনেশন ব্যবহার করতে চান, সেটা করতে পারবেন। যেমন:
+   ```bash
+   interface range FastEthernet0/1 - 5, GigabitEthernet0/1 - 2
+   ```
+- এটি **FastEthernet0/1 থেকে FastEthernet0/5** এবং **GigabitEthernet0/1 থেকে GigabitEthernet0/2** পর্যন্ত সব ইন্টারফেস একসাথে সিলেক্ট করবে।
+
 
 এভাবে আপনি Cisco switch-এ একটি ইন্টারফেস shutdown এবং no shutdown (চালু) করতে পারেন।
+# Login Banner
+Cisco switch-এ **banner** সেট করা হলে, যখন কেউ সুইচে লগ ইন করবে, তখন তাকে একটি নির্দিষ্ট বার্তা দেখানো হয়। এই বার্তাটি সাধারণত **Welcome message** বা **Warning message** হিসেবে ব্যবহৃত হয়। আপনি বিভিন্ন ধরণের banner তৈরি করতে পারেন, যেমন:
+
+- **Login Banner**: এটি ব্যবহারকারীকে লগ ইন করার সময় দেখানো হয়।
+- **Motd (Message of the Day) Banner**: এটি সুইচে লগ ইন করার পর দেখা যায় এবং সাধারণত গুরুত্বপূর্ণ তথ্য বা নোটিফিকেশন দেখানোর জন্য ব্যবহৃত হয়।
+- **Exec Banner**: এটি EXEC মোডে প্রবেশের সময় দেখানো হয়।
+
+### Banner সেট করার পদক্ষেপ:
+
+1. **Global Configuration Mode-এ প্রবেশ করুন:**
+   প্রথমে আপনাকে **Global Configuration Mode**-এ প্রবেশ করতে হবে:
+   ```bash
+   Switch> enable
+   Switch# configure terminal
+   ```
+
+2. **Message of the Day (MOTD) Banner সেট করুন:**
+   আপনি যদি **MOTD** (Message of the Day) banner সেট করতে চান, তাহলে এই কমান্ডটি ব্যবহার করতে হবে:
+   ```bash
+   banner motd # আপনার বার্তা এখানে লিখুন #
+   ```
+
+   এখানে, **#** একটি delimiter চিহ্ন হিসেবে ব্যবহৃত হয়। আপনি যেকোনো চিহ্ন ব্যবহার করতে পারেন, তবে দুটি চিহ্নের মধ্যে বার্তা লিখতে হবে। উদাহরণস্বরূপ:
+   ```bash
+   banner motd # স্বাগতম! এই সুইচটি শুধুমাত্র অনুমোদিত ব্যবহারকারীদের জন্য #
+   ```
+
+3. **Login Banner সেট করুন:**
+   যদি আপনি **Login Banner** সেট করতে চান, তাহলে এই কমান্ডটি ব্যবহার করুন:
+   ```bash
+   banner login # সতর্কতা: শুধুমাত্র অনুমোদিত ব্যবহারকারীরা লগ ইন করতে পারবেন! #
+   ```
+
+4. **Exit করুন এবং কনফিগারেশন সংরক্ষণ করুন:**
+   সব কিছু শেষ করার পর, আপনি **exit** কমান্ড ব্যবহার করে Global Configuration Mode থেকে বের হয়ে যেতে পারেন, এবং কনফিগারেশন সংরক্ষণ করতে পারেন:
+   ```bash
+   Switch(config)# end
+   Switch# write memory
+   ```
+
+### **ব্যানারের উদাহরণ:**
+
+1. **MOTD Banner**:
+   ```bash
+   Switch> enable
+   Switch# configure terminal
+   Switch(config)# banner motd # স্বাগতম! এই সুইচটি শুধুমাত্র অনুমোদিত ব্যবহারকারীদের জন্য #
+   Switch(config)# end
+   Switch# write memory
+   ```
+
+2. **Login Banner**:
+   ```bash
+   Switch> enable
+   Switch# configure terminal
+   Switch(config)# banner login # সতর্কতা: শুধুমাত্র অনুমোদিত ব্যবহারকারীরা লগ ইন করতে পারবেন! #
+   Switch(config)# end
+   Switch# write memory
+   ```
+
+### **Banner ব্যবহারের সুবিধা:**
+- **Security Warning**: সুইচ বা রাউটার ব্যবহার করার আগে ব্যবহারকারীদের জন্য নিরাপত্তা সতর্কতা প্রদান করা যায়।
+- **Custom Messages**: ব্যবহারকারীদের জন্য স্বাগত বার্তা, নির্দেশনা বা অন্য কোন প্রাসঙ্গিক বার্তা প্রদর্শন করা যায়।
+- **Legal Notice**: আপনি যেকোনো আইনি বা নীতি সম্পর্কিত বার্তা প্রদর্শন করতে পারেন, যা ব্যবহারকারীদের সুইচ ব্যবহার করার আগে পড়তে হবে।
+
+এভাবে আপনি Cisco switch-এ বিভিন্ন ধরনের **banner** সেট করতে পারেন।
+
+Cisco switch-এ কনফিগারেশন সেভ (সংরক্ষণ) করার জন্য আপনাকে **running configuration** (বর্তমান কনফিগারেশন) কে **startup configuration** (স্টার্টআপ কনফিগারেশন) এ কপি করতে হবে। এটি করতে, **write memory** বা **copy running-config startup-config** কমান্ড ব্যবহার করা হয়। 
+
+# কনফিগারেশন সেভ করার প্রক্রিয়া:
+
+1. **Privileged EXEC Mode-এ প্রবেশ করুন:**
+   প্রথমে আপনাকে **privileged EXEC mode** (যেখানে `Switch#` প্রম্পট থাকে) এ যেতে হবে।
+   ```bash
+   Switch> enable
+   ```
+
+2. **Running Configuration সেভ করুন:**
+   এখন, আপনি কনফিগারেশন সেভ করতে **write memory** অথবা **copy running-config startup-config** কমান্ড ব্যবহার করতে পারেন। দুটোই একই কাজ করে, অর্থাৎ **running-config** কে **startup-config** এ কপি করবে।
+
+   **কমান্ড ১:**
+   ```bash
+   Switch# write memory
+   ```
+
+   অথবা
+
+   **কমান্ড ২:**
+   ```bash
+   Switch# copy running-config startup-config
+   ```
+
+   উক্ত কমান্ডগুলির মধ্যে কোনটিও ব্যবহার করলে আপনার **running configuration** সংরক্ষণ হয়ে **startup configuration** এ চলে যাবে, যার ফলে পরবর্তী রিবুটের সময় আপনার কনফিগারেশন অটোমেটিকালি লোড হবে।
+
+3. **কনফিগারেশন চেক করুন:**
+   যদি আপনি নিশ্চিত হতে চান যে কনফিগারেশন সেভ হয়েছে কিনা, তাহলে আপনি **show startup-config** কমান্ড ব্যবহার করতে পারেন:
+   ```bash
+   Switch# show startup-config
+   ```
+
+### **পূর্ণ উদাহরণ:**
+
+1. **Privileged EXEC Mode-এ প্রবেশ করুন:**
+   ```bash
+   Switch> enable
+   ```
+
+2. **Running Configuration সেভ করুন:**
+   ```bash
+   Switch# write memory
+   ```
+
+   অথবা
+
+   ```bash
+   Switch# copy running-config startup-config
+   ```
+
+3. **কনফিগারেশন চেক করুন (Optional):**
+   ```bash
+   Switch# show startup-config
+   ```
+
+### **কনফিগারেশন সেভ করার গুরুত্ব:**
+- **Running Configuration** হচ্ছে বর্তমান কনফিগারেশন, যা আপনি এখন প্রয়োগ করেছেন।
+- **Startup Configuration** হচ্ছে সেই কনফিগারেশন যা ডিভাইস রিবুট করার পর লোড হয়।
+- যদি আপনি কনফিগারেশন সেভ না করেন, তাহলে ডিভাইস রিবুট হওয়ার পর সমস্ত পরিবর্তন হারিয়ে যাবে।
+
+এভাবে, আপনি Cisco switch-এ কনফিগারেশন সেভ করতে পারেন, যাতে পরবর্তী রিবুটে আপনার সব কনফিগারেশন অটোমেটিকালি লোড হয়।
