@@ -57,4 +57,441 @@ Switch(config-line)# login local
 ssh yourusername@Switch_IP_address
 ```
 
+
+
+```bash
+Switch>enable
+Switch#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#
+Switch(config)#hostname ? [হোস্টনেম]
+  WORD  This system's network name
+Switch(config)#hostname cisco
+cisco(config)#
+cisco(config)#ip domain?
+domain  domain-lookup  domain-name  
+cisco(config)#ip domain-n
+cisco(config)#ip domain-name ? [ ডোমেইন নাম]
+  WORD  Default domain name
+cisco(config)#ip domain-name cisco.com?
+WORD  
+cisco(config)#ip domain-name cisco.com
+cisco(config)#
+cisco(config)#crypto ? [*RSA কী জেনারেট]
+  key  Long term key operations
+cisco(config)#crypto key ?
+  generate  Generate new keys
+  zeroize   Remove keys
+cisco(config)#crypto key gene
+cisco(config)#crypto key generate ?
+  rsa  Generate RSA keys
+cisco(config)#crypto key generate rs
+cisco(config)#crypto key generate rsa ?
+  general-keys  Generate a general purpose RSA key pair for signing and
+                encryption
+  <cr>
+cisco(config)#crypto key generate rsa 
+The name for the keys will be: cisco.cisco.com
+Choose the size of the key modulus in the range of 360 to 4096 for your
+  General Purpose Keys. Choosing a key modulus greater than 512 may take
+  a few minutes.
+
+How many bits in the modulus [512]: 512
+% Generating 512 bit RSA keys, keys will be non-exportable...[OK]
+
+cisco(config)#
+cisco(config)# ip ?
+*Mar 1 0:4:30.372: RSA key size needs to be at least 768 bits for ssh version 2
+*Mar 1 0:4:30.372: %SSH-5-ENABLED: SSH 1.5 has been enabled
+  access-list      Named access-list
+  arp              IP ARP global configuration
+  default-gateway  Specify default gateway (if not routing IP)
+  dhcp             Configure DHCP server and relay parameters
+  domain           IP DNS Resolver
+  domain-lookup    Enable IP Domain Name System hostname translation
+  domain-name      Define the default domain name
+  ftp              FTP configuration commands
+  host             Add an entry to the ip hostname table
+  name-server      Specify address of name server to use
+  scp              Scp commands
+  ssh              Configure ssh options
+cisco(config)# ip ssh ?  [SSH ]
+  authentication-retries  Specify number of authentication retries
+  time-out                Specify SSH time-out interval
+  version                 Specify protocol version to be supported
+cisco(config)# ip ssh ver
+cisco(config)# ip ssh version ?
+  <1-2>  Protocol version
+cisco(config)# ip ssh version 2
+Please create RSA keys (of at least 768 bits size) to enable SSH v2.
+cisco(config)#username ?  [username & Password]
+  WORD  User name
+cisco(config)#username cisco?
+WORD  
+cisco(config)#username cisco ?
+  password   Specify the password for the user
+  privilege  Set user privilege level
+  secret     Specify the secret for the user
+  <cr>
+cisco(config)#username cisco se
+cisco(config)#username cisco secret ? 
+  0     Specifies an UNENCRYPTED secret will follow
+  5     Specifies a HIDDEN secret will follow
+  LINE  The UNENCRYPTED (cleartext) user secret
+cisco(config)#username cisco secret cisco
+cisco(config)#
+cisco(config)#do show run
+Building configuration...
+
+Current configuration : 1178 bytes
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname cisco
+!
+!
+!
+ip ssh version 1
+ip domain-name cisco.com
+!
+username cisco secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0   [username & passsowrd]
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+ --More-- 
+cisco(config)#do show ip interface brief 
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual up                    up 
+FastEthernet0/2        unassigned      YES manual down                  down 
+FastEthernet0/3        unassigned      YES manual down                  down 
+FastEthernet0/4        unassigned      YES manual down                  down 
+FastEthernet0/5        unassigned      YES manual down                  down 
+FastEthernet0/6        unassigned      YES manual down                  down 
+FastEthernet0/7        unassigned      YES manual down                  down 
+FastEthernet0/8        unassigned      YES manual down                  down 
+FastEthernet0/9        unassigned      YES manual down                  down 
+FastEthernet0/10       unassigned      YES manual down                  down 
+FastEthernet0/11       unassigned      YES manual down                  down 
+FastEthernet0/12       unassigned      YES manual down                  down 
+FastEthernet0/13       unassigned      YES manual down                  down 
+FastEthernet0/14       unassigned      YES manual down                  down 
+FastEthernet0/15       unassigned      YES manual down                  down 
+FastEthernet0/16       unassigned      YES manual down                  down 
+FastEthernet0/17       unassigned      YES manual down                  down 
+FastEthernet0/18       unassigned      YES manual down                  down 
+FastEthernet0/19       unassigned      YES manual down                  down 
+FastEthernet0/20       unassigned      YES manual down                  down 
+FastEthernet0/21       unassigned      YES manual down                  down 
+FastEthernet0/22       unassigned      YES manual down                  down 
+FastEthernet0/23       unassigned      YES manual down                  down 
+FastEthernet0/24       unassigned      YES manual down                  down 
+GigabitEthernet0/1     unassigned      YES manual down                  down 
+GigabitEthernet0/2     unassigned      YES manual down                  down 
+Vlan1                  unassigned      YES manual administratively down down
+
+cisco(config)#interface
+cisco(config)#interface vlan 1
+cisco(config-if)#no shutdown
+
+cisco(config-if)#
+%LINK-5-CHANGED: Interface Vlan1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan1, changed state to up
+
+cisco(config-if)#do show ip interface brief 
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual up                    up 
+FastEthernet0/2        unassigned      YES manual down                  down 
+FastEthernet0/3        unassigned      YES manual down                  down 
+FastEthernet0/4        unassigned      YES manual down                  down 
+FastEthernet0/5        unassigned      YES manual down                  down 
+FastEthernet0/6        unassigned      YES manual down                  down 
+FastEthernet0/7        unassigned      YES manual down                  down 
+FastEthernet0/8        unassigned      YES manual down                  down 
+FastEthernet0/9        unassigned      YES manual down                  down 
+FastEthernet0/10       unassigned      YES manual down                  down 
+FastEthernet0/11       unassigned      YES manual down                  down 
+FastEthernet0/12       unassigned      YES manual down                  down 
+FastEthernet0/13       unassigned      YES manual down                  down 
+FastEthernet0/14       unassigned      YES manual down                  down 
+FastEthernet0/15       unassigned      YES manual down                  down 
+FastEthernet0/16       unassigned      YES manual down                  down 
+FastEthernet0/17       unassigned      YES manual down                  down 
+FastEthernet0/18       unassigned      YES manual down                  down 
+FastEthernet0/19       unassigned      YES manual down                  down 
+FastEthernet0/20       unassigned      YES manual down                  down 
+FastEthernet0/21       unassigned      YES manual down                  down 
+FastEthernet0/22       unassigned      YES manual down                  down 
+FastEthernet0/23       unassigned      YES manual down                  down 
+FastEthernet0/24       unassigned      YES manual down                  down 
+GigabitEthernet0/1     unassigned      YES manual down                  down 
+GigabitEthernet0/2     unassigned      YES manual down                  down 
+Vlan1                  unassigned      YES manual up                    up
+
+cisco(config-if)#ip address 192.168.0.2 255.255.255.0
+cisco(config-if)#do show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual up                    up 
+FastEthernet0/2        unassigned      YES manual down                  down 
+FastEthernet0/3        unassigned      YES manual down                  down 
+FastEthernet0/4        unassigned      YES manual down                  down 
+FastEthernet0/5        unassigned      YES manual down                  down 
+FastEthernet0/6        unassigned      YES manual down                  down 
+FastEthernet0/7        unassigned      YES manual down                  down 
+FastEthernet0/8        unassigned      YES manual down                  down 
+FastEthernet0/9        unassigned      YES manual down                  down 
+FastEthernet0/10       unassigned      YES manual down                  down 
+FastEthernet0/11       unassigned      YES manual down                  down 
+FastEthernet0/12       unassigned      YES manual down                  down 
+FastEthernet0/13       unassigned      YES manual down                  down 
+FastEthernet0/14       unassigned      YES manual down                  down 
+FastEthernet0/15       unassigned      YES manual down                  down 
+FastEthernet0/16       unassigned      YES manual down                  down 
+FastEthernet0/17       unassigned      YES manual down                  down 
+FastEthernet0/18       unassigned      YES manual down                  down 
+FastEthernet0/19       unassigned      YES manual down                  down 
+FastEthernet0/20       unassigned      YES manual down                  down 
+FastEthernet0/21       unassigned      YES manual down                  down 
+FastEthernet0/22       unassigned      YES manual down                  down 
+FastEthernet0/23       unassigned      YES manual down                  down 
+FastEthernet0/24       unassigned      YES manual down                  down 
+GigabitEthernet0/1     unassigned      YES manual down                  down 
+GigabitEthernet0/2     unassigned      YES manual down                  down 
+Vlan1                  192.168.0.2     YES manual up                    up
+cisco(config)#ip default-gateway 192.168.0.1
+cisco(config)#line vty 0 15
+cisco(config-line)#password ?
+  7     Specifies a HIDDEN password will follow
+  LINE  The UNENCRYPTED (cleartext) line password
+cisco(config-line)#password cisco
+cisco(config-line)#login
+cisco(config-line)#exit
+cisco(config-line)#password ?
+  7     Specifies a HIDDEN password will follow
+  LINE  The UNENCRYPTED (cleartext) line password
+cisco(config-line)#password cisco
+cisco(config-line)#login
+cisco(config-line)#exit
+cisco(config)#enable secret cisco
+cisco(config)#service passw
+cisco(config)#service password-encryption 
+cisco(config)#do show run 
+Building configuration...
+
+Current configuration : 1320 bytes
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname cisco
+!
+enable secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
+!
+!
+!
+ip ssh version 1
+ip domain-name cisco.com
+!
+username cisco secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+!
+interface FastEthernet0/2
+!
+interface FastEthernet0/3
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ ip address 192.168.0.2 255.255.255.0
+!
+ip default-gateway 192.168.0.1
+!
+!
+!
+!
+line con 0
+!
+line vty 0 4
+ password 7 0822455D0A16
+ login
+line vty 5 15
+ password 7 0822455D0A16
+ login
+!
+!
+!
+!
+end
+
+cisco(config)#line vty 0 15  [ssh/telnet allow]
+cisco(config-line)#trans
+cisco(config-line)#tra
+cisco(config-line)#transport ?
+  input   Define which protocols to use when connecting to the terminal server
+  output  Define which protocols to use for outgoing connections
+cisco(config-line)#transport inpu
+cisco(config-line)#transport input ?
+  all     All protocols
+  none    No protocols
+  ssh     TCP/IP SSH protocol
+  telnet  TCP/IP Telnet protocol
+cisco(config-line)# transport input all 
+cisco(config-line)# do show run
+Building configuration...
+
+Current configuration : 1320 bytes
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname cisco
+!
+enable secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
+!
+!
+!
+ip ssh version 1
+ip domain-name cisco.com
+!
+username cisco secret 5 $1$mERr$hx5rVt7rPNoS4wqbXKX7m0
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+!
+interface FastEthernet0/2
+!
+interface FastEthernet0/3
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ ip address 192.168.0.2 255.255.255.0
+!
+ip default-gateway 192.168.0.1
+!
+!
+!
+!
+line con 0
+!
+line vty 0 4
+ password 7 0822455D0A16
+ login
+line vty 5 15
+ password 7 0822455D0A16
+ login
+!
+!
+!
+!
+end
+```
+
 এই ছিলো SSH কনফিগারেশন প্রক্রিয়া!
