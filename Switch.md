@@ -57,7 +57,7 @@ Switch(config-line)# login local
 ssh yourusername@Switch_IP_address
 ```
 
-
+ ### উদাহরণ
 
 ```bash
 Switch>enable
