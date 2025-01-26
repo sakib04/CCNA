@@ -505,15 +505,85 @@ end
 Switch(config)# interface fastEthernet 0/1
 Switch(config-if)# switchport port-security
 ```
+### Violation Shutdown
+**Port Security Violation Shutdown** হল একটি পোর্ট সিকিউরিটি অ্যাকশন যা তখন কার্যকর হয় যখন পোর্টে কোনো **অননুমোদিত** MAC অ্যাড্রেস সংযুক্ত হয়, অথবা যদি পোর্টে ব্যবহৃত MAC অ্যাড্রেসের সংখ্যা সীমার বাইরে চলে যায়। এই অবস্থায়, পোর্টটি **অটোমেটিক্যালি বন্ধ (shutdown)** হয়ে যায় এবং সেই পোর্টে আর কোনো ট্র্যাফিক পাস করতে পারে না যতক্ষণ না ম্যানুয়ালি পুনরায় পোর্টটি চালু করা হয়।
 
+### Violation Shutdown এর কার্যপ্রণালী:
+1. **অননুমোদিত MAC অ্যাড্রেস সংযুক্ত হলে**: যদি কোনো ডিভাইসের MAC অ্যাড্রেস পোর্ট সিকিউরিটি কনফিগারেশনের সাথে মেলেনা, তবে পোর্টটি **shutdown** হয়ে যাবে।
+2. **MAC অ্যাড্রেস সীমা অতিক্রম হলে**: যদি পোর্টে অনুমোদিত MAC অ্যাড্রেসের সংখ্যা সীমা ছাড়িয়ে যায়, তবে পোর্টটি বন্ধ হয়ে যাবে।
+3. **পোর্ট বন্ধ হওয়ার পর**: পোর্টটি **err-disable (error-disabled)** হয়ে যাবে, অর্থাৎ পোর্টটি ডাউন হয়ে যাবে এবং নতুন সংযোগ গ্রহণ করবে না।
+
+### Violation Shutdown কনফিগারেশন:
+আপনি যদি চান যে, যখন কোনো violation (ভায়োলেশন) ঘটবে তখন পোর্টটি বন্ধ হয়ে যাবে, তাহলে নিম্নলিখিত কমান্ডটি ব্যবহার করবেন:
+
+```bash
+Switch(config)# interface fastEthernet 0/1
+Switch(config-if)# switchport port-security
+Switch(config-if)# switchport port-security violation shutdown
+```
+
+### কনফিগারেশন ব্যাখ্যা:
+- `switchport port-security`: পোর্ট সিকিউরিটি সক্রিয় করে।
+- `switchport port-security violation shutdown`: যদি কোনো violation ঘটে (যেমন, কোনো অননুমোদিত MAC অ্যাড্রেস সংযুক্ত হলে), তখন পোর্টটি **shutdown** হয়ে যাবে।
+
+### পোর্টটি পুনরায় চালু করা:
+যদি পোর্টটি **shutdown** হয়ে যায়, তাহলে আপনাকে ম্যানুয়ালি পোর্টটি পুনরায় **up** করতে হবে। আপনি এটি `shutdown` এবং `no shutdown` কমান্ড দিয়ে করতে পারেন:
+
+```bash
+Switch(config-if)# shutdown
+Switch(config-if)# no shutdown
+```
+
+### Violation Shutdown এর সুবিধা:
+- **সুরক্ষা**: পোর্ট সিকিউরিটি ভায়োলেশন হলে পোর্টটি বন্ধ হয়ে যাওয়ায়, অননুমোদিত ডিভাইস বা মালিসিয়াস ডিভাইস নেটওয়ার্কে প্রবেশ করতে পারে না।
+- **স্বয়ংক্রিয় প্রতিক্রিয়া**: পোর্টটি বন্ধ হয়ে যাওয়ায় আপনি দ্রুত সমস্যার চিহ্নিত করতে পারবেন এবং ডিভাইসটির সাথে সম্পর্কিত কোনো সমস্যা সমাধান করতে পারবেন।
+
+### Violation Shutdown Troubleshooting:
+যদি পোর্টটি **err-disable** হয়ে যায়, তাহলে এটি চেক করতে পারেন:
+
+```bash
+Switch# show interface status err-disabled
+```
+
+এবং পোর্টটি পুনরায় সক্রিয় করতে:
+
+```bash
+Switch# show port-security interface fastEthernet 0/1
+Switch# clear port-security sticky interface fastEthernet 0/1
+```
+
+এভাবে, **Violation Shutdown** পোর্ট সিকিউরিটির একটি গুরুত্বপূর্ণ অংশ যা নেটওয়ার্কের নিরাপত্তা নিশ্চিত করে।
 ### 2. পোর্ট সিকিউরিটির নিয়ম সেট করা
 আপনার পোর্ট সিকিউরিটির জন্য কিছু প্যারামিটার কনফিগার করতে হবে, যেমন:
 
 - **ম্যাক অ্যাড্রেস সীমা**: কতটি MAC অ্যাড্রেস পোর্টে অনুমোদিত হবে
 - **অ্যাকশন**: যদি কোনো নিষিদ্ধ ডিভাইস পোর্টে সংযুক্ত হয় তাহলে কি হবে (সেটআপ করা যেতে পারে "restrict", "protect", বা "shutdown" অ্যাকশন)
 - **MAC অ্যাড্রেস লক করা**: পোর্টে ম্যানুয়ালি নির্দিষ্ট MAC অ্যাড্রেস সেট করা।
+- **Port Security Sticky Mode** সিস্কো সুইচে একটি ফিচার যা পোর্টে সংযুক্ত MAC অ্যাড্রেসগুলোকে **স্বয়ংক্রিয়ভাবে সুরক্ষিত** করে রাখে। এই মোডে, যখন একটি ডিভাইস প্রথমবারের মতো একটি পোর্টে সংযুক্ত হয়, তখন পোর্টটি ঐ ডিভাইসের MAC অ্যাড্রেসটিকে "sticky" হিসেবে স্মরণ করে রাখে। এর মানে হলো, সিস্কো সুইচ ঐ MAC অ্যাড্রেসটিকে পোর্ট সিকিউরিটির তালিকায় অস্থায়ীভাবে যোগ করে এবং ভবিষ্যতে ঐ MAC অ্যাড্রেসটি শুধুমাত্র ঐ পোর্টে ব্যবহৃত হতে পারে।
 
-### উদাহরণ:
+Sticky মোডে কনফিগার করলে, ডিভাইসটির MAC অ্যাড্রেসটি সেই পোর্টে স্টোর হয়ে যায় এবং পুনরায় সুইচ রিস্টার্ট হলে, সিস্টেম ঐ MAC অ্যাড্রেসগুলো আবারও স্বয়ংক্রিয়ভাবে পুনরুদ্ধার করে, এর ফলে নতুন করে MAC অ্যাড্রেস যুক্ত করার প্রয়োজন হয় না।
+
+#### Sticky Mode-এর সুবিধা:
+1. **স্বয়ংক্রিয় MAC অ্যাড্রেস সংরক্ষণ**: আপনি যখন কোনো ডিভাইস সংযুক্ত করেন, তখন ঐ ডিভাইসের MAC অ্যাড্রেস পোর্টে স্বয়ংক্রিয়ভাবে যুক্ত হয়ে যায়।
+2. **সুরক্ষা**: এটি পোর্টে শুধুমাত্র অনুমোদিত MAC অ্যাড্রেসগুলো সংযুক্ত থাকতে নিশ্চিত করে, ফলে নকল বা অননুমোদিত ডিভাইসের সংযোগ বন্ধ হয়ে যায়।
+3. **কনফিগারেশন সহজ করা**: আপনি ম্যানুয়ালি MAC অ্যাড্রেস কনফিগার না করে, শুধুমাত্র Sticky মোড ব্যবহার করে সমস্ত MAC অ্যাড্রেস কনফিগার করতে পারেন।
+
+#### Sticky Mode-এর কাজের পদ্ধতি:
+- যখন একটি ডিভাইস প্রথমবার পোর্টে সংযুক্ত হয়, তখন ঐ MAC অ্যাড্রেসটি সিস্কো সুইচে `sticky` হিসেবে সংরক্ষিত হয়ে যায়।
+- ঐ MAC অ্যাড্রেসটির পরে যদি পোর্টে আরেকটি ডিভাইস সংযুক্ত করা হয় যার MAC অ্যাড্রেসটি আগে থেকেই স্টোর করা থাকে, তবে ঐ ডিভাইসটি পোর্টে কাজ করবে।
+- যদি ঐ MAC অ্যাড্রেসটির সীমা পার হয়ে যায় বা অন্য কোনো অননুমোদিত MAC অ্যাড্রেস সংযুক্ত হয়, তখন নির্দিষ্ট অ্যাকশন যেমন `restrict`, `shutdown`, বা `protect` কার্যকর হয়।
+
+#### Sticky Mode কনফিগার করার উদাহরণ:
+```bash
+Switch(config)# interface fastEthernet 0/1
+Switch(config-if)# switchport port-security
+Switch(config-if)# switchport port-security mac-address sticky
+Switch(config-if)# switchport port-security maximum 2
+Switch(config-if)# switchport port-security violation restrict
+```
+
+এভাবে, **Sticky Mode** পোর্ট সিকিউরিটির মাধ্যমে আপনাকে স্বয়ংক্রিয়ভাবে সুরক্ষিত MAC অ্যাড্রেস ব্যবস্থাপনা করতে সাহায্য করে।
+#### উদাহরণ:
 1. পোর্টে একমাত্র একটি MAC অ্যাড্রেস অনুমোদিত হবে:
 ```bash
 Switch(config-if)# switchport port-security maximum 1
@@ -530,18 +600,131 @@ Switch(config-if)# switchport port-security mac-address 0010.1234.5678
 Switch(config-if)# switchport port-security violation shutdown
 ```
 
-### 3. পোর্ট সিকিউরিটি স্ট্যাটাস চেক করা
+#### 3. পোর্ট সিকিউরিটি স্ট্যাটাস চেক করা
 আপনি পোর্ট সিকিউরিটির বর্তমান স্ট্যাটাস দেখতে চাইলে নিচের কমান্ড ব্যবহার করতে পারেন:
 
 ```bash
 Switch# show port-security interface fastEthernet 0/1
 ```
 
-### 4. পোর্ট সিকিউরিটি ডিএকটিভেট করা
+#### 4. পোর্ট সিকিউরিটি ডিএকটিভেট করা
 যদি আপনি পোর্ট সিকিউরিটি নিষ্ক্রিয় করতে চান:
 
 ```bash
 Switch(config-if)# no switchport port-security
 ```
+```bash
+Switch>
+Switch>
+Switch>enable 
+Switch#conf
+Switch#configure t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#do show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual up                    up 
+FastEthernet0/2        unassigned      YES manual down                  down 
+FastEthernet0/3        unassigned      YES manual down                  down 
+FastEthernet0/4        unassigned      YES manual down                  down 
+FastEthernet0/5        unassigned      YES manual down                  down 
+FastEthernet0/6        unassigned      YES manual down                  down 
+FastEthernet0/7        unassigned      YES manual down                  down 
+FastEthernet0/8        unassigned      YES manual down                  down 
+FastEthernet0/9        unassigned      YES manual down                  down 
+FastEthernet0/10       unassigned      YES manual down                  down 
+FastEthernet0/11       unassigned      YES manual down                  down 
+FastEthernet0/12       unassigned      YES manual down                  down 
+FastEthernet0/13       unassigned      YES manual down                  down 
+FastEthernet0/14       unassigned      YES manual down                  down 
+FastEthernet0/15       unassigned      YES manual down                  down 
+FastEthernet0/16       unassigned      YES manual down                  down 
+FastEthernet0/17       unassigned      YES manual down                  down 
+FastEthernet0/18       unassigned      YES manual down                  down 
+FastEthernet0/19       unassigned      YES manual down                  down 
+FastEthernet0/20       unassigned      YES manual down                  down 
+FastEthernet0/21       unassigned      YES manual down                  down 
+FastEthernet0/22       unassigned      YES manual down                  down 
+FastEthernet0/23       unassigned      YES manual down                  down 
+FastEthernet0/24       unassigned      YES manual down                  down 
+GigabitEthernet0/1     unassigned      YES manual down                  down 
+GigabitEthernet0/2     unassigned      YES manual down                  down 
+Vlan1                  unassigned      YES manual administratively down down
+Switch(config)#inter
+Switch(config)#interface fas
+Switch(config)#interface fastEthernet 0/1
+Switch(config-if)#?
+  authentication    Auth Manager Interface Configuration Commands
+  cdp               Global CDP configuration subcommands
+  channel-group     Etherchannel/port bundling configuration
+  channel-protocol  Select the channel protocol (LACP, PAgP)
+  description       Interface specific description
+  dot1x             Interface Config Commands for IEEE 802.1X
+  duplex            Configure duplex operation.
+  exit              Exit from interface configuration mode
+  ip                Interface Internet Protocol config commands
+  lldp              LLDP interface subcommands
+  mdix              Set Media Dependent Interface with Crossover
+  mls               mls interface commands
+  no                Negate a command or set its defaults
+  shutdown          Shutdown the selected interface
+  spanning-tree     Spanning Tree Subsystem
+  speed             Configure speed operation.
+  storm-control     storm configuration
+  switchport        Set switching mode characteristics
+  tx-ring-limit     Configure PA level transmit ring limit
+Switch(config-if)#sw
+Switch(config-if)#switchport ?
+  access         Set access mode characteristics of the interface
+  mode           Set trunking mode of the interface
+  nonegotiate    Device will not engage in negotiation protocol on this
+                 interface
+  port-security  Security related command
+  priority       Set appliance 802.1p priority
+  protected      Configure an interface to be a protected port
+  trunk          Set trunking characteristics of the interface
+  voice          Voice appliance attributes
+Switch(config-if)#switchport pr
+Switch(config-if)#switchport port
+Switch(config-if)#switchport port-security ?
+  aging        Port-security aging commands
+  mac-address  Secure mac address
+  maximum      Max secure addresses
+  violation    Security violation mode
+  <cr>
+Switch(config-if)#switchport port-security
+Switch(config-if)#do sh mac address
+          Mac Address Table
+-------------------------------------------
 
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+
+   1    000a.417d.e982    DYNAMIC     Fa0/1
+   1    0030.a31e.b661    DYNAMIC     Fa0/2
+   1    00d0.ba2e.0687    DYNAMIC     Fa0/3
+
+Switch(config-if)#switch port-security maximum 5
+Switch(config-if)#switchport port-security violation shutdown
+switch(config)#do sh run ?
+  aaa         Show AAA configurations
+  all         Configuration with defaults
+  brief       configuration without certificate data
+  class-map   Show class-map information
+  eap         Show EAP configuration
+  flow        Global Flow configuration subcommands
+  full        full configuration
+  identity    Show identity profile/policy information
+  interface   Show interface configuration
+  ip          IPv4 subcommands
+  linenum     Display line numbers in output
+  map-class   Show map class information
+  partition   Configuration corresponding a partition
+  policy-map  Show policy-map information
+  view        View options
+  vlan        Show L2 VLAN information
+  vrf         Show VRF aware configuration
+  |           Output modifiers
+  <cr>
+
+```
 এই স্টেপগুলি ব্যবহার করে আপনি সিস্কো সুইচে পোর্ট সিকিউরিটি কনফিগার করতে পারেন।
