@@ -726,5 +726,44 @@ switch(config)#do sh run ?
   |           Output modifiers
   <cr>
 
+Core_switch-Server_R(config)#do sh run inter gig 1/0/5
+Building configuration...
+
+Current configuration : 258 bytes
+!
+interface GigabitEthernet1/0/5
+ description N5-EC-01_D-Sw-01
+ switchport trunk allowed vlan 1,100-116,130,150,160
+ switchport mode trunk
+ macro description cisco-switch
+ auto qos trust
+ spanning-tree link-type point-to-point
+ channel-group 1 mode on
+end
+
+Switch#show running-config 
+Building configuration...
+
+Current configuration : 1162 bytes
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Switch
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+ switchport port-security maximum 5
+ switchport port-security mac-address sticky
+ --More--
 ```
 এই স্টেপগুলি ব্যবহার করে আপনি সিস্কো সুইচে পোর্ট সিকিউরিটি কনফিগার করতে পারেন।
