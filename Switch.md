@@ -506,38 +506,73 @@ Switch(config)# interface fastEthernet 0/1
 Switch(config-if)# switchport port-security
 ```
 ### Violation Shutdown
-**Port Security Violation Shutdown** হল একটি পোর্ট সিকিউরিটি অ্যাকশন যা তখন কার্যকর হয় যখন পোর্টে কোনো **অননুমোদিত** MAC অ্যাড্রেস সংযুক্ত হয়, অথবা যদি পোর্টে ব্যবহৃত MAC অ্যাড্রেসের সংখ্যা সীমার বাইরে চলে যায়। এই অবস্থায়, পোর্টটি **অটোমেটিক্যালি বন্ধ (shutdown)** হয়ে যায় এবং সেই পোর্টে আর কোনো ট্র্যাফিক পাস করতে পারে না যতক্ষণ না ম্যানুয়ালি পুনরায় পোর্টটি চালু করা হয়।
+**পোর্ট সিকিউরিটি ভায়োলেশন (Port Security Violation)** হলো সেই ঘটনা যখন কোনো পোর্টে অনুমোদিত MAC ঠিকানা ছাড়া অন্য কোনো ডিভাইস সংযুক্ত হয়। এটি **নেটওয়ার্ক সিকিউরিটি** বাড়ানোর জন্য গুরুত্বপূর্ণ, কারণ এটি অপ্রত্যাশিত বা অবাঞ্ছিত ডিভাইসগুলোকে পোর্টে সংযোগ করতে বাধা দেয়।
 
-### Violation Shutdown এর কার্যপ্রণালী:
-1. **অননুমোদিত MAC অ্যাড্রেস সংযুক্ত হলে**: যদি কোনো ডিভাইসের MAC অ্যাড্রেস পোর্ট সিকিউরিটি কনফিগারেশনের সাথে মেলেনা, তবে পোর্টটি **shutdown** হয়ে যাবে।
-2. **MAC অ্যাড্রেস সীমা অতিক্রম হলে**: যদি পোর্টে অনুমোদিত MAC অ্যাড্রেসের সংখ্যা সীমা ছাড়িয়ে যায়, তবে পোর্টটি বন্ধ হয়ে যাবে।
-3. **পোর্ট বন্ধ হওয়ার পর**: পোর্টটি **err-disable (error-disabled)** হয়ে যাবে, অর্থাৎ পোর্টটি ডাউন হয়ে যাবে এবং নতুন সংযোগ গ্রহণ করবে না।
+- **পোর্ট সিকিউরিটি ভায়োলেশন কিভাবে কাজ করে?**
 
-### Violation Shutdown কনফিগারেশন:
-আপনি যদি চান যে, যখন কোনো violation (ভায়োলেশন) ঘটবে তখন পোর্টটি বন্ধ হয়ে যাবে, তাহলে নিম্নলিখিত কমান্ডটি ব্যবহার করবেন:
+যখন একটি ডিভাইস একটি পোর্টে সংযুক্ত হয়, সিস্কো সুইচ **MAC ঠিকানা** শনাক্ত করে। যদি ঐ পোর্টের জন্য কনফিগার করা MAC ঠিকানার সাথে নতুন কোনো MAC ঠিকানা মিল না খায়, তবে সেটি **ভায়োলেশন** হিসেবে গণ্য হয়। এবং এরপর স্যুইচ যেই **ভায়োলেশন অ্যাকশন** কনফিগার করা থাকে, তা অনুযায়ী ব্যবস্থা নেয়।
+
+- **পোর্ট সিকিউরিটি ভায়োলেশন অ্যাকশন**
+
+সিস্কো সুইচে পোর্ট সিকিউরিটি ভায়োলেশন ঘটলে তিন ধরনের অ্যাকশন নেয়া যায়:
+
+1. **Protect**:
+   - অজানা MAC ঠিকানার প্যাকেট ড্রপ করা হয়, তবে কোনো নোটিফিকেশন পাঠানো হয় না।
+   
+   কনফিগারেশন:
+   ```bash
+   switchport port-security violation protect
+   ```
+
+2. **Restrict**:
+   - অজানা MAC ঠিকানার প্যাকেট ড্রপ করা হয় এবং স্যুইচ একটি নোটিফিকেশন (syslog) পাঠায়।
+   
+   কনফিগারেশন:
+   ```bash
+   switchport port-security violation restrict
+   ```
+
+3. **Shutdown (ডিফল্ট অপশন)**:
+   - পোর্টটি স্বয়ংক্রিয়ভাবে **শাটডাউন** হয়ে যায় এবং কোন প্যাকেট পাস করতে পারে না। এটি সবচেয়ে কড়া নিরাপত্তা।
+   
+   কনফিগারেশন:
+   ```bash
+   switchport port-security violation shutdown
+   ```
+
+**উদাহরণ কনফিগারেশন:**
+ধরা যাক, আপনি যদি FastEthernet0/1 পোর্টে পোর্ট সিকিউরিটি কনফিগার করতে চান এবং ভায়োলেশন ঘটলে পোর্টটি বন্ধ (shutdown) করতে চান, তাহলে কনফিগারেশন হবে:
 
 ```bash
-Switch(config)# interface fastEthernet 0/1
-Switch(config-if)# switchport port-security
-Switch(config-if)# switchport port-security violation shutdown
+Switch(config)#interface FastEthernet0/1
+Switch(config-if)#switchport mode access
+Switch(config-if)#switchport port-security
+Switch(config-if)#switchport port-security maximum 1
+Switch(config-if)#switchport port-security violation shutdown
+Switch(config-if)#switchport port-security mac-address sticky
 ```
 
-### কনফিগারেশন ব্যাখ্যা:
-- `switchport port-security`: পোর্ট সিকিউরিটি সক্রিয় করে।
-- `switchport port-security violation shutdown`: যদি কোনো violation ঘটে (যেমন, কোনো অননুমোদিত MAC অ্যাড্রেস সংযুক্ত হলে), তখন পোর্টটি **shutdown** হয়ে যাবে।
+এখানে:
+- **`switchport port-security violation shutdown`**: যদি অন্য কোনো অজানা MAC ঠিকানা পোর্টে যুক্ত হয়, পোর্টটি বন্ধ হয়ে যাবে (shutdown)।
+- **`switchport port-security maximum 1`**: একে সীমিত করা হবে ১টি MAC ঠিকানায়।
+- **`switchport port-security mac-address sticky`**: যেই MAC ঠিকানা প্রথমে সংযুক্ত হবে, সেগুলো সিস্টেমে অটোমেটিক্যালি সংরক্ষিত হবে।
 
-### পোর্টটি পুনরায় চালু করা:
-যদি পোর্টটি **shutdown** হয়ে যায়, তাহলে আপনাকে ম্যানুয়ালি পোর্টটি পুনরায় **up** করতে হবে। আপনি এটি `shutdown` এবং `no shutdown` কমান্ড দিয়ে করতে পারেন:
-
+**পোর্ট সিকিউরিটি ভায়োলেশন চেক করা:**
+ভায়োলেশন ঘটে থাকলে তার বিস্তারিত জানার জন্য আপনি নিচের কমান্ডটি ব্যবহার করতে পারেন:
 ```bash
-Switch(config-if)# shutdown
-Switch(config-if)# no shutdown
+show port-security
+show port-security interface FastEthernet0/1
 ```
 
-### Violation Shutdown এর সুবিধা:
-- **সুরক্ষা**: পোর্ট সিকিউরিটি ভায়োলেশন হলে পোর্টটি বন্ধ হয়ে যাওয়ায়, অননুমোদিত ডিভাইস বা মালিসিয়াস ডিভাইস নেটওয়ার্কে প্রবেশ করতে পারে না।
-- **স্বয়ংক্রিয় প্রতিক্রিয়া**: পোর্টটি বন্ধ হয়ে যাওয়ায় আপনি দ্রুত সমস্যার চিহ্নিত করতে পারবেন এবং ডিভাইসটির সাথে সম্পর্কিত কোনো সমস্যা সমাধান করতে পারবেন।
+এটি আপনাকে পোর্ট সিকিউরিটির বর্তমান স্ট্যাটাস এবং ভায়োলেশন তথ্য দেখাবে।
 
+### ভায়োলেশন সম্পর্কে সচেতনতা:
+- **পোর্ট শাটডাউন** (shutdown) অবস্থায়, পোর্টটি পুনরায় **enable** করতে হবে। এটি করতে:
+  ```bash
+  Switch(config)#interface FastEthernet0/1
+  Switch(config-if)#shutdown
+  Switch(config-if)#no shutdown
+  ```
 ### Violation Shutdown Troubleshooting:
 যদি পোর্টটি **err-disable** হয়ে যায়, তাহলে এটি চেক করতে পারেন:
 
@@ -654,84 +689,223 @@ Switch(config-if)#switchport port-security maxi
 Switch(config-if)#switchport port-security maximum ?
   <1-132>  Maximum addresses
 Switch(config-if)#switchport port-security maximum 1
+Switch(config-if)#switchport port-security maximum 2
 ```
 switchport port-security maximum 1 কমান্ডটি ব্যবহার করে আপনি একটি পোর্টে সর্বাধিক 1টি MAC ঠিকানা অনুমোদিত করতে পারেন।
 
 এটির মাধ্যমে আপনি নির্দিষ্ট করে দেন যে, ঐ পোর্টে কেবল 1টি ডিভাইসের MAC ঠিকানা কানেক্ট হতে পারবে। যদি অন্য কোনো MAC ঠিকানা ওই পোর্টে সংযুক্ত হয়, তবে এটি একটি ভায়োলেশন সৃষ্টি করবে, এবং সেটি নির্ধারিত ভায়োলেশন অ্যাকশন অনুযায়ী (যেমন: Shutdown, Protect, বা Restrict) কাজ করবে।
 
 আইপি টেলিফোন এবং পিসির জন্য  ঐ পোর্টে কেবল 2টি ডিভাইসের MAC ঠিকানা কানেক্ট হতে পারবে।
-```bash
-Switch(config-if)#switchport port-security maximum 2
-```
-**পোর্ট সিকিউরিটি ভায়োলেশন (Port Security Violation)** হলো সেই ঘটনা যখন কোনো পোর্টে অনুমোদিত MAC ঠিকানা ছাড়া অন্য কোনো ডিভাইস সংযুক্ত হয়। এটি **নেটওয়ার্ক সিকিউরিটি** বাড়ানোর জন্য গুরুত্বপূর্ণ, কারণ এটি অপ্রত্যাশিত বা অবাঞ্ছিত ডিভাইসগুলোকে পোর্টে সংযোগ করতে বাধা দেয়।
-
-- **পোর্ট সিকিউরিটি ভায়োলেশন কিভাবে কাজ করে?**
-
-যখন একটি ডিভাইস একটি পোর্টে সংযুক্ত হয়, সিস্কো সুইচ **MAC ঠিকানা** শনাক্ত করে। যদি ঐ পোর্টের জন্য কনফিগার করা MAC ঠিকানার সাথে নতুন কোনো MAC ঠিকানা মিল না খায়, তবে সেটি **ভায়োলেশন** হিসেবে গণ্য হয়। এবং এরপর স্যুইচ যেই **ভায়োলেশন অ্যাকশন** কনফিগার করা থাকে, তা অনুযায়ী ব্যবস্থা নেয়।
-
-- **পোর্ট সিকিউরিটি ভায়োলেশন অ্যাকশন**
-
-সিস্কো সুইচে পোর্ট সিকিউরিটি ভায়োলেশন ঘটলে তিন ধরনের অ্যাকশন নেয়া যায়:
-
-1. **Protect**:
-   - অজানা MAC ঠিকানার প্যাকেট ড্রপ করা হয়, তবে কোনো নোটিফিকেশন পাঠানো হয় না।
-   
-   কনফিগারেশন:
-   ```bash
-   switchport port-security violation protect
-   ```
-
-2. **Restrict**:
-   - অজানা MAC ঠিকানার প্যাকেট ড্রপ করা হয় এবং স্যুইচ একটি নোটিফিকেশন (syslog) পাঠায়।
-   
-   কনফিগারেশন:
-   ```bash
-   switchport port-security violation restrict
-   ```
-
-3. **Shutdown (ডিফল্ট অপশন)**:
-   - পোর্টটি স্বয়ংক্রিয়ভাবে **শাটডাউন** হয়ে যায় এবং কোন প্যাকেট পাস করতে পারে না। এটি সবচেয়ে কড়া নিরাপত্তা।
-   
-   কনফিগারেশন:
-   ```bash
-   switchport port-security violation shutdown
-   ```
-
-**উদাহরণ কনফিগারেশন:**
-ধরা যাক, আপনি যদি FastEthernet0/1 পোর্টে পোর্ট সিকিউরিটি কনফিগার করতে চান এবং ভায়োলেশন ঘটলে পোর্টটি বন্ধ (shutdown) করতে চান, তাহলে কনফিগারেশন হবে:
 
 ```bash
-Switch(config)#interface FastEthernet0/1
-Switch(config-if)#switchport mode access
-Switch(config-if)#switchport port-security
-Switch(config-if)#switchport port-security maximum 1
-Switch(config-if)#switchport port-security violation shutdown
+Switch(config)#interface fastEthernet 0/1
+Switch(config-if)#swit
+Switch(config-if)#switchport por
+Switch(config-if)#switchport port-security ?
+  aging        Port-security aging commands
+  mac-address  Secure mac address
+  maximum      Max secure addresses
+  violation    Security violation mode
+  <cr>
+Switch(config-if)#switchport port-security vio
+Switch(config-if)#switchport port-security violation ?
+  protect   Security violation protect mode
+  restrict  Security violation restrict mode
+  shutdown  Security violation shutdown mode
+Switch(config-if)#switchport port-security violation shutdo
+Switch(config-if)#switchport port-security violation shutdown 
+Switch(config-if)#switchport port-security mac
+Switch(config-if)#switchport port-security mac-address ?
+  H.H.H   48 bit mac address
+  sticky  Configure dynamic secure addresses as sticky
+Switch(config-if)#switchport port-security mac-address sti
 Switch(config-if)#switchport port-security mac-address sticky
+Switch(config-if)#do sh mac add
+          Mac Address Table
+-------------------------------------------
+
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+
+   1    0001.c7ad.88d7    DYNAMIC     Fa0/3
+   1    000b.be53.27b3    STATIC      Fa0/1
+   1    0030.f276.6c65    DYNAMIC     Fa0/2
+   1    0090.21ce.31b1    DYNAMIC     Fa0/4
+
+
+Switch(config-if)# do sh run
+Building configuration...
+
+Current configuration : 1272 bytes
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Switch
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky 
+ switchport port-security mac-address sticky 000B.BE53.27B3
+!
+--More--
+
+Switch(config-if)#do sh port-security
+Secure Port MaxSecureAddr CurrentAddr SecurityViolation Security Action
+               (Count)       (Count)        (Count)
+--------------------------------------------------------------------
+        Fa0/1        2          1                 0         Shutdown
+----------------------------------------------------------------------
+Switch(config-if)#^Z
+Switch#
+%SYS-5-CONFIG_I: Configured from console by console
+Switch#show port-security ?
+  address    Show secure address
+  interface  Show secure interface
+  <cr>
+Switch#show port-security inter
+Switch#show port-security interface ?
+  Ethernet         IEEE 802.3
+  FastEthernet     FastEthernet IEEE 802.3
+  GigabitEthernet  GigabitEthernet IEEE 802.3z
+Switch#show port-security interface F
+Switch#show port-security interface FastEthernet 
+Switch#show port-security interface FastEthernet ?
+  <0-9>  FastEthernet interface number
+Switch#show port-security interface FastEthernet 0?
+/  
+Switch#show port-security interface FastEthernet 0/1
+Port Security              : Enabled
+Port Status                : Secure-up
+Violation Mode             : Shutdown
+Aging Time                 : 0 mins
+Aging Type                 : Absolute
+SecureStatic Address Aging : Disabled
+Maximum MAC Addresses      : 2
+Total MAC Addresses        : 1
+Configured MAC Addresses   : 0
+Sticky MAC Addresses       : 1
+Last Source Address:Vlan   : 000B.BE53.27B3:1
+Security Violation Count   : 0
+
+%%%%%if we change condition&&&&&&&
+Switch#show port-security interface FastEthernet 0/1
+Port Security              : Enabled
+Port Status                : Secure-shutdown
+Violation Mode             : Shutdown
+Aging Time                 : 0 mins
+Aging Type                 : Absolute
+SecureStatic Address Aging : Disabled
+Maximum MAC Addresses      : 2
+Total MAC Addresses        : 2
+Configured MAC Addresses   : 0
+Sticky MAC Addresses       : 2
+Last Source Address:Vlan   : 0090.21CE.31B1:1
+Security Violation Count   : 1
+Switch#show ip int brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual down                  down 
+FastEthernet0/2        unassigned      YES manual up                    up 
+FastEthernet0/3        unassigned      YES manual up                    up 
+FastEthernet0/4        unassigned      YES manual up                    up 
+FastEthernet0/5        unassigned      YES manual down                  down 
+FastEthernet0/6        unassigned      YES manual down                  down 
+FastEthernet0/7        unassigned      YES manual down                  down 
+FastEthernet0/8        unassigned      YES manual down                  down 
+FastEthernet0/9        unassigned      YES manual down                  down 
+FastEthernet0/10       unassigned      YES manual down                  down 
+FastEthernet0/11       unassigned      YES manual down                  down 
+FastEthernet0/12       unassigned      YES manual down                  down 
+FastEthernet0/13       unassigned      YES manual down                  down 
+FastEthernet0/14       unassigned      YES manual down                  down 
+FastEthernet0/15       unassigned      YES manual down                  down 
+FastEthernet0/16       unassigned      YES manual down                  down 
+FastEthernet0/17       unassigned      YES manual down                  down 
+FastEthernet0/18       unassigned      YES manual down                  down 
+FastEthernet0/19       unassigned      YES manual down                  down 
+FastEthernet0/20       unassigned      YES manual down                  down 
+FastEthernet0/21       unassigned      YES manual down                  down 
+FastEthernet0/22       unassigned      YES manual down                  down 
+FastEthernet0/23       unassigned      YES manual down                  down 
+FastEthernet0/24       unassigned      YES manual down                  down 
+GigabitEthernet0/1     unassigned      YES manual down                  down 
+GigabitEthernet0/2     unassigned      YES manual down                  down 
+Vlan1                  unassigned      YES manual administratively down down
+
+Switch#show inter fastEthernet 0/1
+FastEthernet0/1 is down, line protocol is down **(err-disabled)**
+  Hardware is Lance, address is 00e0.a363.5c01 (bia 00e0.a363.5c01)
+ BW 100000 Kbit, DLY 1000 usec,
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s
+  input flow-control is off, output flow-control is off
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:08, output 00:00:05, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue :0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     956 packets input, 193351 bytes, 0 no buffer
+     Received 956 broadcasts, 0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     2357 packets output, 263570 bytes, 0 underruns
+     0 output errors, 0 collisions, 10 interface resets
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier
+     0 output buffer failures, 0 output buffers swapped out
+Switch#configure terminal 
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#inter
+Switch(config)#interface fa
+Switch(config)#interface fastEthernet 0/1
+Switch(config-if)#show por
+Switch(config-if)#shu
+Switch(config-if)#shutdown 
+
+%LINK-5-CHANGED: Interface FastEthernet0/1, changed state to administratively down
+Switch(config-if)#do sh ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual administratively down down 
+--More--
+
+Switch(config-if)#no shutdown 
+
+Switch(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to up
+
+Switch(config-if)#do sh ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual up                    up 
+--More--
+Switch(config-if)#do sh port inter f0/1
+Port Security              : Enabled
+Port Status                : Secure-up
+Violation Mode             : Shutdown
+Aging Time                 : 0 mins
+Aging Type                 : Absolute
+SecureStatic Address Aging : Disabled
+Maximum MAC Addresses      : 2
+Total MAC Addresses        : 2
+Configured MAC Addresses   : 0
+Sticky MAC Addresses       : 2
+Last Source Address:Vlan   : 0090.21CE.31B1:1
+Security Violation Count   : 0
 ```
 
-এখানে:
-- **`switchport port-security violation shutdown`**: যদি অন্য কোনো অজানা MAC ঠিকানা পোর্টে যুক্ত হয়, পোর্টটি বন্ধ হয়ে যাবে (shutdown)।
-- **`switchport port-security maximum 1`**: একে সীমিত করা হবে ১টি MAC ঠিকানায়।
-- **`switchport port-security mac-address sticky`**: যেই MAC ঠিকানা প্রথমে সংযুক্ত হবে, সেগুলো সিস্টেমে অটোমেটিক্যালি সংরক্ষিত হবে।
 
-**পোর্ট সিকিউরিটি ভায়োলেশন চেক করা:**
-ভায়োলেশন ঘটে থাকলে তার বিস্তারিত জানার জন্য আপনি নিচের কমান্ডটি ব্যবহার করতে পারেন:
-```bash
-show port-security
-show port-security interface FastEthernet0/1
-```
-
-এটি আপনাকে পোর্ট সিকিউরিটির বর্তমান স্ট্যাটাস এবং ভায়োলেশন তথ্য দেখাবে।
-
-### ভায়োলেশন সম্পর্কে সচেতনতা:
-- **পোর্ট শাটডাউন** (shutdown) অবস্থায়, পোর্টটি পুনরায় **enable** করতে হবে। এটি করতে:
-  ```bash
-  Switch(config)#interface FastEthernet0/1
-  Switch(config-if)#shutdown
-  Switch(config-if)#no shutdown
-  ```
-
-এইভাবে আপনি পোর্ট সিকিউরিটি ভায়োলেশন কনফিগার এবং ম্যানেজ করতে পারবেন।
-
-আপনার যদি আরো কোনো প্রশ্ন থাকে বা কোনো অংশে সাহায্য প্রয়োজন হয়, তাহলে আমাকে জানাতে পারেন! 😊
 এই স্টেপগুলি ব্যবহার করে আপনি সিস্কো সুইচে পোর্ট সিকিউরিটি কনফিগার করতে পারেন।
