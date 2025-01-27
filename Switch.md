@@ -613,157 +613,50 @@ Switch# show port-security interface fastEthernet 0/1
 ```bash
 Switch(config-if)# no switchport port-security
 ```
-```bash
+```
 Switch>
-Switch>
-Switch>enable 
-Switch#conf
-Switch#configure t
+Switch>enable
+Switch#config
+Switch#configure te
+Switch#configure terminal 
 Enter configuration commands, one per line.  End with CNTL/Z.
-Switch(config)#do show ip interface brief
-Interface              IP-Address      OK? Method Status                Protocol 
-FastEthernet0/1        unassigned      YES manual up                    up 
-FastEthernet0/2        unassigned      YES manual down                  down 
-FastEthernet0/3        unassigned      YES manual down                  down 
-FastEthernet0/4        unassigned      YES manual down                  down 
-FastEthernet0/5        unassigned      YES manual down                  down 
-FastEthernet0/6        unassigned      YES manual down                  down 
-FastEthernet0/7        unassigned      YES manual down                  down 
-FastEthernet0/8        unassigned      YES manual down                  down 
-FastEthernet0/9        unassigned      YES manual down                  down 
-FastEthernet0/10       unassigned      YES manual down                  down 
-FastEthernet0/11       unassigned      YES manual down                  down 
-FastEthernet0/12       unassigned      YES manual down                  down 
-FastEthernet0/13       unassigned      YES manual down                  down 
-FastEthernet0/14       unassigned      YES manual down                  down 
-FastEthernet0/15       unassigned      YES manual down                  down 
-FastEthernet0/16       unassigned      YES manual down                  down 
-FastEthernet0/17       unassigned      YES manual down                  down 
-FastEthernet0/18       unassigned      YES manual down                  down 
-FastEthernet0/19       unassigned      YES manual down                  down 
-FastEthernet0/20       unassigned      YES manual down                  down 
-FastEthernet0/21       unassigned      YES manual down                  down 
-FastEthernet0/22       unassigned      YES manual down                  down 
-FastEthernet0/23       unassigned      YES manual down                  down 
-FastEthernet0/24       unassigned      YES manual down                  down 
-GigabitEthernet0/1     unassigned      YES manual down                  down 
-GigabitEthernet0/2     unassigned      YES manual down                  down 
-Vlan1                  unassigned      YES manual administratively down down
-Switch(config)#inter
 Switch(config)#interface fas
 Switch(config)#interface fastEthernet 0/1
-Switch(config-if)#?
-  authentication    Auth Manager Interface Configuration Commands
-  cdp               Global CDP configuration subcommands
-  channel-group     Etherchannel/port bundling configuration
-  channel-protocol  Select the channel protocol (LACP, PAgP)
-  description       Interface specific description
-  dot1x             Interface Config Commands for IEEE 802.1X
-  duplex            Configure duplex operation.
-  exit              Exit from interface configuration mode
-  ip                Interface Internet Protocol config commands
-  lldp              LLDP interface subcommands
-  mdix              Set Media Dependent Interface with Crossover
-  mls               mls interface commands
-  no                Negate a command or set its defaults
-  shutdown          Shutdown the selected interface
-  spanning-tree     Spanning Tree Subsystem
-  speed             Configure speed operation.
-  storm-control     storm configuration
-  switchport        Set switching mode characteristics
-  tx-ring-limit     Configure PA level transmit ring limit
-Switch(config-if)#sw
-Switch(config-if)#switchport ?
-  access         Set access mode characteristics of the interface
-  mode           Set trunking mode of the interface
-  nonegotiate    Device will not engage in negotiation protocol on this
-                 interface
-  port-security  Security related command
-  priority       Set appliance 802.1p priority
-  protected      Configure an interface to be a protected port
-  trunk          Set trunking characteristics of the interface
-  voice          Voice appliance attributes
-Switch(config-if)#switchport pr
-Switch(config-if)#switchport port
+Switch(config-if)#switchport port-security
+Command rejected: FastEthernet0/1 is a dynamic port.
+Switch(config-if)#switchport mode access
+Switch(config-if)#switchport port-security
+```
+এটি মানে যে, আপনি যে ইন্টারফেসে পোর্ট সিকিউরিটি কনফিগার করতে চাচ্ছেন, সেই ইন্টারফেসটি ডাইনামিক পোর্ট হিসেবে কনফিগার করা আছে, যা ভলেটাইল বা পরিবর্তনযোগ্য। Cisco সুইচে কিছু পোর্টে ডাইনামিক পোর্ট কনফিগারেশন থাকতে পারে, এবং এই ধরনের পোর্টে পোর্ট সিকিউরিটি প্রয়োগ করা যায় না।
+
+**সমস্যা সমাধানের জন্য সমাধান:**
+- ইন্টারফেসটিকে Access Mode এ স্যুইচ করুন:
+
+ - প্রথমে আপনাকে ইন্টারফেসটিকে access mode এ সেট করতে হবে। এরপর আপনি পোর্ট সিকিউরিটি কনফিগার করতে পারবেন।
+   নির্দেশনা:
+   ```bash
+      Switch(config)#interface FastEthernet0/1
+      Switch(config-if)#switchport mode access
+   ```
+- পোর্ট সিকিউরিটি কনফিগার করুন:
+     এখন, আপনি সহজেই পোর্ট সিকিউরিটি কনফিগার করতে পারবেন।
+  ```bash
+      Switch(config-if)#switchport port-security
+  ```
+```bash
 Switch(config-if)#switchport port-security ?
   aging        Port-security aging commands
   mac-address  Secure mac address
   maximum      Max secure addresses
   violation    Security violation mode
   <cr>
-Switch(config-if)#switchport port-security
-Switch(config-if)#do sh mac address
-          Mac Address Table
--------------------------------------------
-
-Vlan    Mac Address       Type        Ports
-----    -----------       --------    -----
-
-   1    000a.417d.e982    DYNAMIC     Fa0/1
-   1    0030.a31e.b661    DYNAMIC     Fa0/2
-   1    00d0.ba2e.0687    DYNAMIC     Fa0/3
-
-Switch(config-if)#switch port-security maximum 5
-Switch(config-if)#switchport port-security violation shutdown
-switch(config)#do sh run ?
-  aaa         Show AAA configurations
-  all         Configuration with defaults
-  brief       configuration without certificate data
-  class-map   Show class-map information
-  eap         Show EAP configuration
-  flow        Global Flow configuration subcommands
-  full        full configuration
-  identity    Show identity profile/policy information
-  interface   Show interface configuration
-  ip          IPv4 subcommands
-  linenum     Display line numbers in output
-  map-class   Show map class information
-  partition   Configuration corresponding a partition
-  policy-map  Show policy-map information
-  view        View options
-  vlan        Show L2 VLAN information
-  vrf         Show VRF aware configuration
-  |           Output modifiers
-  <cr>
-
-Core_switch-Server_R(config)#do sh run inter gig 1/0/5
-Building configuration...
-
-Current configuration : 258 bytes
-!
-interface GigabitEthernet1/0/5
- description N5-EC-01_D-Sw-01
- switchport trunk allowed vlan 1,100-116,130,150,160
- switchport mode trunk
- macro description cisco-switch
- auto qos trust
- spanning-tree link-type point-to-point
- channel-group 1 mode on
-end
-
-Switch#show running-config 
-Building configuration...
-
-Current configuration : 1162 bytes
-!
-version 15.0
-no service timestamps log datetime msec
-no service timestamps debug datetime msec
-no service password-encryption
-!
-hostname Switch
-!
-!
-!
-!
-!
-!
-spanning-tree mode pvst
-spanning-tree extend system-id
-!
-interface FastEthernet0/1
- switchport port-security maximum 5
- switchport port-security mac-address sticky
- --More--
+Switch(config-if)#switchport port-security maxi
+Switch(config-if)#switchport port-security maximum ?
+  <1-132>  Maximum addresses
+Switch(config-if)#switchport port-security maximum 1
 ```
+switchport port-security maximum 1 কমান্ডটি ব্যবহার করে আপনি একটি পোর্টে সর্বাধিক 1টি MAC ঠিকানা অনুমোদিত করতে পারেন।
+
+এটির মাধ্যমে আপনি নির্দিষ্ট করে দেন যে, ঐ পোর্টে কেবল 1টি ডিভাইসের MAC ঠিকানা কানেক্ট হতে পারবে। যদি অন্য কোনো MAC ঠিকানা ওই পোর্টে সংযুক্ত হয়, তবে এটি একটি ভায়োলেশন সৃষ্টি করবে, এবং সেটি নির্ধারিত ভায়োলেশন অ্যাকশন অনুযায়ী (যেমন: Shutdown, Protect, বা Restrict) কাজ করবে।
+
 এই স্টেপগুলি ব্যবহার করে আপনি সিস্কো সুইচে পোর্ট সিকিউরিটি কনফিগার করতে পারেন।
