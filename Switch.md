@@ -648,6 +648,7 @@ Switch# show port-security interface fastEthernet 0/1
 ```bash
 Switch(config-if)# no switchport port-security
 ```
+**উদাহরণ**
 ```
 Switch>
 Switch>enable
@@ -906,6 +907,205 @@ Sticky MAC Addresses       : 2
 Last Source Address:Vlan   : 0090.21CE.31B1:1
 Security Violation Count   : 0
 ```
-
-
 এই স্টেপগুলি ব্যবহার করে আপনি সিস্কো সুইচে পোর্ট সিকিউরিটি কনফিগার করতে পারেন।
+
+# স্পিড এবং ডুপ্লেক্স সেটিংস 
+আপনি যদি বলছেন যে সুইচের নেটওয়ার্ক স্লো হয়ে যাচ্ছে স্পিড এবং ডুপ্লেক্স সেটিংসের কারণে, তাহলে এটা বেশ সাধারণ একটি সমস্যা হতে পারে। স্পিড এবং ডুপ্লেক্স হল নেটওয়ার্ক ডাটা ট্রান্সফারের গতি এবং মেথড। যদি এগুলোর মধ্যে মিসম্যাচ হয়, তাহলে স্লো কানেকশন বা ডাটা ট্রান্সফারের সমস্যা হতে পারে। নিচে কিছু বিষয় বিস্তারিতভাবে দেওয়া হলো:
+
+### ১. **স্পিড (Speed)**:
+এটি হল ডাটা ট্রান্সফারের গতি। সাধারণত স্পিড ১০ Mbps, ১০০ Mbps, ১ Gbps ইত্যাদি হয়ে থাকে। যদি এক ডিভাইস ১ Gbps এ সেট করা থাকে এবং অন্যটি ১০০ Mbps এ, তাহলে কানেকশন স্লো হতে পারে।
+
+### ২. **ডুপ্লেক্স (Duplex)**:
+ডুপ্লেক্স হল ডাটা ট্রান্সফারের কিভাবে হবে তা নির্ধারণ করে। 
+- **হাফ-ডুপ্লেক্স (Half-duplex)**: এক সময় শুধু ডাটা পাঠানো অথবা গ্রহণ করা যাবে।
+- **ফুল-ডুপ্লেক্স (Full-duplex)**: একই সময়ে পাঠানো এবং গ্রহণ করা সম্ভব, যা দ্রুত ডাটা ট্রান্সফার নিশ্চিত করে।
+
+### সমস্যার সমাধান:
+- **মিসম্যাচিং সেটিংস**: যদি এক ডিভাইস অটো-নেগোশিয়েট (Auto-Negotiate) এ সেট করা থাকে এবং অন্যটি একটি নির্দিষ্ট স্পিড বা ডুপ্লেক্সে সেট করা থাকে, তাহলে সঠিকভাবে সিঙ্ক না হওয়ায় স্লো কানেকশন হতে পারে। উভয় ডিভাইসে স্পিড এবং ডুপ্লেক্স সঠিকভাবে সেট আছে কিনা, তা চেক করুন।
+  
+- **অটো-নেগোশিয়েট ব্যবহার করুন**: বেশিরভাগ ক্ষেত্রে, উভয় ডিভাইসকে অটো-নেগোশিয়েট (Auto-Negotiate) সেট করলে এটি স্বয়ংক্রিয়ভাবে সঠিক স্পিড এবং ডুপ্লেক্স মেলাতে সাহায্য করবে।
+
+- **ম্যানুয়ালি সেট করুন**: যদি অটো-নেগোশিয়েট কাজ না করে, তাহলে উভয় ডিভাইসে স্পিড এবং ডুপ্লেক্স ম্যানুয়ালি একই করতে হবে।
+
+- **কেবলের সমস্যা**: মাঝে মাঝে কেবলের কারণেও সমস্যা হতে পারে। যদি কেবলের মান ভালো না হয় বা কেবল ড্যামেজ হয়ে যায়, তাহলে নেটওয়ার্ক স্পিড স্লো হতে পারে। সঠিক ক্যাটেগরি (যেমন Cat5e, Cat6) কেবল ব্যবহার করা জরুরি।
+
+আপনি কি ডিভাইসগুলোর স্পিড এবং ডুপ্লেক্স সেটিংস চেক করেছেন?
+```bash
+Switch1>
+Switch1>enable
+Switch1#config
+Switch1#configure ter
+Switch1#configure terminal 
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(1config)#do sh ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual up                    up 
+FastEthernet0/2        unassigned      YES manual up                    up 
+FastEthernet0/3        unassigned      YES manual down                  down 
+FastEthernet0/4        unassigned      YES manual down                  down 
+FastEthernet0/5        unassigned      YES manual down                  down 
+FastEthernet0/6        unassigned      YES manual down                  down 
+FastEthernet0/7        unassigned      YES manual down                  down 
+FastEthernet0/8        unassigned      YES manual down                  down 
+FastEthernet0/9        unassigned      YES manual down                  down 
+FastEthernet0/10       unassigned      YES manual down                  down 
+FastEthernet0/11       unassigned      YES manual down                  down 
+FastEthernet0/12       unassigned      YES manual down                  down 
+FastEthernet0/13       unassigned      YES manual down                  down 
+FastEthernet0/14       unassigned      YES manual down                  down 
+FastEthernet0/15       unassigned      YES manual down                  down 
+FastEthernet0/16       unassigned      YES manual down                  down 
+FastEthernet0/17       unassigned      YES manual down                  down 
+FastEthernet0/18       unassigned      YES manual down                  down 
+FastEthernet0/19       unassigned      YES manual down                  down 
+FastEthernet0/20       unassigned      YES manual down                  down 
+FastEthernet0/21       unassigned      YES manual down                  down 
+FastEthernet0/22       unassigned      YES manual down                  down 
+FastEthernet0/23       unassigned      YES manual down                  down 
+FastEthernet0/24       unassigned      YES manual down                  down 
+GigabitEthernet0/1     unassigned      YES manual down                  down 
+GigabitEthernet0/2     unassigned      YES manual down                  down 
+Vlan1                  unassigned      YES manual administratively down down
+Switch1(config)#int
+Switch1(config)#interface fas
+Switch1(config)#interface fastEthernet 0/1
+Switch1(config-if)#speed ?
+  10    Force 10 Mbps operation
+  100   Force 100 Mbps operation
+  auto  Enable AUTO speed configuration
+Switch1(config-if)#speed  100 ?
+  <cr>
+Switch1(config-if)#speed  100 
+Switch1(config-if)#duplex ?
+  auto  Enable AUTO duplex configuration
+  full  Force full duplex operation
+  half  Force half-duplex operation
+Switch1(config-if)#duplex full ?
+  <cr>
+Switch1(config-if)#duplex full 
+Switch1(config-if)#
+%LINK-3-UPDOWN: Interface FastEthernet0/1, changed state to down
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to down
+
+Switch1(config-if)#do sh ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual down                  down 
+FastEthernet0/2        unassigned      YES manual up                    up 
+FastEthernet0/3        unassigned      YES manual down                  down 
+FastEthernet0/4        unassigned      YES manual down                  down 
+FastEthernet0/5        unassigned      YES manual down                  down 
+FastEthernet0/6        unassigned      YES manual down                  down 
+FastEthernet0/7        unassigned      YES manual down                  down 
+FastEthernet0/8        unassigned      YES manual down                  down 
+FastEthernet0/9        unassigned      YES manual down                  down 
+FastEthernet0/10       unassigned      YES manual down                  down 
+FastEthernet0/11       unassigned      YES manual down                  down 
+FastEthernet0/12       unassigned      YES manual down                  down 
+FastEthernet0/13       unassigned      YES manual down                  down 
+FastEthernet0/14       unassigned      YES manual down                  down 
+FastEthernet0/15       unassigned      YES manual down                  down 
+FastEthernet0/16       unassigned      YES manual down                  down 
+FastEthernet0/17       unassigned      YES manual down                  down 
+FastEthernet0/18       unassigned      YES manual down                  down 
+FastEthernet0/19       unassigned      YES manual down                  down 
+FastEthernet0/20       unassigned      YES manual down                  down 
+FastEthernet0/21       unassigned      YES manual down                  down 
+ --More-- 
+%LINK-3-UPDOWN: Interface FastEthernet0/2, changed state to down
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/2, changed state to down
+
+%LINK-5-CHANGED: Interface FastEthernet0/2, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/2, changed state to up
+FastEthernet0/22       unassigned      YES manual down                  down 
+FastEthernet0/23       unassigned      YES manual down                  down 
+FastEthernet0/24       unassigned      YES manual down                  down 
+GigabitEthernet0/1     unassigned      YES manual down                  down 
+GigabitEthernet0/2     unassigned      YES manual down                  down 
+Vlan1                  unassigned      YES manual administratively down down
+Switch1(config-if)#
+Switch1(config-if)#
+
+[for another switch]
+Switch>
+Switch>ena
+Switch>enable 
+Switch#conf
+Switch#configure 
+Configuring from terminal, memory, or network [terminal]? t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#inter
+Switch(config)#do sh ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/1        unassigned      YES manual down                  down 
+FastEthernet0/2        unassigned      YES manual up                    up 
+FastEthernet0/3        unassigned      YES manual down                  down 
+FastEthernet0/4        unassigned      YES manual down                  down 
+FastEthernet0/5        unassigned      YES manual down                  down 
+FastEthernet0/6        unassigned      YES manual down                  down 
+FastEthernet0/7        unassigned      YES manual down                  down 
+FastEthernet0/8        unassigned      YES manual down                  down 
+FastEthernet0/9        unassigned      YES manual down                  down 
+FastEthernet0/10       unassigned      YES manual down                  down 
+FastEthernet0/11       unassigned      YES manual down                  down 
+FastEthernet0/12       unassigned      YES manual down                  down 
+FastEthernet0/13       unassigned      YES manual down                  down 
+FastEthernet0/14       unassigned      YES manual down                  down 
+FastEthernet0/15       unassigned      YES manual down                  down 
+FastEthernet0/16       unassigned      YES manual down                  down 
+FastEthernet0/17       unassigned      YES manual down                  down 
+FastEthernet0/18       unassigned      YES manual down                  down 
+FastEthernet0/19       unassigned      YES manual down                  down 
+FastEthernet0/20       unassigned      YES manual down                  down 
+FastEthernet0/21       unassigned      YES manual down                  down 
+FastEthernet0/22       unassigned      YES manual down                  down 
+FastEthernet0/23       unassigned      YES manual down                  down 
+FastEthernet0/24       unassigned      YES manual down                  down 
+GigabitEthernet0/1     unassigned      YES manual down                  down 
+GigabitEthernet0/2     unassigned      YES manual down                  down 
+Vlan1                  unassigned      YES manual administratively down down
+Switch(config)#inter
+Switch(config)#interface fas
+Switch(config)#interface fastEthernet 0/1
+Switch(config-if)#?
+  authentication    Auth Manager Interface Configuration Commands
+  cdp               Global CDP configuration subcommands
+  channel-group     Etherchannel/port bundling configuration
+  channel-protocol  Select the channel protocol (LACP, PAgP)
+  description       Interface specific description
+  dot1x             Interface Config Commands for IEEE 802.1X
+  duplex            Configure duplex operation.
+  exit              Exit from interface configuration mode
+  ip                Interface Internet Protocol config commands
+  lldp              LLDP interface subcommands
+  mdix              Set Media Dependent Interface with Crossover
+  mls               mls interface commands
+  no                Negate a command or set its defaults
+  shutdown          Shutdown the selected interface
+  spanning-tree     Spanning Tree Subsystem
+  speed             Configure speed operation.
+  storm-control     storm configuration
+  switchport        Set switching mode characteristics
+  tx-ring-limit     Configure PA level transmit ring limit
+Switch(config-if)#spee
+Switch(config-if)#speed ?
+  10    Force 10 Mbps operation
+  100   Force 100 Mbps operation
+  auto  Enable AUTO speed configuration
+Switch(config-if)#speed 100
+Switch(config-if)#speed 100 
+Switch(config-if)#du
+Switch(config-if)#duplex ?
+  auto  Enable AUTO duplex configuration
+  full  Force full duplex operation
+  half  Force half-duplex operation
+Switch(config-if)#duplex full
+Switch(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to up
+
+[now both switch is up]
+```
