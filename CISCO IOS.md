@@ -2128,3 +2128,384 @@ end
 ```
 
 এই ছিলো SSH কনফিগারেশন প্রক্রিয়া!
+# ফ্যাক্টরি রিসেট
+আপনি enable পাসওয়ার্ড হারিয়ে ফেলেন, তবে পাসওয়ার্ড রিকভারি কিভাবে করবেন। প্রথমে ফ্যাক্টরি রিসেট করা যাক। এটি করার পদ্ধতি খুবই সহজ; enable প্রম্পটে গিয়ে 'write erase' কমান্ড ব্যবহার করতে হবে। এটি স্টার্টআপ কনফিগ মুছে ফেলবে। এরপর, ডিভাইসটি রিলোড করতে হবে এবং এটি একটি ফাঁকা কনফিগারেশন নিয়ে বুট হবে। যেহেতু কোনো স্টার্টআপ কনফিগ নেই, সেহেতু Setup Wizard চলবে।
+এখন ফ্যাক্টরি রিসেট করতে চাইলে 'write erase' কমান্ড ব্যবহার করবেন, যা NVRAM ফাইল সিস্টেম মুছে ফেলবে এবং স্টার্টআপ কনফিগ অপসারণ করবে। এরপর 'show start' দিলে দেখাবে যে স্টার্টআপ কনফিগ নেই এবং যদি 'reload' করেন, তাহলে ডিভাইসটি আবার বুট হবে Setup Wizard দিয়ে কারণ কোনো কনফিগারেশন নেই।
+```cmd
+enable
+write erase
+reload
+```
+```bash
+Switch>
+Switch>enable
+Switch# configure terminal
+Switch(config)# hostname host
+hsot(config)# exit
+host# write erase
+host#reload 
+Proceed with reload? [confirm]
+C2960 Boot Loader (C2960-HBOOT-M) Version 12.2(25r)FX, RELEASE SOFTWARE (fc4)
+Cisco WS-C2960-24TT (RC32300) processor (revision C0) with 21039K bytes of memory.
+2960-24TT starting...
+Base ethernet MAC Address: 00D0.973C.E254
+Xmodem file system is available.
+Initializing Flash...
+flashfs[0]: 1 files, 0 directories
+flashfs[0]: 0 orphaned files, 0 orphaned directories
+flashfs[0]: Total bytes: 64016384
+flashfs[0]: Bytes used: 4670455
+flashfs[0]: Bytes available: 59345929
+flashfs[0]: flashfs fsck took 1 seconds.
+...done Initializing Flash.
+
+Boot Sector Filesystem (bs:) installed, fsid: 3
+Parameter Block Filesystem (pb:) installed, fsid: 4
+
+
+Loading "flash:/2960-lanbasek9-mz.150-2.SE4.bin"...
+########################################################################## [OK]
+Smart Init is enabled
+smart init is sizing iomem
+                  TYPE      MEMORY_REQ
+                TOTAL:      0x00000000
+Rounded IOMEM up to: 0Mb.
+Using 6 percent iomem. [0Mb/512Mb]
+
+              Restricted Rights Legend
+Use, duplication, or disclosure by the Government is
+subject to restrictions as set forth in subparagraph
+(c) of the Commercial Computer Software - Restricted
+Rights clause at FAR sec. 52.227-19 and subparagraph
+(c) (1) (ii) of the Rights in Technical Data and Computer
+Software clause at DFARS sec. 252.227-7013.
+           cisco Systems, Inc.
+           170 West Tasman Drive
+           San Jose, California 95134-1706
+Cisco IOS Software, C2960 Software (C2960-LANBASEK9-M), Version 15.0(2)SE4, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2013 by Cisco Systems, Inc.
+Compiled Wed 26-Jun-13 02:49 by mnguyen
+Initializing flashfs...
+fsck: Disable shadow buffering due to heap fragmentation.
+flashfs[2]: 2 files, 1 directories
+flashfs[2]: 0 orphaned files, 0 orphaned directories
+flashfs[2]: Total bytes: 32514048
+flashfs[2]: Bytes used: 11952128
+flashfs[2]: Bytes available: 20561920
+flashfs[2]: flashfs fsck took 2 seconds.
+flashfs[2]: Initialization complete....done Initializing flashfs.
+Checking for Bootloader upgrade..
+Boot Loader upgrade not required (Stage 2)
+POST: CPU MIC register Tests : Begin
+POST: CPU MIC register Tests : End, Status Passed
+POST: PortASIC Memory Tests : Begin
+POST: PortASIC Memory Tests : End, Status Passed
+POST: CPU MIC interface Loopback Tests : Begin
+POST: CPU MIC interface Loopback Tests : End, Status Passed
+POST: PortASIC RingLoopback Tests : Begin
+POST: PortASIC RingLoopback Tests : End, Status Passed
+POST: PortASIC CAM Subsystem Tests : Begin
+POST: PortASIC CAM Subsystem Tests : End, Status Passed
+POST: PortASIC Port Loopback Tests : Begin
+POST: PortASIC Port Loopback Tests : End, Status Passed
+Waiting for Port download...Complete
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+cisco WS-C2960-24TT-L (PowerPC405) processor (revision B0) with 65536K bytes of memory.
+Processor board ID FOC1010X104
+Last reset from power-on
+1 Virtual Ethernet interface
+24 FastEthernet interfaces
+2 Gigabit Ethernet interfaces
+The password-recovery mechanism is enabled.
+64K bytes of flash-simulated non-volatile configuration memory.
+Base ethernet MAC Address       : 00:D0:97:3C:E2:54
+Motherboard assembly number     : 73-10390-03
+Power supply part number        : 341-0097-02
+Motherboard serial number       : FOC10093R12
+Power supply serial number      : AZS1007032H
+Model revision number           : B0
+Motherboard revision number     : B0
+Model number                    : WS-C2960-24TT-L
+System serial number            : FOC1010X104
+Top Assembly Part Number        : 800-27221-02
+Top Assembly Revision Number    : A0
+Version ID                      : V02
+CLEI Code Number                : COM3L00BRA
+Hardware Board Revision Number  : 0x01
+
+Switch Ports Model              SW Version            SW Image
+------ ----- -----              ----------            ----------
+*    1 26    WS-C2960-24TT-L    15.0(2)SE4            C2960-LANBASEK9-M
+
+Cisco IOS Software, C2960 Software (C2960-LANBASEK9-M), Version 15.0(2)SE4, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2013 by Cisco Systems, Inc.
+Compiled Wed 26-Jun-13 02:49 by mnguyen
+
+
+
+Press RETURN to get started!
+
+
+%LINK-5-CHANGED: Interface FastEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to up
+
+
+Switch>
+```
+# পাসওয়ার্ড রিকভারি রাউটার 
+পাসওয়ার্ড রিকভারি করার জন্য প্রথমে আপনাকে কনফিগারেশন রেজিস্টার জানতে হবে, যা রাউটার বা সুইচের বুটিং পদ্ধতি পরিবর্তন করতে ব্যবহৃত হয়। আপনি 'config-register' কমান্ড ব্যবহার করতে পারেন গ্লোবাল কনফিগারেশন মোডে, অথবা যদি ডিভাইসটি রিবুট হওয়ার সময় ROMMON প্রম্পটে চলে আসে, তখন 'confreg' কমান্ড ব্যবহার করতে পারেন। উদাহরণস্বরূপ, 'config-register 0x2142' অথবা 'confreg 0x2142' ব্যবহার করলে সেটি স্টার্টআপ কনফিগ এর কন্টেন্ট উপেক্ষা করবে।অর্থাৎ এটি বুট হওয়ার সময় NVRAM-এর কনটেন্ট গুলি উপেক্ষা করবে। এর মানে হলো, স্টার্টআপ-কনফিগ ব্যবহার হবে না। এগুলোর মধ্যে সবচেয়ে সাধারণ যে তিনটি কনফিগারেশন ব্যবহার করা হয়, তা হল:
+- 0x2102 যা ডিফল্ট রেজিস্টার,
+- 0x2120 যা ROMMON মোডে বুট করবে, এবং
+- 0x2142 যা NVRAM এর কন্টেন্ট উপেক্ষা করবে।
+পাসওয়ার্ড রিকভারি শুরু করার জন্য, 
+- প্রথমে আপনি ডিভাইসটি রিবুট করবেন। রিবুট করার সময়, কীবোর্ডে ব্রেক সিকোয়েন্স চাপবেন, যা সাধারণত Ctrl + Break হয়, তবে এটি আপনার ব্যবহৃত কনসোল সংযোগ সফটওয়্যারের উপর নির্ভর করে। যদি এটি Ctrl + Break না হয়, তবে গুগল করে খুঁজে নিতে পারেন।
+- তারপর, ডিভাইসটি প্রথম এক মিনিটে পাওয়ার অন হওয়ার সময়, এটি ROMMON প্রম্পটে প্রবেশ করবে। সেখানে 'confreg 0x2142' কমান্ড দিন, যা বুট করার সময় স্টার্টআপ-কনফিগ উপেক্ষা করার নির্দেশ দেয়। স্টার্টআপ-কনফিগ এখনও সেখানে থাকবে, এবং ডিভাইসে পূর্বে কনফিগার করা সমস্ত কনফিগারেশন, যেমন আইপি অ্যাড্রেস এবং অন্যান্য সেটিংসও থাকবে। এছাড়া, enable secret এখনও সেখানে থাকবে, যা আপনি জানেন না, তবে রাউটার যখন বুট হবে তখন এটি স্টার্টআপ-কনফিগ ব্যবহার করবে না, তাই আপনাকে enable secret জানার দরকার হবে না।
+-  এরপর ROMMON প্রম্পটে 'reset' কমান্ড দিন যাতে ডিভাইসটি বুট হয়। রাউটার কোন কনফিগারেশন ছাড়াই বুট হবে, ফলে সেটআপ উইজার্ড চালু হবে।
+-   আপনি 'no' টাইপ করে সেটআপ উইজার্ডটি বাইপাস করতে পারবেন।
+-   এরপর 'enable' কমান্ড দিয়ে enable মোডে প্রবেশ করুন। এখন, আপনি enable secret এর জন্য প্রম্পট পাবেন না, কারণ এটি বর্তমান রানিং-কনফিগে নেই, যা এখন খালি।
+-   এখন, আপনাকে স্টার্টআপ-কনফিগ রানিং-কনফিগে কপি করতে হবে। এই পদক্ষেপটি ভুলবেন না। যদি আপনি এই পদক্ষেপটি ভুলে যান এবং অন্যান্য সমস্ত নির্দেশনা সঠিকভাবে অনুসরণ করেন, তবে আপনি ডিভাইসটি ফ্যাক্টরি রিসেট করে ফেলবেন এবং পূর্ববর্তী কনফিগ হারিয়ে ফেলবেন। যদি আপনি পাসওয়ার্ড রিকভারি করছেন কারণ অ্যাডমিনিস্ট্রেটর চলে গেছে এবং আপনাকে সেই কনফিগ বজায় রাখতে হবে, তবে এটি একটি বড় ভুল হবে। তাই স্টার্টআপ-কনফিগ রানিং-কনফিগে কপি করা ভুলবেন না। এটি পুরনো কনফিগের সমস্ত তথ্য, যেমন অজানা enable secret, রানিং-কনফিগে কপি করবে। তবে, আপনি ইতিমধ্যে enable মোডে আছেন, তাই আপনাকে সেই enable secret জানার দরকার নেই।
+-    এরপর গ্লোবাল কনফিগারেশন মোডে গিয়ে একটি নতুন enable secret দিন, যা পুরনো একটিকে ওভাররাইট করবে এবং তা বর্তমান রানিং-কনফিগে চলে যাবে।
+-    তারপর 'config-register 0x2102' টাইপ করুন যাতে রাউটার পরবর্তী রিস্টার্টে স্বাভাবিকভাবে বুট হয়। আবার, এটি ভুলবেন না, কারণ যদি ভুলে যান, তবে প্রতি বার বুট করার সময় এটি খালি কনফিগ সহ বুট হবে এবং আপনি ভাববেন যে রাউটারে কিছু সমস্যা রয়েছে। যদি কখনও এমন লक्षण দেখেন, যেখানে প্রতি বার বুট করার সময় মনে হয় এটি ফ্যাক্টরি রিসেট হয়ে গেছে, তবে এটি হবে কারণ কনফিগ রেজিস্টার 0x2102 তে সেট করা আছে।
+-    শেষে, 'copy run start' কমান্ড দিন কনফিগারেশনটি সেভ করতে এবং আপনি এখন আবার আপনার জায়গায় ফিরে এসেছেন, তবে এবার আপনি লগ ইন আছেন এবং নতুন enable secret দিয়ে। 
+
+এটি হলো রাউটারে পাসওয়ার্ড রিকভারি করার প্রক্রিয়া। যদি আপনি সুইচ ব্যবহার করেন, তবে এটি কিছুটা আলাদা হতে পারে, আপনার যেই মডেলটি ব্যবহার করছেন তার উপর নির্ভর করে। কিছু রাউটারও একটু ভিন্ন হতে পারে। তবে যেই ডিভাইসই হোক না কেন, এটি সেই নির্দেশনাগুলোর সাথে খুবই সাদৃশ্যপূর্ণ, যা আমি আপনাকে দেখিয়েছি, তবে কিছুটা ভিন্ন হতে পারে। আবার, গুগল করে সঠিক নির্দেশনা খুঁজে বের করে সেগুলো অনুসরণ করুন।
+
+# Cisco সুইচের পাসওয়ার্ড রিকভারি
+Cisco Catalyst 2960-X Series সুইচের পাসওয়ার্ড রিকভারি বা রিসেট প্রক্রিয়া সাধারণত নিম্নলিখিত ধাপগুলোর মাধ্যমে সম্পন্ন করা যায়:
+
+### 1. **সুইচ রিস্টার্ট করুন**
+   প্রথমে সুইচটি বন্ধ করুন (Power off)। এরপর আবার সুইচটি চালু করুন (Power on)। 
+
+### 2. **ROMMON মোডে প্রবেশ করুন**
+   সুইচ চালু হওয়ার পর, যখন লোড হচ্ছে, তখন "Mode" বাটনটি (ফ্রন্ট প্যানেলে) 10 সেকেন্ডের জন্য ধরে রাখুন। এতে আপনি "ROMMON" মোডে প্রবেশ করবেন। 
+
+### 3. **কনফিগ রেজিস্টার পরিবর্তন করুন**
+   ROMMON মোডে প্রবেশ করার পর, নিচের কমান্ডটি ব্যবহার করুন:
+   ```
+   confreg 0x2142
+   ```
+   এই কমান্ডটি সুইচকে স্টার্টআপ কনফিগ লোড না করতে বলে, যার ফলে পাসওয়ার্ড ছাড়াই সুইচটি বুট হবে।
+
+### 4. **সুইচ রিস্টার্ট করুন**
+   এরপর `reset` কমান্ড দিন:
+   ```
+   reset
+   ```
+   সুইচটি আবার রিস্টার্ট হবে এবং স্টার্টআপ কনফিগ ছাড়া নতুনভাবে বুট হবে।
+
+### 5. **Enable মোডে প্রবেশ করুন**
+   যখন সুইচটি বুট হয়ে যাবে, তখন `enable` কমান্ড ব্যবহার করে enable মোডে প্রবেশ করুন:
+   ```
+   enable
+   ```
+
+### 6. **স্টার্টআপ কনফিগ কপি করুন**
+   স্টার্টআপ কনফিগ কপি করতে নিচের কমান্ডটি দিন:
+   ```
+   copy startup-config running-config
+   ```
+   এতে আপনি পূর্বের কনফিগ ব্যবহার করতে পারবেন, তবে পাসওয়ার্ড সুরক্ষিত থাকবে না।
+
+### 7. **নতুন Enable পাসওয়ার্ড সেট করুন**
+   এখন আপনি নতুন পাসওয়ার্ড সেট করতে পারবেন। `enable secret` কমান্ড দিয়ে নতুন পাসওয়ার্ড নির্ধারণ করুন:
+   ```
+   configure terminal
+   enable secret [new_password]
+   ```
+
+### 8. **কনফিগ রেজিস্টার পরিবর্তন করুন**
+   কনফিগ রেজিস্টারটি আবার 0x2102 এ পরিবর্তন করুন, যাতে পরবর্তী বুটে স্বাভাবিক কনফিগ লোড হয়:
+   ```
+   config-register 0x2102
+   ```
+
+### 9. **কনফিগ সেভ করুন**
+   অবশেষে, নতুন কনফিগারেশনটি সেভ করতে `copy running-config startup-config` কমান্ড দিন:
+   ```
+   copy running-config startup-config
+   ```
+
+এখন আপনার সুইচ রিসেট এবং নতুন পাসওয়ার্ড সেট করা হয়ে গেছে। পরবর্তী বুটে এটি স্বাভাবিকভাবে কাজ করবে।
+
+FOR PACKET TRACER
+```bash
+Router>
+Router>
+Router>
+Router>
+Router>enable
+Router#config
+Router#configure ter
+Router#configure terminal 
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#config-re
+Router(config)#config-register 0x2120
+Router(config)#end
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Router#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+Router#
+Router#reload 
+Proceed with reload? [confirm]
+System Bootstrap, Version 15.1(4)M4, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 2010 by cisco Systems, Inc.
+Total memory size = 512 MB - On-board = 512 MB, DIMM0 = 0 MB
+CISCO2901/K9 platform with 524288 Kbytes of main memory
+Main memory is configured to 72/-1(On-board/DIMM0) bit mode with ECC disabled
+
+Readonly ROMMON initialized
+
+rommon 1 >confreg 0x2142
+rommon 2 > reset
+System Bootstrap, Version 15.1(4)M4, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 2010 by cisco Systems, Inc.
+Total memory size = 512 MB - On-board = 512 MB, DIMM0 = 0 MB
+CISCO2901/K9 platform with 524288 Kbytes of main memory
+Main memory is configured to 72/-1(On-board/DIMM0) bit mode with ECC disabled
+
+Readonly ROMMON initialized
+
+program load complete, entry point: 0x80803000, size: 0x1b340
+program load complete, entry point: 0x80803000, size: 0x1b340
+
+IOS Image Load Test
+___________________
+Digitally Signed Release Software
+program load complete, entry point: 0x81000000, size: 0x3bcd3d8
+Self decompressing the image :
+########################################################################## [OK]
+Smart Init is enabled
+smart init is sizing iomem
+                  TYPE      MEMORY_REQ
+     Onboard devices &
+          buffer pools      0x0228F000
+-----------------------------------------------
+                TOTAL:      0x0228F000
+Rounded IOMEM up to: 36Mb.
+Using 6 percent iomem. [36Mb/512Mb]
+
+              Restricted Rights Legend
+
+Use, duplication, or disclosure by the Government is
+subject to restrictions as set forth in subparagraph
+(c) of the Commercial Computer Software - Restricted
+Rights clause at FAR sec. 52.227-19 and subparagraph
+(c) (1) (ii) of the Rights in Technical Data and Computer
+Software clause at DFARS sec. 252.227-7013.
+
+           cisco Systems, Inc.
+           170 West Tasman Drive
+           San Jose, California 95134-1706
+
+Cisco IOS Software, C2900 Software (C2900-UNIVERSALK9-M), Version 15.1(4)M5, RELEASE SOFTWARE (fc2)Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2007 by Cisco Systems, Inc.
+Compiled Wed 18-Jul-07 04:52 by pt_team
+Image text-base: 0x2100F918, data-base: 0x24729040
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+Cisco CISCO2901/K9 (revision 1.0) with 491520K/32768K bytes of memory.
+Processor board ID FTX152400KS
+2 Gigabit Ethernet interfaces
+DRAM configuration is 64 bits wide with parity disabled.
+255K bytes of non-volatile configuration memory.
+249856K bytes of ATA System CompactFlash 0 (Read/Write)
+
+
+         --- System Configuration Dialog ---
+
+Would you like to enter the initial configuration dialog? [yes/no]: no
+
+
+Press RETURN to get started!
+
+Router>en
+Router>enable 
+Router#copy start run
+Destination filename [running-config]? 
+
+608 bytes copied in 0.416 secs (1461 bytes/sec)
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+Router#conf
+Router#configure te
+Router#configure terminal 
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#no enable se
+Router(config)#no enable secret
+Router(config)#no enable password 
+Router(config)#end
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Router#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+Router#config t
+Router#config terminal 
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#config
+Router(config)#config-register 0x2102
+Router(config)#end
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Router#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+Router>enable
+Router#configur
+Router#configure ter
+Router#configure terminal 
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#enable secret router
+Router(config)#end
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Router#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+Router#exit
+Router>ena
+Router>enable 
+Password: 
+Router#
+```
