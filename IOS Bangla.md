@@ -2509,3 +2509,380 @@ Router>enable
 Password: 
 Router#
 ```
+# CISCO IOS আপগ্রেড
+CISCO IOS আপগ্রেড একটি গুরুত্বপূর্ণ প্রক্রিয়া যা রাউটার বা সুইচের পারফরম্যান্স উন্নত করতে এবং নিরাপত্তা বা নতুন বৈশিষ্ট্যগুলি যোগ করতে সাহায্য করে। IOS আপগ্রেডের মাধ্যমে আপনি নতুন ফিচার, বাগ ফিক্স, নিরাপত্তা প্যাচ, এবং অন্যান্য উন্নতি পেতে পারেন। এখানে CISCO IOS আপগ্রেডের জন্য প্রয়োজনীয় কিছু ধাপ উল্লেখ করা হল:
+
+### ১. সঠিক IOS ইমেজ নির্বাচন:
+আপনার ডিভাইসের জন্য সঠিক IOS ইমেজ নির্বাচন করা খুবই গুরুত্বপূর্ণ। CISCO এর অফিসিয়াল ওয়েবসাইট বা আপনার সাপোর্ট কনট্রাক্টের মাধ্যমে আপনি সঠিক ভার্সন পেতে পারেন।
+
+### ২. ব্যাকআপ নেওয়া:
+আপগ্রেড করার আগে, আপনার বর্তমান কনফিগ ফাইল এবং সিস্টেম ইমেজের ব্যাকআপ নেওয়া উচিত। আপনি এটি TFTP সার্ভার, USB ড্রাইভ অথবা ফ্ল্যাশে সেভ করতে পারেন। ব্যাকআপ ছাড়া আপগ্রেড করা উচিত নয়, কারণ কোনো সমস্যা হলে আপনি সহজেই ফিরে আসতে পারবেন।
+
+### ৩. নতুন IOS ইমেজ ডাউনলোড:
+আপনি CISCO এর সাপোর্ট ওয়েবসাইটে গিয়ে আপনার ডিভাইসের জন্য নতুন IOS ইমেজ ডাউনলোড করতে পারেন। এছাড়া আপনি ফ্ল্যাশে সরাসরি আপলোড করতে পারেন।
+
+### ৪. IOS ইমেজ ফ্ল্যাশে কপি করা:
+নতুন IOS ইমেজ আপনার রাউটার বা সুইচের ফ্ল্যাশে কপি করতে হবে। আপনি এই কাজটি TFTP, FTP বা USB ব্যবহার করে করতে পারেন। উদাহরণস্বরূপ:
+```
+copy tftp flash
+```
+এই কমান্ডের মাধ্যমে আপনি TFTP সার্ভার থেকে ফ্ল্যাশে ইমেজ কপি করবেন।
+
+### ৫. নতুন IOS ভার্সনে স্যুইচ করা:
+একবার ইমেজ ফ্ল্যাশে কপি হয়ে গেলে, আপনাকে ডিভাইসটি নতুন IOS ভার্সনে স্যুইচ করতে হবে। এর জন্য আপনি নিচের কমান্ডটি ব্যবহার করতে পারেন:
+```
+boot system flash <filename>
+```
+এখানে `<filename>` হলো আপনার নতুন IOS ইমেজের নাম।
+
+### ৬. রাউটার/সুইচ রিবুট:
+নতুন IOS ভার্সনকে লোড করার জন্য ডিভাইসটি রিবুট করতে হবে। কমান্ডটি হল:
+```
+reload
+```
+এটি ডিভাইসটি নতুন IOS ভার্সনে রিস্টার্ট করবে।
+
+### ৭. কনফিগ চেক করা:
+আপগ্রেড সফলভাবে সম্পন্ন হলে, আপনাকে নতুন IOS ভার্সনটি চালু করার পর কনফিগ চেক করতে হবে যাতে নিশ্চিত হতে পারেন সবকিছু ঠিকঠাক কাজ করছে। 'show version' কমান্ড দিয়ে আপনি বর্তমানে চলমান IOS ভার্সন দেখতে পারবেন:
+```
+show version
+```
+
+### ৮. পূর্ববর্তী কনফিগ ব্যবহার:
+যদি আপনি নতুন আপগ্রেডের পরে কোন সমস্যা দেখেন, আপনি পূর্ববর্তী কনফিগ ব্যবহার করতে পারেন যেটি আপনার ব্যাকআপ থেকে পুনরুদ্ধার করা যেতে পারে।
+
+### সতর্কতা:
+- IOS আপগ্রেড করার সময় কোনো গুরুত্বপূর্ণ ডেটা হারানোর ঝুঁকি থাকে, তাই ব্যাকআপ নেওয়া অত্যন্ত গুরুত্বপূর্ণ।
+- আপনার রাউটারের রিসোর্স (RAM, Flash) নতুন IOS ইমেজ সমর্থন করতে সক্ষম কি না, তা নিশ্চিত করুন।
+
+এই প্রক্রিয়া অনুসরণ করে আপনি সফলভাবে CISCO IOS আপগ্রেড করতে পারেন।
+
+- প্রথম কাজ হলো নতুন সফটওয়্যার ইমেজটি ডাউনলোড করা, যা আপনি CISCO এর ওয়েবসাইট থেকে পেতে পারেন [ISO download link](https://software.cisco.com/#)। সেখানে সফটওয়্যার ডাউনলোড লিঙ্কে ক্লিক করলে একটি নতুন ট্যাব খুলবে যেখানে আপনি আপনার প্রয়োজনীয় মডেল অনুসারে সার্চ করতে পারবেন।
+- যেমন, যদি আপনি 2960 সুইচ আপগ্রেড করতে চান, তাহলে এটি অনুসন্ধান করুন এবং আপনার মডেল নির্বাচন করুন। তারপর, আপনি ডাউনলোড করার জন্য ইমেজটি বেছে নিতে পারবেন।
+- এরপর, আপনি ইমেজটি TFTP সার্ভারে কপি করবেন এবং TFTP সার্ভার থেকে ডিভাইসে ফ্ল্যাশে ডাউনলোড করবেন।
+- একবার ফ্ল্যাশে ইমেজ চলে এলে, আপনি পুরানো ইমেজটি মুছে ফেলতে পারেন, যাতে নতুন ইমেজ থেকে বুট হবে, অথবা যদি আপনি পুরানো ইমেজটি রাখার সিদ্ধান্ত নেন, তবে 'boot system' কমান্ড ব্যবহার করতে হবে যাতে ডিভাইসটি নতুন ইমেজটি ব্যবহার করে।
+- উদাহরণস্বরূপ, একটি সুইচে নতুন IOS ইমেজ আপলোড করতে গিয়ে, প্রথমে 'show flash' কমান্ড ব্যবহার করে চেক করা হয় যে বর্তমানে কোন ইমেজ চলছে। এরপর, TFTP সার্ভার থেকে নতুন ইমেজ ডাউনলোড করা হয় এবং ফ্ল্যাশে কপি করা হয়। তারপর 'boot system' কমান্ড ব্যবহার করে নতুন ইমেজটি বুট করার জন্য সেট করা হয়।
+- সুইচ রিবুট করার পর, 'show version' কমান্ড দিয়ে নতুন ইমেজটি নিশ্চিত করা হয় এবং দেখা যায় যে, নতুন IOS ভার্সনটি সফলভাবে ইনস্টল হয়েছে।
+```
+Switch>
+Switch>
+Switch>sh flash
+Directory of flash:/
+
+    1  -rw-     4670455          <no date>  2960-lanbasek9-mz.150-2.SE4.bin
+
+64016384 bytes total (59345929 bytes free)
+Switch>sh ver
+Switch>sh version 
+Cisco IOS Software, C2960 Software (C2960-LANBASEK9-M), Version 15.0(2)SE4, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2013 by Cisco Systems, Inc.
+Compiled Wed 26-Jun-13 02:49 by mnguyen
+
+ROM: Bootstrap program is C2960 boot loader
+BOOTLDR: C2960 Boot Loader (C2960-HBOOT-M) Version 12.2(25r)FX, RELEASE SOFTWARE (fc4)
+
+Switch uptime is 39 minutes
+System returned to ROM by power-on
+System image file is "flash:c2960-lanbasek9-mz.150-2.SE4.bin"
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+cisco WS-C2960-24TT-L (PowerPC405) processor (revision B0) with 65536K bytes of memory.
+Processor board ID FOC1010X104
+Last reset from power-on
+1 Virtual Ethernet interface
+24 FastEthernet interfaces
+2 Gigabit Ethernet interfaces
+The password-recovery mechanism is enabled.
+
+64K bytes of flash-simulated non-volatile configuration memory.
+Base ethernet MAC Address       : 00:E0:F9:6B:A2:13
+Motherboard assembly number     : 73-10390-03
+Power supply part number        : 341-0097-02
+Motherboard serial number       : FOC10093R12
+Power supply serial number      : AZS1007032H
+Model revision number           : B0
+Motherboard revision number     : B0
+Model number                    : WS-C2960-24TT-L
+System serial number            : FOC1010X104
+Top Assembly Part Number        : 800-27221-02
+Top Assembly Revision Number    : A0
+Version ID                      : V02
+CLEI Code Number                : COM3L00BRA
+Hardware Board Revision Number  : 0x01
+
+Switch Ports Model              SW Version            SW Image
+------ ----- -----              ----------            ----------
+*    1 26    WS-C2960-24TT-L    15.0(2)SE4            C2960-LANBASEK9-M
+
+Configuration register is 0xF
+
+Switch>
+Switch>sh flash
+Directory of flash:/
+
+    1  -rw-     4670455          <no date>  2960-lanbasek9-mz.150-2.SE4.bin
+
+64016384 bytes total (59345929 bytes free)
+Switch>sh ver
+Switch>sh version 
+Cisco IOS Software, C2960 Software (C2960-LANBASEK9-M), Version 15.0(2)SE4, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2013 by Cisco Systems, Inc.
+Compiled Wed 26-Jun-13 02:49 by mnguyen
+
+ROM: Bootstrap program is C2960 boot loader
+BOOTLDR: C2960 Boot Loader (C2960-HBOOT-M) Version 12.2(25r)FX, RELEASE SOFTWARE (fc4)
+
+Switch uptime is 39 minutes
+System returned to ROM by power-on
+System image file is "flash:c2960-lanbasek9-mz.150-2.SE4.bin"
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+cisco WS-C2960-24TT-L (PowerPC405) processor (revision B0) with 65536K bytes of memory.
+Processor board ID FOC1010X104
+Last reset from power-on
+1 Virtual Ethernet interface
+24 FastEthernet interfaces
+2 Gigabit Ethernet interfaces
+The password-recovery mechanism is enabled.
+
+64K bytes of flash-simulated non-volatile configuration memory.
+Base ethernet MAC Address       : 00:E0:F9:6B:A2:13
+Motherboard assembly number     : 73-10390-03
+Power supply part number        : 341-0097-02
+Motherboard serial number       : FOC10093R12
+Power supply serial number      : AZS1007032H
+Model revision number           : B0
+Motherboard revision number     : B0
+Model number                    : WS-C2960-24TT-L
+System serial number            : FOC1010X104
+Top Assembly Part Number        : 800-27221-02
+Top Assembly Revision Number    : A0
+Version ID                      : V02
+CLEI Code Number                : COM3L00BRA
+Hardware Board Revision Number  : 0x01
+
+
+Switch Ports Model              SW Version            SW Image
+------ ----- -----              ----------            ----------
+*    1 26    WS-C2960-24TT-L    15.0(2)SE4            C2960-LANBASEK9-M
+
+
+Configuration register is 0xF
+
+
+
+Switch>en
+Switch>enable 
+Switch#co
+Switch#cop
+Switch#copy tftp flash
+Switch#copy tftp flash
+Address or name of remote host []? 192.168.0.4
+Source filename []? c2960-lanbasek9-mz.150-2.SE4.bin
+Destination filename [c2960-lanbasek9-mz.150-2.SE4.bin]? 
+
+Accessing tftp://192.168.0.4/c2960-lanbasek9-mz.150-2.SE4.bin....
+Loading c2960-lanbasek9-mz.150-2.SE4.bin from 192.168.0.4: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+[OK - 4670455 bytes]
+
+4670455 bytes copied in 3.072 secs (122229 bytes/sec)
+Switch#sh flas
+Switch#sh flash: 
+Directory of flash:/
+
+    1  -rw-     4670455          <no date>  2960-lanbasek9-mz.150-2.SE4.bin
+    2  -rw-     4670455          <no date>  c2960-lanbasek9-mz.150-2.SE4.bin
+
+64016384 bytes total (54675474 bytes free)
+Switch# config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)# boot syst
+Switch(config)# boot system flas
+Switch(config)# boot system ?
+WORD  pathlist of boot file(s) ... file1;file2;...
+Switch(config)# boot system flash:c2960-lanbasek9-mz.150-2.SE4.bin
+Switch(config)#end
+Switch#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Switch#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+Switch#reload
+Proceed with reload? [confirm]
+C2960 Boot Loader (C2960-HBOOT-M) Version 12.2(25r)FX, RELEASE SOFTWARE (fc4)
+Cisco WS-C2960-24TT (RC32300) processor (revision C0) with 21039K bytes of memory.
+2960-24TT starting...
+Base ethernet MAC Address: 00E0.F96B.A213
+Xmodem file system is available.
+Initializing Flash...
+flashfs[0]: 3 files, 0 directories
+flashfs[0]: 0 orphaned files, 0 orphaned directories
+flashfs[0]: Total bytes: 64016384
+flashfs[0]: Bytes used: 9342036
+flashfs[0]: Bytes available: 54674348
+flashfs[0]: flashfs fsck took 1 seconds.
+...done Initializing Flash.
+
+Boot Sector Filesystem (bs:) installed, fsid: 3
+Parameter Block Filesystem (pb:) installed, fsid: 4
+
+
+Loading "flash:/c2960-lanbasek9-mz.150-2.SE4.bin"...
+########################################################################## [OK]
+Smart Init is enabled
+smart init is sizing iomem
+                  TYPE      MEMORY_REQ
+                TOTAL:      0x00000000
+Rounded IOMEM up to: 0Mb.
+Using 6 percent iomem. [0Mb/512Mb]
+
+C2960 Boot Loader (C2960-HBOOT-M) Version 12.2(25r)FX, RELEASE SOFTWARE (fc4)
+Cisco WS-C2960-24TT (RC32300) processor (revision C0) with 21039K bytes of memory.
+2960-24TT starting...
+Base ethernet MAC Address: 00E0.F96B.A213
+Xmodem file system is available.
+Initializing Flash...
+flashfs[0]: 3 files, 0 directories
+flashfs[0]: 0 orphaned files, 0 orphaned directories
+flashfs[0]: Total bytes: 64016384
+flashfs[0]: Bytes used: 9342036
+flashfs[0]: Bytes available: 54674348
+flashfs[0]: flashfs fsck took 1 seconds.
+...done Initializing Flash.
+
+Boot Sector Filesystem (bs:) installed, fsid: 3
+Parameter Block Filesystem (pb:) installed, fsid: 4
+
+
+Loading "flash:/c2960-lanbasek9-mz.150-2.SE4.bin"...
+########################################################################## [OK]
+Smart Init is enabled
+smart init is sizing iomem
+                  TYPE      MEMORY_REQ
+                TOTAL:      0x00000000
+Rounded IOMEM up to: 0Mb.
+Using 6 percent iomem. [0Mb/512Mb]
+
+              Restricted Rights Legend
+Use, duplication, or disclosure by the Government is
+subject to restrictions as set forth in subparagraph
+(c) of the Commercial Computer Software - Restricted
+Rights clause at FAR sec. 52.227-19 and subparagraph
+(c) (1) (ii) of the Rights in Technical Data and Computer
+Software clause at DFARS sec. 252.227-7013.
+           cisco Systems, Inc.
+           170 West Tasman Drive
+           San Jose, California 95134-1706
+Cisco IOS Software, C2960 Software (C2960-LANBASEK9-M), Version 15.0(2)SE4, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2013 by Cisco Systems, Inc.
+Compiled Wed 26-Jun-13 02:49 by mnguyen
+Initializing flashfs...
+fsck: Disable shadow buffering due to heap fragmentation.
+flashfs[2]: 2 files, 1 directories
+flashfs[2]: 0 orphaned files, 0 orphaned directories
+flashfs[2]: Total bytes: 32514048
+flashfs[2]: Bytes used: 11952128
+flashfs[2]: Bytes available: 20561920
+flashfs[2]: flashfs fsck took 2 seconds.
+flashfs[2]: Initialization complete....done Initializing flashfs.
+Checking for Bootloader upgrade..
+Boot Loader upgrade not required (Stage 2)
+POST: CPU MIC register Tests : Begin
+POST: CPU MIC register Tests : End, Status Passed
+POST: PortASIC Memory Tests : Begin
+POST: PortASIC Memory Tests : End, Status Passed
+POST: CPU MIC interface Loopback Tests : Begin
+POST: CPU MIC interface Loopback Tests : End, Status Passed
+POST: PortASIC RingLoopback Tests : Begin
+POST: PortASIC RingLoopback Tests : End, Status Passed
+POST: PortASIC CAM Subsystem Tests : Begin
+POST: PortASIC CAM Subsystem Tests : End, Status Passed
+POST: PortASIC Port Loopback Tests : Begin
+POST: PortASIC Port Loopback Tests : End, Status Passed
+Waiting for Port download...Complete
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+cisco WS-C2960-24TT-L (PowerPC405) processor (revision B0) with 65536K bytes of memory.
+Processor board ID FOC1010X104
+Last reset from power-on
+1 Virtual Ethernet interface
+24 FastEthernet interfaces
+2 Gigabit Ethernet interfaces
+The password-recovery mechanism is enabled.
+64K bytes of flash-simulated non-volatile configuration memory.
+Base ethernet MAC Address       : 00:E0:F9:6B:A2:13
+Motherboard assembly number     : 73-10390-03
+Power supply part number        : 341-0097-02
+Motherboard serial number       : FOC10093R12
+Power supply serial number      : AZS1007032H
+Model revision number           : B0
+Motherboard revision number     : B0
+Model number                    : WS-C2960-24TT-L
+System serial number            : FOC1010X104
+Top Assembly Part Number        : 800-27221-02
+Top Assembly Revision Number    : A0
+Version ID                      : V02
+CLEI Code Number                : COM3L00BRA
+Hardware Board Revision Number  : 0x01
+
+Switch Ports Model              SW Version            SW Image
+------ ----- -----              ----------            ----------
+*    1 26    WS-C2960-24TT-L    15.0(2)SE4            C2960-LANBASEK9-M
+
+Cisco IOS Software, C2960 Software (C2960-LANBASEK9-M), Version 15.0(2)SE4, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2013 by Cisco Systems, Inc.
+Compiled Wed 26-Jun-13 02:49 by mnguyen
+
+Press RETURN to get started!
+
+%SYS-5-CONFIG_I: Configured from console by console
+
+Switch>
+```
