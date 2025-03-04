@@ -386,4 +386,73 @@ write memory
 
 ---
 
+![](Images/dhcp.jpg)
 
+- সার্ভারে dhcp তৈরি করুন। সার্ভার ip address 192.168.1.2 255.255.255.0
+- সুইচ0 এর জন্য
+```bash
+switch>ena
+swhitch# config ter
+switch(config)# hostname sw0
+sw0(config)# interface vlan 1
+sw0(config-if)#ip add 192.168.1.1 255.255.255.0
+sw0(config-if)#no shut
+sw0(config-if)# ip helper-address 192.168.1.2           #server ip address
+sw0(config-if)# vlan 10
+sw0(config-if)# name IT
+sw0(config-if)# interface vlan 10
+sw0(config-if)# ip address 192.168.10.1 255.255.255.0
+sw0(config-if)#no shut
+sw0(config-if)#ip helper-address 192.168.1.2
+sw0(config-if)# vlan 20
+sw0(config-if)# name sales
+sw0(config-if)#interface vlan 20
+sw0(config-if)#ip address 192.168.20.1 255.255.255.0
+sw0(config-if)#no shut
+sw0(config-if)#ip helper-address 192.168.1.2
+sw0(config-if)#exit
+sw0(config)#interface range fastethernet 0/1-3
+sw0(config-if-range)# switchport mode trunk
+sw0(config-if-range)# switchport trunk allowed vlan 10,20
+```
+- সুইচ1 এর জন্য
+```bash
+switch>ena
+swhitch# config ter
+switch(config)# hostname sw1
+sw1(config-if)# vlan 10
+sw1(config-if)# name IT
+sw1(config-if)# vlan 20
+sw1(config-if)# name sales
+sw1(config)#interface range fastethernet 0/3
+sw1(config-if-range)# switchport mode trunk
+sw1(config-if-range)# switchport trunk allowed vlan 10,20
+sw1(config)#interface range fastethernet 0/1
+sw1(config-if)#switchport mode access
+sw1(config-if)#switchport access vlan 10
+sw1(config-if)#exit
+sw1(config)#interface fastEthernet 0/2
+sw1(config-if)#switchport mode access 
+sw1(config-if)#switchport access vlan 20
+```
+
+সুইচ2 এর জন্য
+```bash
+switch>ena
+swhitch# config ter
+switch(config)# hostname sw2
+sw2(config-if)# vlan 10
+sw2(config-if)# name IT
+sw2(config-if)# vlan 20
+sw2(config-if)# name sales
+sw2(config)#interface range fastethernet 0/3
+sw2(config-if-range)# switchport mode trunk
+sw2(config-if-range)# switchport trunk allowed vlan 10,20
+sw2(config)#interface range fastethernet 0/1
+sw2(config-if)#switchport mode access
+sw2(config-if)#switchport access vlan 10
+sw2(config-if)#exit
+sw2(config)#interface fastEthernet 0/2
+sw2(config-if)#switchport mode access 
+sw2(config-if)#switchport access vlan 20
+```
