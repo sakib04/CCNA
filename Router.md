@@ -68,6 +68,95 @@ write memory
 
 ---
 
+## **Cisco Router-এ একাধিক IP Address কনফিগার করার পদ্ধতি**  
+## **Secondary IP Address ব্যবহার করে**
+**একই ফিজিক্যাল ইন্টারফেসে একাধিক IP Address যোগ করতে নিচের স্টেপগুলো অনুসরণ করুন:**
+
+### **কনফিগারেশন স্টেপ**
+```bash
+Router> enable  
+Router# configure terminal  
+Router(config)# interface gigabitEthernet 0/1  
+Router(config-if)# ip address 192.168.1.1 255.255.255.0  
+Router(config-if)# ip address 192.168.2.1 255.255.255.0 secondary  
+Router(config-if)# exit  
+Router(config)# write memory  
+```
+### **ব্যাখ্যা:**
+- **192.168.1.1/24** → প্রথম IP (প্রাইমারি)  
+- **192.168.2.1/24** → দ্বিতীয় IP (সেকেন্ডারি)  
+- `secondary` **কমান্ডটি ব্যবহারের ফলে একই ইন্টারফেসে একাধিক IP সেট করা সম্ভব হয়।**  
+
+---
+### **একটি ফিজিক্যাল পোর্টে সর্বোচ্চ কতটি IP অ্যাড্রেস কনফিগার করা যায়?**  
+
+একটি **Cisco Router-এর** একক **Physical Interface**-এ **Secondary IP Address** ব্যবহার করে **250+ IP Address** কনফিগার করা সম্ভব। তবে, সঠিক সীমা নির্ভর করে **Router Model, IOS Version এবং Hardware Limitations** এর উপর।  
+
+---
+
+## **Cisco Router-এ একক ইন্টারফেসে কতগুলো IP সেট করা সম্ভব?**
+### **১. Secondary IP Address ব্যবহার করলে:**
+Cisco IOS-এ, **প্রতি ইন্টারফেসে সাধারণত 250-500 পর্যন্ত IP Address** দেওয়া সম্ভব **(সাপোর্টেড মডেল অনুযায়ী ভিন্ন হতে পারে)**।  
+ 
+**Example (Multiple IP Configuration)**:
+```bash
+Router(config)# interface gigabitEthernet 0/1  
+Router(config-if)# ip address 192.168.1.1 255.255.255.0  
+Router(config-if)# ip address 192.168.2.1 255.255.255.0 secondary  
+Router(config-if)# ip address 192.168.3.1 255.255.255.0 secondary  
+Router(config-if)# ip address 192.168.4.1 255.255.255.0 secondary  
+Router(config-if)# ip address 192.168.5.1 255.255.255.0 secondary  
+...
+Router(config-if)# exit  
+Router# write memory  
+```
+**এই পদ্ধতিতে অনেকগুলো সাবনেট একসাথে ব্যবহার করা যায়, তবে অনেক বেশি IP অ্যাড্রেস অ্যাড করলে পারফরম্যান্স কমতে পারে।**  
+
+---
+
+### **২. VLAN Sub-Interfaces ব্যবহার করলে:**
+VLAN **(802.1Q tagging)** ব্যবহার করে **1000+ IP Address** সেট করা সম্ভব, কারণ এখানে প্রতিটি VLAN আলাদা একটি **Sub-Interface** হিসেবে কাজ করে।  
+
+**Example (Multiple VLAN Sub-Interfaces)**:
+```bash
+Router(config)# interface gigabitEthernet 0/1.10  
+Router(config-subif)# encapsulation dot1Q 10  
+Router(config-subif)# ip address 192.168.10.1 255.255.255.0  
+Router(config-subif)# exit  
+
+Router(config)# interface gigabitEthernet 0/1.20  
+Router(config-subif)# encapsulation dot1Q 20  
+Router(config-subif)# ip address 192.168.20.1 255.255.255.0  
+Router(config-subif)# exit  
+
+Router(config)# interface gigabitEthernet 0/1.30  
+Router(config-subif)# encapsulation dot1Q 30  
+Router(config-subif)# ip address 192.168.30.1 255.255.255.0  
+Router(config-subif)# exit  
+```
+**এই পদ্ধতিতে হাজারের বেশি VLAN এবং IP অ্যাড্রেস সেট করা সম্ভব, কারণ এখানে প্রতিটি VLAN আলাদা ভাবে কাজ করে।**  
+
+---
+
+## **Cisco Router-এর Hardware Limitations**
+| **Router Model** | **Secondary IP Support** | **VLAN Sub-Interfaces Support** |
+|-----------------|--------------------------|---------------------------------|
+| **Cisco 2800/2900** | 250+ | 1000+ VLAN |
+| **Cisco 3900/4000** | 500+ | 4000+ VLAN |
+| **Cisco ASR Routers** | 1000+ | 8000+ VLAN |
+
+**High-end Cisco routers (e.g., ASR series) অনেক বেশি IP অ্যাড্রেস এবং VLAN Sub-Interfaces হ্যান্ডেল করতে পারে।**  
+
+---
+
+## **উপসংহার:**
+  - **Secondary IP Address** পদ্ধতিতে **250+ IP Address** ব্যবহার করা যায়।  
+  - **VLAN Sub-Interfaces** ব্যবহার করলে **1000+ IP Address** সেট করা সম্ভব।  
+  - **Router Model এবং Hardware Capacity অনুযায়ী সর্বোচ্চ লিমিট ভিন্ন হতে পারে।**  
+
+আপনি যদি **বড় নেটওয়ার্ক** পরিচালনা করতে চান, তাহলে **VLAN এবং Sub-Interface** পদ্ধতিই সবচেয়ে ভালো।  
+
+
 # **Static Route (স্ট্যাটিক রুট) কি?**  
 
 **Static Route** হল এমন একটি **Routing Method**, যেখানে ম্যানুয়ালি **IP Route** নির্ধারণ করা হয়। **Router** বা **Layer 3 Switch** স্বয়ংক্রিয়ভাবে পথ খোঁজার পরিবর্তে **Network Administrator**-ই **Routes** নির্দিষ্ট করে দেয়।  
