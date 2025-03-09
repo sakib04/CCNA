@@ -247,3 +247,243 @@ debug ip routing
 - কিন্তু **বড় নেটওয়ার্কের জন্য Dynamic Routing বেশি কার্যকর।**  
 - **Cisco Router-এ "ip route" কমান্ড দিয়ে Static Route সেট করা যায়।**  
 
+
+### রাউটার 0 আইপি কনফিগার
+```
+enable
+config ter
+interface loopback 0 
+no shut
+ip address 1.1.1.1 255.255.255.255
+exit
+interface gigabitEthernet 0/0
+no shut
+ip address 10.1.1.1 255.255.255.0
+exit
+exit
+sh ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     1.0.0.0/32 is subnetted, 1 subnets
+C       1.1.1.1/32 is directly connected, Loopback0
+     10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       10.1.1.0/24 is directly connected, GigabitEthernet0/0
+L       10.1.1.1/32 is directly connected, GigabitEthernet0/0
+
+sh ip int brief
+Interface              IP-Address      OK? Method Status                Protocol 
+GigabitEthernet0/0     10.1.1.1        YES manual up                    up 
+GigabitEthernet0/1     unassigned      YES unset  administratively down down 
+Loopback0              1.1.1.1         YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
+
+```
+
+
+### রাউটার 1 আইপি কনফিগার
+```
+enable
+config ter
+interface loopback 0 
+no shut
+ip address 2.2.2.2 255.255.255.255
+exit
+interface gigabitEthernet 0/0
+no shut
+ip address 10.1.1.2 255.255.255.0
+exit
+interface gigabitEthernet 0/1
+no shut
+ip add 10.1.2.1 255.255.255.0
+exit
+do sh ip int brief
+
+Interface              IP-Address      OK? Method Status                Protocol 
+GigabitEthernet0/0     10.1.1.2        YES manual up                    up 
+GigabitEthernet0/1     10.1.2.1        YES manual up                    down 
+Loopback0              2.2.2.2         YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
+
+do sh ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     2.0.0.0/32 is subnetted, 1 subnets
+C       2.2.2.2/32 is directly connected, Loopback0
+     10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       10.1.1.0/24 is directly connected, GigabitEthernet0/0
+L       10.1.1.2/32 is directly connected, GigabitEthernet0/0
+```
+
+### রাউটার 2 আইপি কনফিগার
+```
+enable
+config ter
+interface loopback 0 
+no shut
+ip address 3.3.3.3 255.255.255.255
+exit
+interface gigabitEthernet 0/0
+no shut
+ip address 10.1.2.2 255.255.255.0
+exit
+do sh ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     3.0.0.0/32 is subnetted, 1 subnets
+C       3.3.3.3/32 is directly connected, Loopback0
+     10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       10.1.2.0/24 is directly connected, GigabitEthernet0/0
+L       10.1.2.2/32 is directly connected, GigabitEthernet0/0
+
+do sh ip int brief
+Interface              IP-Address      OK? Method Status                Protocol 
+GigabitEthernet0/0     10.1.2.2        YES manual up                    up 
+GigabitEthernet0/1     unassigned      YES unset  administratively down down 
+Loopback0              3.3.3.3         YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
+```
+### রাউটার 0 রুট কনফিগার 
+```
+ip route 10.1.2.0 255.255.255.0 10.1.1.2
+ip route  2.2.2.2 255.255.255.255 10.1.1.2
+ip route 3.3.3.3 255.255.255.255 10.1.1.2
+do sh ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     1.0.0.0/32 is subnetted, 1 subnets
+C       1.1.1.1/32 is directly connected, Loopback0
+     2.0.0.0/32 is subnetted, 1 subnets
+S       2.2.2.2/32 [1/0] via 10.1.1.2
+     3.0.0.0/32 is subnetted, 1 subnets
+S       3.3.3.3/32 [1/0] via 10.1.1.2
+     10.0.0.0/8 is variably subnetted, 3 subnets, 2 masks
+C       10.1.1.0/24 is directly connected, GigabitEthernet0/0
+L       10.1.1.1/32 is directly connected, GigabitEthernet0/0
+S       10.1.2.0/24 [1/0] via 10.1.1.2
+```
+
+### রাউটার 1 রুট কনফিগার 
+```
+ip route 3.3.3.3 255.255.255.255 10.1.2.2
+ip route 1.1.1.1 255.255.255.255 10.1.1.1
+
+ do sh ip cef
+Prefix               Next Hop             Interface
+0.0.0.0/0            no route
+0.0.0.0/8            drop                 
+0.0.0.0/32           receive              
+2.2.2.2/32           receive              Loopback0
+3.3.3.3/32             next hop 10.1.2.2 GigabitEthernet0/1
+10.1.1.0/24          attached             GigabitEthernet0/0
+10.1.1.0/32          receive              GigabitEthernet0/0
+10.1.1.1/32          10.1.1.1             GigabitEthernet0/0
+10.1.1.2/32          receive              GigabitEthernet0/0
+10.1.1.255/32        receive              GigabitEthernet0/0
+10.1.2.0/24          attached             GigabitEthernet0/1
+10.1.2.0/32          receive              GigabitEthernet0/1
+10.1.2.1/32          receive              GigabitEthernet0/1
+10.1.2.2/32          10.1.2.2             GigabitEthernet0/1
+10.1.2.255/32        receive              GigabitEthernet0/1
+127.0.0.0/8          drop                 
+224.0.0.0/4          drop                 
+224.0.0.0/24         receive              
+240.0.0.0/4          drop                 
+255.255.255.255/32   receive      
+
+
+do sh ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     1.0.0.0/32 is subnetted, 1 subnets
+S       1.1.1.1/32 [1/0] via 10.1.1.1
+     2.0.0.0/32 is subnetted, 1 subnets
+C       2.2.2.2/32 is directly connected, Loopback0
+     3.0.0.0/32 is subnetted, 1 subnets
+S       3.3.3.3/32 [1/0] via 10.1.2.2
+     10.0.0.0/8 is variably subnetted, 4 subnets, 2 masks
+C       10.1.1.0/24 is directly connected, GigabitEthernet0/0
+L       10.1.1.2/32 is directly connected, GigabitEthernet0/0
+C       10.1.2.0/24 is directly connected, GigabitEthernet0/1
+L       10.1.2.1/32 is directly connected, GigabitEthernet0/1
+
+```
+
+### রাউটার 2 রুট কনফিগার 
+```
+
+ip route 10.1.1.0 255.255.255.0 10.1.2.1
+ip route 1.1.1.1 255.255.255.255 10.1.2.1
+ip route  2.2.2.2 255.255.255.255 10.1.2.1
+do sh ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     1.0.0.0/32 is subnetted, 1 subnets
+S       1.1.1.1/32 [1/0] via 10.1.2.1
+     2.0.0.0/32 is subnetted, 1 subnets
+S       2.2.2.2/32 [1/0] via 10.1.2.1
+     3.0.0.0/32 is subnetted, 1 subnets
+C       3.3.3.3/32 is directly connected, Loopback0
+     10.0.0.0/8 is variably subnetted, 3 subnets, 2 masks
+S       10.1.1.0/24 [1/0] via 10.1.2.1
+C       10.1.2.0/24 is directly connected, GigabitEthernet0/0
+L       10.1.2.2/32 is directly connected, GigabitEthernet0/0
+
+
+```
+### এখন চেকআপের জন্য
+```enable
+debug ip icmp
+debug ip packet
+```
+### undebug জন্য
+```
+undebug all
+```
