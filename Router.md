@@ -247,6 +247,7 @@ debug ip routing
 - কিন্তু **বড় নেটওয়ার্কের জন্য Dynamic Routing বেশি কার্যকর।**  
 - **Cisco Router-এ "ip route" কমান্ড দিয়ে Static Route সেট করা যায়।**  
 
+![](Images/static.png)
 
 ### রাউটার 0 আইপি কনফিগার
 ```
