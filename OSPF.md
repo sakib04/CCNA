@@ -874,7 +874,7 @@ Here’s the **full Bangla translation** of your OSPF Basics document. I've brok
 - **LSU প্যাকেট**-ই একমাত্র বার্তা যা প্রকৃত এলএসএ ডেটা বহন করে।  
 - **সমস্যা সমাধান**: `show ip ospf database` কমান্ড দিয়ে LSDB-র সামঞ্জস্যতা যাচাই করুন। 
 
-![](Images/network.jpg)
+![](Images/ospf1.png)
 ```
 r1
 enable
