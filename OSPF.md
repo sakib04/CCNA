@@ -875,5 +875,179 @@ Here’s the **full Bangla translation** of your OSPF Basics document. I've brok
 - **সমস্যা সমাধান**: `show ip ospf database` কমান্ড দিয়ে LSDB-র সামঞ্জস্যতা যাচাই করুন। 
 
 
+```
+r1
+enable
+conf ter 
+interface GigabitEthernet0/0
+no shut
+ip address 10.0.1.2 255.255.255.0 
+
+interface GigabitEthernet0/2/0
+ ip address 10.0.0.1 255.255.255.0
+ no shut
+
+interface GigabitEthernet0/2/0
+ ip address 10.0.0.1 255.255.255.0
+ no shut
+
+r2
+interface GigabitEthernet0/1
+ ip address 10.1.0.2 255.255.255.0
+ no shut
+
+interface GigabitEthernet0/3/0
+ ip address 10.0.0.2 255.255.255.0
+ no shut
+
+r3
+interface GigabitEthernet0/0
+ ip address 10.1.1.1 255.255.255.0
+ no shut
+
+ interface GigabitEthernet0/1
+ ip address 10.1.0.1 255.255.255.0
+ no shut
+
+ r4
+
+ interface GigabitEthernet0/0
+ ip address 10.1.1.2 255.255.255.0
+ no shut
+
+ interface GigabitEthernet0/1
+ ip address 10.1.3.1 255.255.255.0
+ no shut
+
+ interface GigabitEthernet0/2
+ ip address 10.1.2.1 255.255.255.0
+ no shut
 
 
+ r5
+ interface GigabitEthernet0/0
+ ip address 10.1.3.2 255.255.255.0
+no shut
+
+interface GigabitEthernet0/3/0
+ ip address 10.0.3.2 255.255.255.0
+ no shut
+```
+
+ospf conf
+
+```
+r1 r2 r3 r4 r5
+
+Enable
+Conf term
+Router ospf 1
+Network 10.0.0.0 0.255.255.255 area 0
+
+r1 
+Router#sh run | section ospf
+router ospf 1
+ log-adjacency-changes
+ network 10.0.0.0 0.255.255.255 area 0
+
+Router#sh ip pro
+
+Routing Protocol is "ospf 1"
+
+  Outgoing update filter list for all interfaces is not set
+
+  Incoming update filter list for all interfaces is not set 
+
+  Router ID 10.0.3.1
+
+  Number of areas in this router is 1. 1 normal 0 stub 0 nssa
+  Maximum path: 4
+
+  Routing for Networks:
+    10.0.0.0 0.255.255.255 area 0
+
+  Routing Information Sources:  
+    Gateway         Distance      Last Update 
+    10.0.3.1             110      00:13:13
+    10.1.0.2             110      00:13:19
+    10.1.1.1             110      00:13:32
+    10.1.3.1             110      00:13:41
+    10.1.3.2             110      00:13:14
+  Distance: (default is 110)
+
+  Router#sh ip ospf neighbor 
+
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.1.0.2          1   FULL/DR         00:00:37    10.0.0.2        GigabitEthernet0/2/0
+10.1.3.2          1   FULL/DR         00:00:37    10.0.3.2        GigabitEthernet0/3/0
+Router#
+
+Router#sh ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     10.0.0.0/8 is variably subnetted, 12 subnets, 2 masks
+C       10.0.0.0/24 is directly connected, GigabitEthernet0/2/0
+L       10.0.0.1/32 is directly connected, GigabitEthernet0/2/0
+C       10.0.1.0/24 is directly connected, GigabitEthernet0/0
+L       10.0.1.2/32 is directly connected, GigabitEthernet0/0
+C       10.0.2.0/24 is directly connected, GigabitEthernet0/1
+L       10.0.2.2/32 is directly connected, GigabitEthernet0/1
+C       10.0.3.0/24 is directly connected, GigabitEthernet0/3/0
+L       10.0.3.1/32 is directly connected, GigabitEthernet0/3/0
+O       10.1.0.0/24 [110/2] via 10.0.0.2, 01:05:15, GigabitEthernet0/2/0
+O       10.1.1.0/24 [110/3] via 10.0.0.2, 01:05:05, GigabitEthernet0/2/0
+                    [110/3] via 10.0.3.2, 01:05:05, GigabitEthernet0/3/0
+O       10.1.2.0/24 [110/3] via 10.0.3.2, 01:05:05, GigabitEthernet0/3/0
+O       10.1.3.0/24 [110/2] via 10.0.3.2, 01:05:05, GigabitEthernet0/3/0
+
+
+Router#sh ip ospf databas
+            OSPF Router with ID (10.0.3.1) (Process ID 1)
+
+                Router Link States (Area 0)
+
+Link ID         ADV Router      Age         Seq#       Checksum Link count
+10.0.3.1        10.0.3.1        348         0x80000008 0x0013a1 4
+10.1.3.1        10.1.3.1        376         0x80000007 0x000eba 3
+10.1.1.1        10.1.1.1        367         0x80000006 0x0044ae 2
+10.1.0.2        10.1.0.2        354         0x80000006 0x0038bc 2
+10.1.3.2        10.1.3.2        348         0x80000006 0x00ce14 2
+
+                Net Link States (Area 0)
+Link ID         ADV Router      Age         Seq#       Checksum
+10.1.3.1        10.1.3.1        376         0x80000005 0x007630
+10.1.1.2        10.1.3.1        376         0x80000006 0x001c95
+10.1.0.1        10.1.1.1        367         0x80000003 0x00c9e5
+10.0.0.2        10.1.0.2        354         0x80000003 0x00d1f0
+10.0.3.2        10.1.3.2        348         0x80000003 0x007d2a
+
+
+Router#sh ip ospf databas
+            OSPF Router with ID (10.0.3.1) (Process ID 1)
+
+                Router Link States (Area 0)
+
+Link ID         ADV Router      Age         Seq#       Checksum Link count
+10.0.3.1        10.0.3.1        348         0x80000008 0x0013a1 4
+10.1.3.1        10.1.3.1        376         0x80000007 0x000eba 3
+10.1.1.1        10.1.1.1        367         0x80000006 0x0044ae 2
+10.1.0.2        10.1.0.2        354         0x80000006 0x0038bc 2
+10.1.3.2        10.1.3.2        348         0x80000006 0x00ce14 2
+
+                Net Link States (Area 0)
+Link ID         ADV Router      Age         Seq#       Checksum
+10.1.3.1        10.1.3.1        376         0x80000005 0x007630
+10.1.1.2        10.1.3.1        376         0x80000006 0x001c95
+10.1.0.1        10.1.1.1        367         0x80000003 0x00c9e5
+10.0.0.2        10.1.0.2        354         0x80000003 0x00d1f0
+10.0.3.2        10.1.3.2        348         0x80000003 0x007d2a
+```
