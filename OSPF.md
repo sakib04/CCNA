@@ -1052,7 +1052,7 @@ Link ID         ADV Router      Age         Seq#       Checksum
 10.0.3.2        10.1.3.2        348         0x80000003 0x007d2a
 ```
 
-
+![](Images/osf-router-id.png)
 
 ```
 r4(config)#do sh ip protocols
