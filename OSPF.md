@@ -1458,6 +1458,8 @@ S*   0.0.0.0/0 [1/0] via 203.0.113.2
 
 ![](Images/ospf-multiarea.png)
 
+r4 and r3 ospf configure
+
 ```
 router ospf 1 
 router-id 2.2.2.2
