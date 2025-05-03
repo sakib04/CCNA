@@ -1052,7 +1052,7 @@ Link ID         ADV Router      Age         Seq#       Checksum
 10.0.3.2        10.1.3.2        348         0x80000003 0x007d2a
 
 ```
-
+## Router ID (রাউটার আইডি)
 ### **OSPF-এর উন্নত বিষয়বস্তুসমূহ (Router ID, Passive Interfaces, Default Route Injection)** 
 
 #### **Router ID (রাউটার আইডি)**
@@ -1449,5 +1449,239 @@ S*   0.0.0.0/0 [1/0] via 203.0.113.2
 - নেটওয়ার্ক স্কেলেবল ও স্থিতিশীল হয়।
 
 ---
+
+
+
+r4 route show
+
+```
+r4>enable
+r4#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     1.0.0.0/32 is subnetted, 1 subnets
+C       1.1.1.1/32 is directly connected, Loopback0
+     2.0.0.0/32 is subnetted, 1 subnets
+C       2.2.2.2/32 is directly connected, Loopback1
+     10.0.0.0/8 is variably subnetted, 11 subnets, 2 masks
+O       10.0.0.0/24 [110/3] via 10.1.1.2, 08:40:42, GigabitEthernet0/0
+O       10.0.1.0/24 [110/4] via 10.1.1.2, 08:40:42, GigabitEthernet0/0
+O       10.0.2.0/24 [110/4] via 10.1.1.2, 08:40:42, GigabitEthernet0/0
+O       10.0.3.0/24 [110/4] via 10.1.1.2, 08:40:42, GigabitEthernet0/0
+O       10.1.0.0/24 [110/2] via 10.1.1.2, 08:40:42, GigabitEthernet0/0
+C       10.1.1.0/24 is directly connected, GigabitEthernet0/0
+L       10.1.1.1/32 is directly connected, GigabitEthernet0/0
+C       10.1.2.0/24 is directly connected, GigabitEthernet0/1
+L       10.1.2.1/32 is directly connected, GigabitEthernet0/1
+C       10.1.3.0/24 is directly connected, GigabitEthernet0/0/0
+L       10.1.3.1/32 is directly connected, GigabitEthernet0/0/0
+
+
+```
+r1 route show
+```
+r1>enable
+r1#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     10.0.0.0/8 is variably subnetted, 12 subnets, 2 masks
+C       10.0.0.0/24 is directly connected, GigabitEthernet0/2/0
+L       10.0.0.1/32 is directly connected, GigabitEthernet0/2/0
+C       10.0.1.0/24 is directly connected, GigabitEthernet0/0
+L       10.0.1.1/32 is directly connected, GigabitEthernet0/0
+C       10.0.2.0/24 is directly connected, GigabitEthernet0/1
+L       10.0.2.1/32 is directly connected, GigabitEthernet0/1
+C       10.0.3.0/24 is directly connected, GigabitEthernet0/3/0
+L       10.0.3.1/32 is directly connected, GigabitEthernet0/3/0
+O       10.1.0.0/24 [110/2] via 10.0.0.2, 08:40:09, GigabitEthernet0/2/0
+O       10.1.1.0/24 [110/3] via 10.0.0.2, 08:40:09, GigabitEthernet0/2/0
+O       10.1.2.0/24 [110/4] via 10.0.0.2, 08:40:09, GigabitEthernet0/2/0
+O       10.1.3.0/24 [110/4] via 10.0.0.2, 08:40:09, GigabitEthernet0/2/0
+
+```
+configure ABR on r2 
+
+```
+r2(config)#do sh run | sec ospf
+router ospf 1
+ log-adjacency-changes
+ network 10.0.0.0 0.255.255.255 area 0
+
+ r2(config-router)#do sh ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     10.0.0.0/8 is variably subnetted, 10 subnets, 2 masks
+C       10.0.0.0/24 is directly connected, GigabitEthernet0/3/0
+L       10.0.0.2/32 is directly connected, GigabitEthernet0/3/0
+O       10.0.1.0/24 [110/2] via 10.0.0.1, 11:09:29, GigabitEthernet0/3/0
+O       10.0.2.0/24 [110/2] via 10.0.0.1, 11:09:29, GigabitEthernet0/3/0
+O       10.0.3.0/24 [110/2] via 10.0.0.1, 11:09:29, GigabitEthernet0/3/0
+C       10.1.0.0/24 is directly connected, GigabitEthernet0/1
+L       10.1.0.2/32 is directly connected, GigabitEthernet0/1
+O       10.1.1.0/24 [110/2] via 10.1.0.1, 11:09:29, GigabitEthernet0/1
+O       10.1.2.0/24 [110/3] via 10.1.0.1, 11:09:29, GigabitEthernet0/1
+O       10.1.3.0/24 [110/3] via 10.1.0.1, 11:09:29, GigabitEthernet0/1
+
+r2(config)#router ospf 1
+r2(config-router)#no network 10.0.0.0 0.255.255.255 area 0
+r2(config-router)#network 10.1.0.0 0.0.255.255 area 0
+r2(config-router)#network 10.0.0.0 0.0.255.255 area 1
+
+```
+
+```
+r5(config)#do sh run | sec ospf
+router ospf 1
+ log-adjacency-changes
+ network 10.0.0.0 0.255.255.255 area 0
+r5(config)#router ospf 1
+r5(config-router)#no network 10.0.0.0 0.255.255.255 area 0
+r5(config-router)#network 10.1.0.0 0.0.255.255 area 0
+r5(config-router)#network 10.0.0.0 0.0.255.255 area 1
+
+```
+
+```
+
+r1(config)#do sh run | sec ospf
+router ospf 1
+ log-adjacency-changes
+ network 10.0.0.0 0.255.255.255 area 0
+ r1(config)#router ospf 1
+r1(config-router)#no network 10.0.0.0 0.255.255.255 area 0
+r1(config-router)#network 10.0.0.0 0.0.255.255 area 1
+
+```
+
+
+```
+
+r4#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     1.0.0.0/32 is subnetted, 1 subnets
+C       1.1.1.1/32 is directly connected, Loopback0
+     2.0.0.0/32 is subnetted, 1 subnets
+C       2.2.2.2/32 is directly connected, Loopback1
+     10.0.0.0/8 is variably subnetted, 11 subnets, 2 masks
+O IA    10.0.0.0/24 [110/3] via 10.1.1.2, 01:05:39, GigabitEthernet0/0
+O IA    10.0.1.0/24 [110/4] via 10.1.1.2, 01:05:39, GigabitEthernet0/0
+O IA    10.0.2.0/24 [110/4] via 10.1.1.2, 01:05:39, GigabitEthernet0/0
+O IA    10.0.3.0/24 [110/4] via 10.1.1.2, 01:05:39, GigabitEthernet0/0
+O       10.1.0.0/24 [110/2] via 10.1.1.2, 01:05:39, GigabitEthernet0/0
+C       10.1.1.0/24 is directly connected, GigabitEthernet0/0
+L       10.1.1.1/32 is directly connected, GigabitEthernet0/0
+C       10.1.2.0/24 is directly connected, GigabitEthernet0/1
+L       10.1.2.1/32 is directly connected, GigabitEthernet0/1
+C       10.1.3.0/24 is directly connected, GigabitEthernet0/0/0
+L       10.1.3.1/32 is directly connected, GigabitEthernet0/0/0
+
+```
+
+r2 and r5 ar cmd for route summarization
+
+```
+r2(config)#router ospf 1
+r2(config-router)#area 0 range 10.1.0.0 255.255.0.0 
+r2(config-router)#area 1 range 10.0.0.0 255.255.0.0
+
+```
+
+```
+
+r5(config)#router ospf 1
+r5(config-router)#area 0 range 10.1.0.0 255.255.0.0 
+r5(config-router)#area 1 range 10.0.0.0 255.255.0.0
+
+```
+r4 route
+
+```
+r4#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     1.0.0.0/32 is subnetted, 1 subnets
+C       1.1.1.1/32 is directly connected, Loopback0
+     2.0.0.0/32 is subnetted, 1 subnets
+C       2.2.2.2/32 is directly connected, Loopback1
+     10.0.0.0/8 is variably subnetted, 8 subnets, 3 masks
+O IA    10.0.0.0/16 [110/4] via 10.1.1.2, 00:04:50, GigabitEthernet0/0
+O       10.1.0.0/24 [110/2] via 10.1.1.2, 02:48:43, GigabitEthernet0/0
+C       10.1.1.0/24 is directly connected, GigabitEthernet0/0
+L       10.1.1.1/32 is directly connected, GigabitEthernet0/0
+C       10.1.2.0/24 is directly connected, GigabitEthernet0/1
+L       10.1.2.1/32 is directly connected, GigabitEthernet0/1
+C       10.1.3.0/24 is directly connected, GigabitEthernet0/0/0
+L       10.1.3.1/32 is directly connected, GigabitEthernet0/0/0
+
+```
+r1 route
+
+```
+r1#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     10.0.0.0/8 is variably subnetted, 9 subnets, 3 masks
+C       10.0.0.0/24 is directly connected, GigabitEthernet0/2/0
+L       10.0.0.1/32 is directly connected, GigabitEthernet0/2/0
+C       10.0.1.0/24 is directly connected, GigabitEthernet0/0
+L       10.0.1.1/32 is directly connected, GigabitEthernet0/0
+C       10.0.2.0/24 is directly connected, GigabitEthernet0/1
+L       10.0.2.1/32 is directly connected, GigabitEthernet0/1
+C       10.0.3.0/24 is directly connected, GigabitEthernet0/3/0
+L       10.0.3.1/32 is directly connected, GigabitEthernet0/3/0
+O IA    10.1.0.0/16 [110/3] via 10.0.0.2, 00:12:58, GigabitEthernet0/2/0
+
+```
+
+
 
 
