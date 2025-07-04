@@ -1956,7 +1956,56 @@ auto-cost reference-bandwidth 10000
 উচ্চগতির নেটওয়ার্কে ডিফল্ট সেটিং সমস্যা সৃষ্টি করে। ডিভাইস অনুযায়ী কনফিগারেশন সমন্বয় করুন।
 
 ---
+``` css
+Ospf cost formula 
+default reference bandwith = 100 mbs
 
+100 mbps / 10000 mbps (10gbs) = cost 0.01
+100 mbps /  1000 mbps (1gbps) = cost 0.1
+100 mbps /  100  mbps = cost 1
+100 mbps /  10   mbps = cost 10
+100 mbps /  1    mbps = cost 100
+```
+R1,r2,r3,r4,r5,r6,r7 
+```
+r1#show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        16.0.0.1        YES manual up                    up 
+FastEthernet0/1        10.0.0.1        YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
 
+r2#sh ip int brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        11.0.0.1        YES manual up                    up 
+FastEthernet0/1        10.0.0.2        YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
 
+r3#sh ip int brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        11.0.0.2        YES manual up                    up 
+FastEthernet0/1        12.0.0.1        YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
 
+r4#sh ip int brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        12.0.0.2        YES manual up                    up 
+FastEthernet0/1        13.0.0.1        YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
+
+r5#sh ip int brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        13.0.0.2        YES manual up                    up 
+FastEthernet0/1        14.0.0.1        YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
+
+r7#sh ip int brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        14.0.0.2        YES manual up                    up 
+FastEthernet0/1        15.0.0.1        YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
+
+r6# sh ip int brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        15.0.0.2        YES manual up                    up 
+FastEthernet0/1        16.0.0.2        YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
