@@ -1956,6 +1956,8 @@ auto-cost reference-bandwidth 10000
 উচ্চগতির নেটওয়ার্কে ডিফল্ট সেটিং সমস্যা সৃষ্টি করে। ডিভাইস অনুযায়ী কনফিগারেশন সমন্বয় করুন।
 
 ---
+![](Images/OSPFbandwidth.png)
+
 ``` css
 Ospf cost formula 
 default reference bandwith = 100 mbs
