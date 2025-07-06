@@ -2009,3 +2009,248 @@ Interface              IP-Address      OK? Method Status                Protocol
 FastEthernet0/0        15.0.0.2        YES manual up                    up 
 FastEthernet0/1        16.0.0.2        YES manual up                    up 
 Vlan1                  unassigned      YES unset  administratively down down
+
+```
+OSPF CONFIGURE R1,R2,R3,R4,R5,R6,R7
+```
+r1(config)# ip route
+r1(config)# router ospf 1
+r1(config)# network 16.0.0.0 0.0.0.255 area 0
+r1(config)# network 10.0.0.0 0.0.0.255 area 0
+
+r2(config)# router ospf 1
+r2(config)# network 10.0.0.0 0.0.0.255 area 0
+r2(config)# network 11.0.0.0 0.0.0.255 area 0 
+
+r3(config)# router ospf 1
+r3(config)# network 10.0.0.0 0.0.0.255 area 0
+r3(config)# network 11.0.0.0 0.0.0.255 area 0 
+
+r4(config)# router ospf 1
+r4(config)# network 12.0.0.0 0.0.0.255 area 0
+r4(config)# network 13.0.0.0 0.0.0.255 area 0 
+
+r5(config)# router ospf 1
+r5(config)# network 13.0.0.0 0.0.0.255 area 0
+r5(config)# network 14.0.0.0 0.0.0.255 area 0
+
+r6(config)# router ospf 1
+r6(config)# network 16.0.0.0 0.0.0.255 area 0
+r6(config)# network 15.0.0.0 0.0.0.255 area 0 
+
+r7(config)# router ospf 1
+r7(config)# network 14.0.0.0 0.0.0.255 area 0
+r7(config)# network 15.0.0.0 0.0.0.255 area 0 
+```
+
+**আপনি এখন OSPF ইন্টারফেস কস্ট পরিবর্তন করেছেন R6 রাউটারে**, এবং আপনি ঠিকমতো `bandwidth` কমিয়ে কস্ট বাড়াতে পেরেছেন। চলুন পুরো বিষয়টি সংক্ষেপে বিশ্লেষণ করি।
+
+---
+
+## আপনার কনফিগারেশন সংক্ষেপে
+
+### OSPF Cost Calculation:
+
+OSPF cost গণনা হয় নিচের ফর্মুলায়:
+
+```
+OSPF Cost = 100,000,000 / Bandwidth (bps)
+```
+
+* ডিফল্ট FastEthernet (100 Mbps):
+
+  ```
+  Cost = 100,000,000 / 100,000,000 = 1
+  ```
+
+* আপনি Bandwidth সেট করেছেন: `10000 Kbps = 10 Mbps`
+
+  ```
+  Cost = 100,000,000 / 10,000,000 = 10
+  ```
+---
+
+## **আপনার ফলাফল (R6 থেকে):**
+
+| Interface | IP       | Bandwidth | OSPF Cost |
+| --------- | -------- | --------- | --------- |
+| Fa0/0     | 15.0.0.2 | 10 Mbps   | 10        |
+| Fa0/1     | 16.0.0.2 | 10 Mbps   | 10        |
+
+আগের মতো আর 1 কস্ট নেই। এখন R6-এর উভয় ইন্টারফেস OSPF কস্ট = **10**।
+
+---
+
+## **এই কনফিগারেশনের প্রভাব**
+
+* এখন R1 থেকে যদি 14.0.0.1 (R5) এর দিকে প্যাকেট পাঠানো হয়, তাহলে OSPF **নিচের পথটি আর প্রেফার করবে না**:
+
+```
+R1 → R6 → R7 → R5 (Because total cost is now 10 + 10 + 1 = 21)
+```
+
+* বরং OSPF আবার **R1 → R2 → R3 → R4 → R5** রুট বেছে নেবে, কারণ প্রতিটি হপের কস্ট এখনো 1:
+
+  ```
+  Total cost = 1 + 1 + 1 + 1 = 4
+  ```
+
+---
+
+## **আপনি এখন করতে পারেন:**
+
+### Test Path Preference:
+
+```bash
+R1# traceroute 14.0.0.1
+```
+
+➡ আপনি দেখতে পাবেন R1 এখন R2-র দিকে প্যাকেট পাঠাচ্ছে যদি Fa0/1 চালু থাকে।
+
+### Equal Cost Multi-Path (ECMP)?
+
+আপনি চাইলে দুটি পাথের কস্ট **সমান** করেও রাউটারকে দুটি রুট একসাথে ব্যবহার করাতে পারেন (load balancing)। যেমন:
+
+* R1→R2→... path = 4
+* R1→R6→... path কস্টও যদি 4 করেন, OSPF দুইটা পথকেই রাখবে।
+---
+
+```
+r6(config-if)#do sh ip ospf int brief
+Interface     PID   Area                     IP Address/Mask          Cost  State  Nbrs F/C
+Fa0/0           1   0                         15.0.0.2/255.255.255.0   1       DR  0/0
+Fa0/1           1   0                         16.0.0.2/255.255.255.0   1       DR  0/0
+
+r6(config)#interface fastEthernet 0/0
+r6(config-if)#bandwidth 10000
+
+r6(config-if)#do sh ip ospf int brief
+Interface     PID   Area                     IP Address/Mask          Cost  State  Nbrs F/C
+Fa0/0           1   0                         15.0.0.2/255.255.255.0   10      DR  0/0
+Fa0/1           1   0                         16.0.0.2/255.255.255.0   1       DR  0/0
+
+r6(config-if)#interface fastEthernet 0/1
+r6(config-if)#bandwidth 10000
+r6(config-if)#do sh ip ospf int brief
+Interface     PID   Area                     IP Address/Mask          Cost  State  Nbrs F/C
+Fa0/0           1   0                         15.0.0.2/255.255.255.0   10      DR  0/0
+Fa0/1           1   0                         16.0.0.2/255.255.255.0   10      DR  0/0
+```
+
+```
+r1(config-if)#do trace 14.0.0.1
+Type escape sequence to abort.
+Tracing the route to 14.0.0.1
+
+  1   10.0.0.2        0 msec    0 msec    0 msec    
+  2   11.0.0.2        0 msec    0 msec    0 msec    
+  3   12.0.0.2        0 msec    0 msec    0 msec    
+  4   13.0.0.2        1 msec    0 msec    0 msec 
+
+
+r1(config)#int fastEthernet 0/1
+r1(config-if)#shutdown
+r1(config-if)#do trace 14.0.0.1
+Type escape sequence to abort.
+Tracing the route to 14.0.0.1
+
+  1   16.0.0.2        0 msec    1 msec    0 msec    
+  2   15.0.0.1        0 msec    0 msec    0 msec    
+  3   14.0.0.1        0 msec    0 msec    0 msec    
+
+```
+
+---
+
+## ধাপে ধাপে বিশ্লেষণ (Step-by-step Bangla Explanation)
+
+### **OSPF কনফিগারেশন (Configuration Phase)**
+
+* প্রতিটি রাউটার OSPF process 1 এ যুক্ত করা হয়েছে এবং সংশ্লিষ্ট নেটওয়ার্কগুলো `area 0` তে যুক্ত হয়েছে।
+* R1 থেকে R7 পর্যন্ত সব রাউটারের মধ্যে IP নেটওয়ার্ক অনুযায়ী কানেকশন রয়েছে।
+
+---
+
+### **R6 রাউটারে Bandwidth পরিবর্তন ও Cost বৃদ্ধি**
+
+আপনি R6 রাউটারের দুটি ইন্টারফেসে Bandwidth কমিয়েছেন:
+
+```bash
+R6(config-if)#interface fastEthernet 0/0
+R6(config-if)#bandwidth 10000     ← 10 Mbps
+
+R6(config-if)#interface fastEthernet 0/1
+R6(config-if)#bandwidth 10000     ← 10 Mbps
+```
+
+>  **OSPF Cost ফর্মুলা:**
+>
+> ```
+> Cost = 100000000 / Bandwidth_in_bps
+> Cost = 100000000 / 10000000 = 10
+> ```
+
+ফলে, R6-এর Fa0/0 এবং Fa0/1 উভয় ইন্টারফেসের OSPF cost এখন 10 হয়ে গেছে (আগে ছিল 1)।
+
+---
+
+### **R1 থেকে R5 (14.0.0.1) এর দিকে ট্রেসরাউট করার সময়**
+
+#### **পরিস্থিতি ১:**
+
+**R1 এর Fa0/1 চালু (10.0.0.1 → R2)**
+
+```bash
+R1 → R2 → R3 → R4 → R5
+```
+
+**Traceroute Output:**
+
+```
+  1   10.0.0.2
+  2   11.0.0.2
+  3   12.0.0.2
+  4   13.0.0.2
+```
+
+ **কারণ:** এই রুটের প্রতিটি লিংকের OSPF cost = 1
+- মোট cost = 1+1+1+1 = **4**
+- এটা সবচেয়ে কম কস্ট, তাই OSPF এই পাথ বেছে নেয়।
+
+---
+
+#### **পরিস্থিতি ২:**
+
+**R1 এর Fa0/1 (R1 → R2) ইন্টারফেস বন্ধ করা হয়েছে**
+
+```bash
+R1(config)#interface fastEthernet 0/1
+R1(config-if)#shutdown
+```
+
+এখন OSPF কনভার্জ করে বিকল্প রুট ব্যবহার করে:
+
+```bash
+R1 → R6 → R7 → R5
+```
+
+**Traceroute Output:**
+
+```
+  1   16.0.0.2
+  2   15.0.0.1
+  3   14.0.0.1
+```
+
+ **কারণ:** R1 → R2 লিংক ডাউন, তাই OSPF বিকল্প পাথ নেয়
+- কিন্তু এই রুটে R6 এর ইন্টারফেস কস্ট = 10
+- মোট cost = 10 (R1→R6) + 10 (R6→R7) + 1 (R7→R5) = **21**
+- এটি ব্যাকআপ রুট হিসেবে কাজ করছে।
+
+---
+
+
+
+
+
+
